@@ -1,0 +1,477 @@
+import 'dart:io';
+
+import 'package:careqar/controllers/bike_controller.dart';
+import 'package:careqar/controllers/home_controller.dart';
+import 'package:careqar/controllers/my_bike_controller.dart';
+import 'package:careqar/controllers/my_car_controller.dart';
+import 'package:careqar/global_variables.dart';
+import 'package:careqar/models/brand_model.dart';
+import 'package:careqar/models/type_model.dart';
+import 'package:careqar/routes.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+
+import '../enums.dart';
+import '../models/car_model.dart';
+import '../models/city_model.dart';
+import '../models/feature_model.dart';
+import '../ui/widgets/alerts.dart';
+import 'car_controller.dart';
+import 'my_numberplate_controller.dart';
+
+class VehicleController extends GetxController {
+
+
+  var featuresStatus = Status.initial.obs;
+  late CarController carController;
+  late MyCarController myCarController;
+  late MyBikeController myBikeController;
+  late MyNumberPlateController myNumberPlateController;
+  late BikeController bikeController;
+  VehicleType? vehicleType;
+  Rx<List<dynamic>> newImages=Rx<List<dynamic>>([]);
+  var featuresFormKey = GlobalKey<FormState>().obs;
+  int? carId;
+  int? bikeId;
+  int lang=2;
+  String? purpose;
+  String? paymentMethod;
+  String? descriptionEn;
+  String? descriptionAr;
+  Type? type;
+  City? city;
+  double? price;
+  String? modelYear;
+  String? condition;
+  Brand? brand;
+  Model? model;
+  String? fuelType;
+  String? transmission;
+  String? color;
+  String? mileage;
+  int? seats;
+  int? typeId;
+  int? brandId;
+  int? cityId;
+  int? numberPlateId;
+  int? modelId;
+  String? engine;
+  String? number;
+  String? digits;
+  String? privilege;
+  String? plateType;
+  List<bool>? expansionIndexes=[];
+  List<VehicleFeature> vehicleFeatures=[];
+  List<String> images=[];
+  PhoneNumber phoneNumber = PhoneNumber(isoCode: gSelectedCountry?.isoCode);
+  Rx<FeatureModel> featureModel= Rx<FeatureModel>(FeatureModel());
+  var formKey=GlobalKey<FormState>();
+  @override
+  void onInit() async {
+    carController =   Get.put(CarController(),permanent: true);
+    bikeController =   Get.put(BikeController(),permanent: true);
+    myCarController =   Get.put(MyCarController(),permanent: true);
+    myBikeController =   Get.put(MyBikeController(),permanent: true);
+    myNumberPlateController =   Get.put(MyNumberPlateController(),permanent: true);
+    super.onInit();
+  }
+  Future<void> getFeatures() async {
+    try {
+
+      featuresStatus(Status.loading);
+
+
+      var response =
+      await gApiProvider.get(path: "feature/GetAllFeatureHeads?isVehicle=true&vehicleType=${EnumToString.convertToString(vehicleType)}");
+
+      await response.fold((l) {
+        showSnackBar(message: l.message!);
+        featuresStatus(Status.error);
+      }, (r) async {
+        featuresStatus(Status.success);
+        featureModel.value = FeatureModel.fromMap(r.data);
+        expansionIndexes = List.generate(featureModel.value.featureHeads.length, (index) => false);
+
+      });update();
+    } catch (e) {
+      showSnackBar(message: "Error");
+      featuresStatus(Status.error);update();
+    }
+  }
+
+  Future<void> uploadImages()async{
+    if(Get.focusScope!=null){
+      Get.focusScope?.unfocus();
+    }
+
+    // FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true,allowCompression: true,type: FileType.custom,
+    // allowedExtensions: ["jpg","jpeg","png"]
+    // );
+    final ImagePicker _picker = ImagePicker();
+    List<XFile?>? pickedImages = await _picker.pickMultiImage();
+
+    if (pickedImages!=null) {
+      for(var item in pickedImages){
+        newImages.value.add(File(item!.path));
+        update();
+      }
+
+    }
+  }
+
+  void uploadNow(){
+if(formKey.currentState!.validate()){
+  if(vehicleType==VehicleType.Car){
+    addCar();
+  }else if(vehicleType==VehicleType.Bike){
+    addBike();
+  }else{
+    addNumberPlate();
+  }
+}
+  }
+
+  Future<void> addNumberPlate() async {
+    try {
+
+      if(newImages.value.isEmpty){
+        showSnackBar(message: "UploadImages");
+      }else {
+        Get.focusScope?.unfocus();
+
+        EasyLoading.show(status: "ProcessingPleaseWait".tr);
+
+        var response = await gApiProvider
+            .post(path: "numberPlate/save",
+            authorization: true,
+            body: {
+              "numberPlateId":numberPlateId,
+              "condition": digits,
+              "description": descriptionEn,
+              "descriptionAr": descriptionAr,
+              "cityId": city?.cityId,
+              "countryId": gSelectedCountry?.countryId,
+              "price":price,
+              "purpose": purpose,
+              "number": number,
+              "plateType": plateType,
+              "digits": digits,
+              "privilege": privilege,
+              "phoneNumber":phoneNumber.parseNumber(),
+              "countryCode":phoneNumber.dialCode,
+              "isoCode":phoneNumber.isoCode,
+              "createdAt": DateTime.now().toString(),
+              "images": images.join(",")
+            });
+
+
+        await  response.fold((l) {
+          EasyLoading.dismiss();
+          showSnackBar(
+              message: l.message!);
+        }, (r) async {
+          EasyLoading.show();
+          var imagesResponse = await gApiProvider
+              .post(path: "numberPlate/SaveImages",
+              isFormData: true,
+              authorization: true,
+              body: {
+                "numberPlateId": r.data["numberPlateId"].toString(),
+
+              },
+              files: newImages.value.whereType<File>().toList());
+          EasyLoading.dismiss();
+          imagesResponse.fold((l) {
+            showSnackBar(
+                message: l.message!);
+          }, (x) async {
+            await showAlertDialog(title: "Success", message: r.message);
+            reset();
+            Get.offAllNamed(Routes.navigationScreen);
+          });
+        });
+      }
+    } catch (e) {
+      EasyLoading.dismiss();
+      showSnackBar(message: "OperationFailed");
+    }
+  }
+
+  Future<void> addCar() async {
+    try {
+
+     if(newImages.value.isEmpty){
+        showSnackBar(message: "UploadCarImages");
+      }else {
+       Get.focusScope?.unfocus();
+
+       EasyLoading.show(status: "ProcessingPleaseWait".tr);
+
+       var response = await gApiProvider
+           .post(path: "car/save",
+           authorization: true,
+           body: {"car": {
+             "modelYear":modelYear,
+             "condition": condition,
+             "brandId": brand?.brandId,
+             "modelId": model?.modelId,
+             "fuelType": fuelType,
+             "transmission":transmission,
+             "color": color,
+             "mileage": mileage,
+             "seats": seats,
+             "engin": engine,
+             "description": descriptionEn,
+             "descriptionAr": descriptionAr,
+             "typeId": type?.typeId,
+             "cityId": city?.cityId,
+             "countryId": gSelectedCountry?.countryId,
+             "price":price,
+             "carId": carId,
+             "purpose": purpose,
+             "paymentMethod": paymentMethod,
+             "createdAt": DateTime.now().toString(),
+             "images": images.join(","),
+             "phoneNumber":phoneNumber.parseNumber(),
+             "countryCode":phoneNumber.dialCode,
+             "isoCode":phoneNumber.isoCode,
+           },
+             "carFeatures": vehicleFeatures.map((e) =>
+             {
+               "featureId": e.featureId,
+               "headId": e.headId,
+               "quantity": e.quantity,
+               "featureOption": e.featureOption
+             }).toList(),
+           });
+
+
+      await  response.fold((l) {
+         showSnackBar(
+             message: l.message!);
+       }, (r) async {
+         var imagesResponse = await gApiProvider
+             .post(path: "car/SaveImages",
+             isFormData: true,
+             authorization: true,
+             body: {
+               "carId": r.data["carId"].toString(),
+
+             },
+             files: newImages.value.whereType<File>().toList());
+         EasyLoading.dismiss();
+         imagesResponse.fold((l) {
+           showSnackBar(
+               message: l.message!);
+         }, (x) async {
+           await showAlertDialog(title: "Success", message: r.message);
+           reset();
+         Get.offAllNamed(Routes.navigationScreen);
+         });
+       });
+     }
+    } catch (e) {
+      EasyLoading.dismiss();
+      showSnackBar(message: "OperationFailed");
+    }
+  }
+
+
+
+  Future<void> addBike() async {
+    try {
+
+       if(newImages.value.isEmpty){
+        showSnackBar(message: "UploadBikeImages");
+      }else
+     {
+        Get.focusScope?.unfocus();
+
+        EasyLoading.show(status: "ProcessingPleaseWait".tr);
+        var response = await gApiProvider
+            .post(path: "bike/save",
+            authorization: true,
+            body: {"bike": {
+              "modelYear": modelYear,
+              "condition": condition,
+              "brandId": brand?.brandId,
+              "modelId": model?.modelId,
+              "color": color,
+              "mileage": mileage,
+              "fuelType": fuelType,
+              "engin": engine,
+              "purpose": purpose,
+              "paymentMethod": paymentMethod,
+              "description": descriptionEn,
+              "descriptionAr": descriptionAr,
+              "typeId": type?.typeId,
+              "cityId": city?.cityId,
+              "countryId": gSelectedCountry?.countryId,
+              "price": price,
+              "bikeId":bikeId,
+              "createdAt": DateTime.now().toString(),
+              "images":images.join(","),
+              "phoneNumber":phoneNumber.parseNumber(),
+              "countryCode":phoneNumber.dialCode,
+              "isoCode":phoneNumber.isoCode,
+            },
+              "bikeFeatures":vehicleFeatures.map((e) => {
+                "featureId":e.featureId,
+                "headId":e.headId,
+                "quantity":e.quantity,
+                "featureOption":e.featureOption
+              }).toList(),
+            });
+
+
+        response.fold((l) {
+          showSnackBar(
+              message: l.message!);
+
+        }, (r) async {
+          var imagesResponse = await gApiProvider
+              .post(path: "bike/SaveImages",isFormData: true,
+              authorization: true,
+              body: {
+                "bikeId":r.data["bikeId"].toString(),
+
+              },files: newImages.value.whereType<File>().toList());
+          EasyLoading.dismiss();
+          imagesResponse.fold((l) {
+            showSnackBar(
+                message: l.message!);
+
+          }, (x) async {
+
+            await    showAlertDialog(title: "Success",message: r.message);
+            reset();
+            Get.find<HomeController>().index.value=0;
+            Get.offAllNamed(Routes.navigationScreen);
+
+          });
+
+        });
+      }
+    } catch (e) {
+      EasyLoading.dismiss();
+      showSnackBar(message: "OperationFailed");
+
+    }
+  }
+
+  void edit({vehicleType,dynamic data})async{
+    reset();
+    if(data!=null){
+      phoneNumber=data.phoneNumber;
+      this.vehicleType=vehicleType;
+      lang=2;
+
+      paymentMethod=data.paymentMethod;
+      descriptionEn=data.descriptionEn;
+      descriptionAr=data.descriptionAr;
+
+      cityId=data.cityId;
+      price=data.price;
+
+      images=data.images;
+      newImages.value.addAll(data.images);
+
+
+    if(vehicleType==VehicleType.Car){
+      carId=data.carId;
+      transmission=data.transmission;
+      seats=data.seats;
+    }else  if(vehicleType==VehicleType.Bike){
+      bikeId=data.bikeId;
+    }
+
+    if(vehicleType!=VehicleType.NumberPlate){
+      purpose=data.purpose;
+      typeId=data.typeId;
+      modelYear=data.modelYear;
+      condition=data.condition;
+      brandId=data.brandId;
+      modelId=data.modelId;
+      fuelType=data.fuelType;
+      color=data.color;
+      mileage=data.mileage;
+
+      engine=data.engine;
+
+      vehicleFeatures=data.features;
+      Get.toNamed(Routes.chooseBrandScreen);
+    }else{
+      numberPlateId=data.numberPlateId;
+      number=data.number;
+      privilege=data.privilege;
+      digits=data.digits;
+      plateType=data.plateType;
+      Get.toNamed(Routes.enterNumberScreen);
+    }
+
+    }
+
+
+
+  }
+
+
+  void reset(){
+    phoneNumber = PhoneNumber(isoCode: gSelectedCountry?.isoCode);
+    digits=null;
+    number=null;
+    plateType=null;
+    privilege=null;
+    vehicleType=null;
+    carId=null;
+    numberPlateId=null;
+    bikeId=null;
+    lang=2;
+    purpose=null;
+    paymentMethod=null;
+    descriptionEn=null;
+    descriptionAr=null;
+    typeId=null;
+    cityId=null;
+    price=null;
+    modelYear=null;
+    condition=null;
+    brandId=null;
+    modelId=null;
+    fuelType=null;
+    transmission=null;
+    color=null;
+    mileage=null;
+    seats=null;
+    engine=null;
+    type=null;
+    brand=null;
+    model=null;
+    city=null;
+    vehicleFeatures.clear();
+    images.clear();
+    newImages.value.clear();
+  }
+
+
+
+}
+
+final numberPlateTypes=[
+  NumberPlateType("3","3 Digits","assets/images/3-digits.png"),
+  NumberPlateType("4","4 Digits","assets/images/4-digits.png"),
+  NumberPlateType("5","5 Digits","assets/images/5-digits.png"),
+  NumberPlateType("6","6 Digits","assets/images/6-digits.png"),
+  NumberPlateType("other","Other","assets/images/others.png"),
+];
+
+class NumberPlateType{
+  String id;
+  String title;
+  String image;
+  NumberPlateType(this.id,this.title,this.image);
+}

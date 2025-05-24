@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "524581358673",
+    "project_id": "car-eqar",
+    "storage_bucket": "car-eqar.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524581358673:android:46813e1a28ed6319a43c70",
+        "android_client_info": {
+          "package_name": "com.caraqaar.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524581358673-beph14d27fi9856da9t10d3hs52fs3qo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.caraqaar.app",
+            "certificate_hash": "0ad86a097ad66818b4fc7b684769be541fb83022"
+          }
+        },
+        {
+          "client_id": "524581358673-kr23pqfnet43gkv9qqli3tsoqgpbne79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx1S2ewLkXDqgDsABZ0FhuU25oZx3euz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524581358673-4ade2em0bq8nm7k528de7edlclutv02b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "524581358673-ml355r4qr8qf3dslp4ku3a3tktk9tg00.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.careqar.careqar"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524581358673:android:74062b2c3e9c5761a43c70",
+        "android_client_info": {
+          "package_name": "com.careqar.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524581358673-78qkpkjdh7rtgmmqm12kgltpvdhej79c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.careqar.app",
+            "certificate_hash": "1037b5e149ac63e334d11aa18eeb737f0d771962"
+          }
+        },
+        {
+          "client_id": "524581358673-a7nd9j7afs1j4ig12tiahc0vklcshk8a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.careqar.app",
+            "certificate_hash": "33452385252118eeed4e9627ba2001eb730139ca"
+          }
+        },
+        {
+          "client_id": "524581358673-jodltn5kv6dddrvvb9mnp60be5lmh9ea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.careqar.app",
+            "certificate_hash": "0ad86a097ad66818b4fc7b684769be541fb83022"
+          }
+        },
+        {
+          "client_id": "524581358673-vqnahljuha4oe2e1mp0773igun20a44a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.careqar.app",
+            "certificate_hash": "a43f2e9a1e1620547c21cc68d737f2ff79283a9c"
+          }
+        },
+        {
+          "client_id": "524581358673-kr23pqfnet43gkv9qqli3tsoqgpbne79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx1S2ewLkXDqgDsABZ0FhuU25oZx3euz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524581358673-4ade2em0bq8nm7k528de7edlclutv02b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "524581358673-ml355r4qr8qf3dslp4ku3a3tktk9tg00.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.careqar.careqar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

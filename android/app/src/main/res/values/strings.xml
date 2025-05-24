@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Car Aqaar</string>
+    <string name="facebook_app_id">599321966402752</string>
+    <string name="fb_login_protocol_scheme">fb599321966402752</string>
+    <string name="facebook_client_token">c5d05bdd5b3d661703a018bd56214d3c</string>
+</resources>
