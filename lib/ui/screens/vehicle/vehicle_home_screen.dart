@@ -40,11 +40,17 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
   int sliderIndex=0;
 
   var currentIndexPosition = 0;
-
+  List top3Types = [];
   @override
   void initState() {
     homeController = Get.find<HomeController>();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (homeController.typeController.searchedTypes.length >= 3) {
+        top3Types = homeController.typeController.searchedTypes.take(3).toList();
+        debugPrint("Types updated in XYZ: $top3Types");
+        debugPrint("Types updated in XYZ: Vehicle home");
+      }
+    });
     if (homeController.contentController.homeContent!=null &&
         homeController.contentController.homeContent!.videos.isNotEmpty)
     {

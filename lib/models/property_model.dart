@@ -1,4 +1,5 @@
 import 'package:careqar/models/feature_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../global_variables.dart';
@@ -88,7 +89,8 @@ class Property{
   createdAt=DateTime.parse(map["CreatedAt"]);
   // companyId=map["CompanyId"]==0?null:map["CompanyId"];
   agentId=map["AgentId"]==0?null:map["AgentId"];
-  email=map["Email"]??"devirfankundi@gmail.com";
+  email=map["Email"]?? "no email";
+    debugPrint("SAHAr ${email=map["Email"]}");
   agentImage=map["AgentImage"];
   floors=map["Floors"];
   coordinates=map["Coordinates"];

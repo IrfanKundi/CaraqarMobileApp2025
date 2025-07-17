@@ -22,11 +22,27 @@ class ContentModel {
 class AppContent extends HiveObject {
   @HiveField(0)
   int? id;
+
   @HiveField(1)
   String? screen;
+
   @HiveField(2)
   var createAt;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "screen": screen,
+      "createAt": createAt.toString(), // make sure it's readable
+    };
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
 }
+
 
 
 class Content{

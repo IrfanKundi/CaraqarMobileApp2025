@@ -63,7 +63,8 @@ class ViewNumberPlateScreen extends GetView<ViewNumberPlateController> {
                                   desc: numberPlate.description,
                                   image: numberPlate.images.first);
                               String webUrl = "https://www.caraqar.co/Properties/Detail/${numberPlate.numberPlateId}";
-                              var message = "Hey! you might be interested in this.\n$adUrl\nor Check this ad on Car aqar\n$webUrl";
+                              // var message = "Hey! you might be interested in this.\n$adUrl\nor Check this ad on Car aqar\n$webUrl";
+                              var message = "Hey! you might be interested in this.\n$adUrl";
 
                               Share.share(message);
                             },
@@ -291,7 +292,8 @@ class ViewNumberPlateScreen extends GetView<ViewNumberPlateController> {
                                 image: numberPlate.images.first);
 
                             String url;
-                            var message = Uri.encodeFull("Hello,\n${numberPlate.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl \n or Check this ad on Car aqar \n https://www.caraqar.co/NumberPlates/Detail/${numberPlate.numberPlateId}");
+                            //var message = Uri.encodeFull("Hello,\n${numberPlate.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl \n or Check this ad on Car aqar \n https://www.caraqar.co/NumberPlates/Detail/${numberPlate.numberPlateId}");
+                            var message = Uri.encodeFull("Hello,\n${numberPlate.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl");
                             if (Platform.isIOS) {
                               url =
                               "https://wa.me/${numberPlate.contactNo}?text=$message";

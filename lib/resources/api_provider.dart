@@ -15,72 +15,81 @@ import '../user_session.dart';
 class ApiProvider {
   final Client _client = Client();
 
-  Future<Either<ErrorModel, SuccessModel>> post(
-      {Map<String, dynamic>? body,
-      String? path,
-      bool authorization = false,
-      bool isFormData = false,
-      String? accessToken,
-        File? file,
-        List<dynamic>? files,
-      bool isPatch = false}) async {
+  Future<Either<ErrorModel, SuccessModel>> post({
+    Map<String, dynamic>? body,
+    String? path,
+    bool authorization = false,
+    bool isFormData = false,
+    String? accessToken,
+    File? file,
+    List<dynamic>? files,
+    bool isPatch = false,
+  }) async {
     try {
       Response response;
 
-      // Logging request details for debugging
+      // 🟡 Request debug
       if (kDebugMode) {
-        print("Making API call to: $kApiBaseUrl/$path");
-        print("Body: ${jsonEncode(body)}");
+        debugPrint("SAHAr📤 [POST ${isFormData ? 'FormData' : 'JSON'}] → $kApiBaseUrl/$path");
+        if (body != null) debugPrint("SAHAr📦 Request Body: ${jsonEncode(body)}");
       }
 
       if (isFormData) {
-        var request = MultipartRequest(
-            isPatch ? "PATCH" : "POST", Uri.parse("$kApiBaseUrl/$path"));
-        // Authorization header
-        request.headers[HttpHeaders.authorizationHeader] = authorization
-            ? "Bearer ${accessToken ?? UserSession.accessToken}"
-            : "";
+        var request = MultipartRequest(isPatch ? "PATCH" : "POST", Uri.parse("$kApiBaseUrl/$path"));
+        request.headers[HttpHeaders.authorizationHeader] =
+        authorization ? "Bearer ${accessToken ?? UserSession.accessToken}" : "";
         request.headers[HttpHeaders.acceptHeader] = 'application/json';
         request.headers["API_KEY"] = kApiKey;
         request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
 
-        // Attach file(s) if provided
         if (file != null) {
           request.files.add(await MultipartFile.fromPath('file', file.path,
               contentType: MediaType('file', file.path.split(".").last)));
-        }else if(files!=null){
-
-          for(var item in files){
+        } else if (files != null) {
+          for (var item in files) {
             request.files.add(await MultipartFile.fromPath('', item.path,
                 contentType: MediaType('file', item.path.split(".").last)));
           }
         }
 
         if (body != null) {
-          request.fields.addAll(body.cast<String,String>());
+          request.fields.addAll(body.cast<String, String>());
         }
+
         final StreamedResponse streamResponse = await request.send();
         response = await Response.fromStream(streamResponse);
-      }
-      else {
+      } else {
         response = await _client.post(Uri.parse("$kApiBaseUrl/$path"),
             body: jsonEncode(body),
             headers: {
               "content-type": "application/json",
               "accept": "application/json",
-            "API_KEY" : kApiKey,
+              "API_KEY": kApiKey,
               "authorization": authorization
                   ? "Bearer ${accessToken ?? UserSession.accessToken}"
                   : ""
             });
       }
+
+      // 🟢 Response debug
+      if (kDebugMode) {
+        debugPrint("SAHAr✅ [POST] Status Code:${UserSession.accessToken}   ${response.statusCode}");
+        debugPrint("SAHAr📨 [POST] Response Body:  ${response.body}");
+      }
+
       var parsedBody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        return right(SuccessModel(title: "Success", data:  parsedBody["data"],message: parsedBody["message"]??"Success"));
+        return right(SuccessModel(
+            title: "Success",
+            data: parsedBody["data"],
+            message: parsedBody["message"] ?? "Success"));
       } else {
         return left(ErrorModel(
-            data:  parsedBody["data"], title: "Error", errorCode: response.statusCode,message: parsedBody["message"]??"Error"));
+            data: parsedBody["data"],
+            title: "Error",
+            errorCode: response.statusCode,
+            message: parsedBody["message"] ?? "Error"));
       }
     } on SocketException {
       return left(ErrorModel(
@@ -90,16 +99,16 @@ class ApiProvider {
           message: "Server is not responding. Try later",
           title: "Error",
           errorCode: 400));
-    }  on TimeoutException {
+    } on TimeoutException {
       return left(ErrorModel(
         message: "Request timeout. Please try again.",
         title: "Error",
         errorCode: 408,
       ));
-    } catch(ex, stackTrace) {
+    } catch (ex, stackTrace) {
       if (kDebugMode) {
-        print("Error in post request: $ex");
-        print("Stack Trace: $stackTrace");
+        debugPrint("SAHAr❌ Error in post request: $ex");
+        debugPrint("SAHAr📍 Stack Trace: $stackTrace");
       }
       return left(ErrorModel(
           message: "Something went wrong. Try again",
@@ -109,7 +118,7 @@ class ApiProvider {
   }
 
   Future<Either<ErrorModel, SuccessModel>> get({
-     String? path,
+    String? path,
     accessToken,
     bool isFormData = false,
     Map<String, String>? body,
@@ -118,49 +127,55 @@ class ApiProvider {
   }) async {
     try {
       Response response;
+
+      // 🟡 Request debug
       if (kDebugMode) {
-        print("Making API call to: $kApiBaseUrl/$path");
-        print("Body: ${jsonEncode(body)}");
+        debugPrint("SAHAr📥 [GET] → $kApiBaseUrl/$path");
+        if (body != null) debugPrint("SAHAr📦 Request Params: $accessToken  ${jsonEncode(body)}");
       }
+
       if (isFormData) {
         var request = MultipartRequest("GET", Uri.parse("$kApiBaseUrl/$path"));
-        request.headers[HttpHeaders.authorizationHeader] = authorization
-            ? "Bearer ${accessToken ?? UserSession.accessToken}"
-            : "";
+        request.headers[HttpHeaders.authorizationHeader] =
+        authorization ? "Bearer ${accessToken ?? UserSession.accessToken}" : "";
         request.headers[HttpHeaders.acceptHeader] = 'application/json';
         request.headers["API_KEY"] = kApiKey;
-
         request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
 
         if (body != null) {
           request.fields.addAll(body);
         }
+
         final StreamedResponse streamResponse = await request.send();
         response = await Response.fromStream(streamResponse);
-      }
-      else {
+      } else {
         response = await _client.get(Uri.parse("$kApiBaseUrl/$path"), headers: {
           "content-type": "application/json",
           "accept": "application/json",
-          "API_KEY":kApiKey,
+          "API_KEY": kApiKey,
           "authorization": authorization
               ? "Bearer ${accessToken ?? UserSession.accessToken}"
               : ""
         });
       }
 
-
-
+      // 🟢 Response debug
+      if (kDebugMode) {
+        debugPrint("SAHAr✅ [GET] Status Code: ${UserSession.accessToken} ${response.statusCode}");
+        debugPrint("SAHAr📨 [GET] Response Body: ${response.body}");
+      }
 
       var parsedBody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        return right(SuccessModel(title: "Success", data: parsedBody["data"],message: parsedBody["message"]??"Success"));
-      }
-      else {
+        return right(SuccessModel(
+            title: "Success",
+            data: parsedBody["data"],
+            message: parsedBody["message"] ?? "Success"));
+      } else {
         return left(ErrorModel(
-            data:  parsedBody["data"],
-            message: parsedBody["message"]??"Error",
+            data: parsedBody["data"],
+            message: parsedBody["message"] ?? "Error",
             title: "Error",
             errorCode: response.statusCode));
       }
@@ -172,16 +187,16 @@ class ApiProvider {
           message: "Server is not responding. Try later",
           title: "Error",
           errorCode: 400));
-    }  on TimeoutException {
+    } on TimeoutException {
       return left(ErrorModel(
         message: "Request timeout. Please try again.",
         title: "Error",
         errorCode: 408,
       ));
-    } catch(e, stackTrace){
+    } catch (e, stackTrace) {
       if (kDebugMode) {
-        print("Error in post request: $e");
-        print("Stack Trace: $stackTrace");
+        debugPrint("SAHAr❌ Error in get request: $e");
+        debugPrint("SAHAr📍 Stack Trace: $stackTrace");
       }
       return left(ErrorModel(
           message: "Something went wrong. Try again",
@@ -190,3 +205,4 @@ class ApiProvider {
     }
   }
 }
+

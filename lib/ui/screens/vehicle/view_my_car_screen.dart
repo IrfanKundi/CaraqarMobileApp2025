@@ -302,8 +302,14 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                   Text("CurrentPrice".tr,
                     textAlign: TextAlign.center, style: kTextStyle14.copyWith(color: kAccentColor),),
                   kVerticalSpace8,
-                  Text("${getPrice(car!.price!)}", textAlign: TextAlign.center,textDirection: TextDirection.ltr,
-                    style: kTextStyle18.copyWith(color: kPrimaryColor),),
+                  Text(
+                    car!.price == null || car.price == 0
+                        ? "Call for Price".tr
+                        : getPrice(car.price!),
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.ltr,
+                    style: kTextStyle18.copyWith(color: kPrimaryColor),
+                  ),
 
 
             Padding(  padding: kScreenPadding,
@@ -419,6 +425,57 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                         Text(
                           "${car.mileage} ${"KM".tr}",
                           style: kTextStyle16.copyWith(color: kAccentColor),),
+                      ],
+                    ),)
+                ],
+              ),    Divider(),
+              //working
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text("Registration province".tr, style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
+                        kVerticalSpace8,
+                        Text(
+                          car.registrationCity?.isNotEmpty == true
+                              ? car.registrationCity!
+                              : "Not Available",
+                          style: kTextStyle16.copyWith(color: kAccentColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),    Divider(),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text("Registration Year".tr, style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
+                        kVerticalSpace8,
+                        Text(
+                          car.registrationYear?.isNotEmpty == true
+                              ? car.registrationYear!
+                              : "Not Available",
+                          style: kTextStyle16.copyWith(color: kAccentColor),
+                        ),
+                      ],
+                    ),
+                  ), SizedBox(
+                    height: 40.h,
+                    child: VerticalDivider(),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text("origin".tr, style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
+                        kVerticalSpace8,
+                        Text(
+                          car.importedLocal?.isNotEmpty == true ? car.importedLocal! : "Not Available",
+                          style: kTextStyle16.copyWith(color: kAccentColor),
+                        ),
                       ],
                     ),)
                 ],

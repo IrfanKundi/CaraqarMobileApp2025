@@ -283,104 +283,100 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                   Divider(thickness: 1.h, color: Colors.grey.shade400,),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        if(property.floors!>0 && property.floors!=null)
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Image.asset("assets/images/floor.png"
-                                  , width: 25.w,
-                                  height:25.w,
-                                  color: kLightBlueColor,
-                                ), Text(
-                                  "${property.floors} ${"Floors".tr}",
-                                  style: TextStyle(
-                                      color: kAccentColor,
-                                      fontSize: 12.sp),
-                                ),
-                              ],
-                            ),
-                          ),
-                        if(property.bedrooms!>0 && property.bedrooms!=null)
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Image.asset("assets/images/bedroom.png"
-                                  , width: 25.w,
-                                  height:25.w,
-                                  color: kLightBlueColor,
-                                ), Text(
-                                  "${property.bedrooms} ${"Beds".tr}",
-                                  style: TextStyle(
-                                      color: kAccentColor,
-                                      fontSize: 12.sp),
-                                ),
-                              ],
-                            ),
-                          ),
-                        if(property.baths!>0 && property.baths!=null)
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Image.asset("assets/images/shower.png"
-                                  , width: 25.w,
-                                  height:25.w,
-                                  color: kLightBlueColor,
-                                ),
-                                Text(
-                                  "${property.baths} ${"Baths".tr}",
-                                  style: TextStyle(
-                                      color: kAccentColor,
-                                      fontSize: 12.sp),
-                                ),
-                              ],
-                            ),
-                          ),
-                        if(property.kitchens!>0 && property.kitchens!=null)
-                          Expanded(child:  Column(
-                            children: [
-                              Image.asset("assets/images/kitchen.png"
-                                ,
-                                width: 25.w,
-                                height:25.w,
-                                color: kLightBlueColor,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          if(property.floors!>0 && property.floors!=null)
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Image.asset("assets/images/floor.png"
+                                    , width: 25.w,
+                                    height:25.w,
+                                    color: kLightBlueColor,
+                                  ), Text(
+                                    "${property.floors} ${"Floors".tr}",
+                                    style: TextStyle(
+                                        color: kAccentColor,
+                                        fontSize: 12.sp),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${property.kitchens} ${"Kitchens".tr}",
-                                style: TextStyle(
-                                    color: kAccentColor,
-                                    fontSize: 12.sp),
+                            ),
+                          if(property.bedrooms!>0 && property.bedrooms!=null)
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Image.asset("assets/images/bedroom.png"
+                                    , width: 25.w,
+                                    height:25.w,
+                                    color: kLightBlueColor,
+                                  ), Text(
+                                    "${property.bedrooms} ${"Beds".tr}",
+                                    style: TextStyle(
+                                        color: kAccentColor,
+                                        fontSize: 12.sp),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),),
-                        if(property.furnished!="" && property.furnished!=null)
-                          Expanded(
-
-                            child:  Column(crossAxisAlignment: CrossAxisAlignment.stretch,
+                            ),
+                          if(property.baths!>0 && property.baths!=null)
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Image.asset("assets/images/shower.png"
+                                    , width: 25.w,
+                                    height:25.w,
+                                    color: kLightBlueColor,
+                                  ),
+                                  Text(
+                                    "${property.baths} ${"Baths".tr}",
+                                    style: TextStyle(
+                                        color: kAccentColor,
+                                        fontSize: 12.sp),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if(property.kitchens!>0 && property.kitchens!=null)
+                            Expanded(child:  Column(
                               children: [
-                                Image.asset("assets/images/furnished.png"
+                                Image.asset("assets/images/kitchen.png"
                                   ,
                                   width: 25.w,
                                   height:25.w,
                                   color: kLightBlueColor,
                                 ),
-                                FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    "${property.furnished!.tr} ${"Furnished".tr}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: kAccentColor,
-                                        fontSize: 12.sp),
-                                  ),
+                                Text(
+                                  "${property.kitchens} ${"Kitchens".tr}",
+                                  style: TextStyle(
+                                      color: kAccentColor,
+                                      fontSize: 12.sp),
                                 ),
                               ],
-                            ),)
-
-
-                      ],
+                            ),),
+                          if(property.furnished!="" && property.furnished!=null)
+                            Expanded(
+                              child:  Column(crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Image.asset("assets/images/furnished.png",
+                                    width: 25.w,
+                                    height:25.w,
+                                    color: kLightBlueColor,
+                                  ),
+                                    Text(
+                                      "${property.furnished!.tr} ${"Furnished".tr}",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: kAccentColor,
+                                          fontSize: 12.sp),
+                                    ),
+                                ],
+                              ),)
+                        ],
+                      ),
                     ),
                   ),
                   Divider(thickness: 1.h, color: Colors.grey.shade400,),
@@ -390,37 +386,24 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                   kVerticalSpace8,
                   Text(getPrice(property.price!), textAlign: TextAlign.center,textDirection: TextDirection.ltr,
                     style: kTextStyle18.copyWith(color: kPrimaryColor),),
-
-
-
-
                   Padding(
                     padding: kScreenPadding,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-
                           Text("Description".tr, style: kTextStyle16.copyWith(color: kAccentColor),),
                           kVerticalSpace12,
                           Text(
                             property.description!,
                             style: kTextStyle14.copyWith(color: kAccentColor),),
-
-
-
-
-
                           kVerticalSpace16,
                           Row(
                             children: [
                               Icon(MaterialCommunityIcons.map_marker_outline,
                                 color: kLightBlueColor, size: 22.sp,),
-
                               kHorizontalSpace8,
-
                               Expanded(child: Text("${property.location}, ${property.cityName}".tr,
                                 style: kTextStyle16.copyWith(color: kAccentColor),)),
-
                               kHorizontalSpace12,
                               GestureDetector(
                                 onTap: () async {
@@ -462,13 +445,11 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                             ],
                           ),
                           kVerticalSpace16,
-
                           if( property.featureHeads.isNotEmpty)
                             Padding(
                               padding:  EdgeInsets.only(bottom: 28.w),
                               child: Text("Features/Amenities".tr, style: kTextStyle16.copyWith(color: kAccentColor),),
                             ),
-
                           Column(
                             children:
                             property.featureHeads.map((e) =>
@@ -485,10 +466,8 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                             borderRadius: kBorderRadius4,
                                             border: Border.all(
                                                 color: kBorderColor, width: 1.w),
-
                                           ),
                                           child:
-
                                           GridView.builder(
                                               padding: EdgeInsets.zero,
                                               physics: const PageScrollPhysics(),
@@ -518,8 +497,6 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                                   ],
                                                 );
                                               })
-
-
                                       ),
 
                                       Positioned(
@@ -541,9 +518,6 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                   ),
                                 )).toList(),
                           ),
-
-
-
                           GetBuilder<ViewMyPropertyController>(
                               id: "comments",
                               builder: (controller)=>
@@ -595,14 +569,9 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                         },separatorBuilder: (context,index){
                                         return  const Divider();
                                       },shrinkWrap: true,itemCount: controller.comments.length,)
-
-
-
                                     ],
                                   )
                           ),
-
-
                           Container(
                             width: 1.sw,
                             padding: kScreenPadding,
@@ -672,18 +641,14 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                     )
                                         :
                                     Container()
-
                                   ],
                                 )
                               ],
                             ),
                           )
-
                         ]
                     ),
                   )
-
-
                 ],
               ),
             ),

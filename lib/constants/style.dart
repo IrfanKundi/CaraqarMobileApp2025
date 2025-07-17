@@ -89,6 +89,9 @@ final kVerticalSpace24 = SizedBox(
 final kVerticalSpace28 = SizedBox(
   height: 28.h,
 );
+final kHorizontalSpace2 = SizedBox(
+  width: 2.w,
+);
 final kHorizontalSpace4 = SizedBox(
   width: 4.w,
 );

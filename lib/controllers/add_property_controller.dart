@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:image/image.dart' as img;
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import '../enums.dart';
 import '../global_variables.dart';
 import 'location_controller.dart';
@@ -20,6 +22,8 @@ class AddPropertyController extends GetxController {
   var status = Status.initial.obs;
   var typeStatus = Status.initial.obs;
   var featureStatus = Status.initial.obs;
+  final RxString priceInWords = ''.obs;
+  final RxString selectedPlotSize = ''.obs;
   int lang=2;
   SubType? selectedSubtype;
   Type? selectedType;
@@ -172,36 +176,69 @@ EasyLoading.dismiss();
 
     }
   }
+  Future<File?> compressAndConvertToWebP(File originalFile) async {
+    try {
+      final bytes = await originalFile.readAsBytes();
+      final image = img.decodeImage(bytes);
+      if (image == null) return null;
+
+      final compressedBytes = img.encodeJpg(image, quality: 40);
+      final dir = await getTemporaryDirectory();
+      final filename = path.basenameWithoutExtension(originalFile.path);
+      final compressedPath = path.join(dir.path, '$filename.jpg');
+
+      final compressedFile = File(compressedPath);
+      await compressedFile.writeAsBytes(compressedBytes);
+
+      return compressedFile;
+    } catch (e) {
+      print('Compression error: $e');
+      return null;
+    }
+  }
+
+  Future<List<File>> compressImages(List<File> originalImages) async {
+    List<File> compressedImages = [];
+
+    for (File image in originalImages) {
+      final compressedImage = await compressAndConvertToWebP(image);
+      if (compressedImage != null) {
+        compressedImages.add(compressedImage);
+      }
+    }
+
+    return compressedImages;
+  }
 
   Future<void> addProperty() async {
     try {
-      if( property.cityId==null){
+      if (property.cityId == null) {
         showSnackBar(message: "SelectCity");
-      }else if(property.location==null){
-       showSnackBar(message: "SelectLocation");
-      }else if(property.typeId==null){
+      } else if (property.location == null) {
+        showSnackBar(message: "SelectLocation");
+      } else if (property.typeId == null) {
         showSnackBar(message: "SelectPropertyType");
-  } else if(images.value.isEmpty){
+      } else if (images.value.isEmpty) {
         showSnackBar(message: "UploadPropertyImages");
-      }else
-      if (formKey.value.currentState!.validate()) {
+      } else if (formKey.value.currentState!.validate()) {
         Get.focusScope?.unfocus();
         formKey.value.currentState?.save();
         status(Status.loading);
         EasyLoading.show(status: "ProcessingPleaseWait".tr);
 
-        var response = await gApiProvider
-            .post(path: "property/save",
-            authorization: true,
-            body: {"property": {
+        var response = await gApiProvider.post(
+          path: "property/save",
+          authorization: true,
+          body: {
+            "property": {
               "title": property.titleEn,
               "titleAr": property.titleAr,
               "description": property.descriptionEn,
               "descriptionAr": property.descriptionAr,
-              "kitchens": property.typeId!>2? null: property.kitchens,
-              "bedrooms": property.typeId!>2? null: property.bedrooms,
-              "baths":  property.typeId!>2? null:property.baths,
-              "floors":  property.typeId!>2? null:property.floors,
+              "kitchens": property.typeId! > 2 ? null : property.kitchens,
+              "bedrooms": property.typeId! > 2 ? null : property.bedrooms,
+              "baths": property.typeId! > 2 ? null : property.baths,
+              "floors": property.typeId! > 2 ? null : property.floors,
               "typeId": property.typeId,
               "subTypeId": property.subTypeId,
               "purpose": property.purpose,
@@ -209,51 +246,55 @@ EasyLoading.dismiss();
               "countryId": gSelectedCountry?.countryId,
               "price": property.price,
               "area": property.area,
-              "furnished": property.typeId!>2? null:property.furnished,
-              "propertyId":property.propertyId,
+              "furnished": property.typeId! > 2 ? null : property.furnished,
+              "propertyId": property.propertyId,
               "locationId": property.locationId,
-              "createdAt":property.createdAt!=null?property.createdAt.toString():DateTime.now().toString(),
-              "images":property.images.join(","),
-              "phoneNumber":property.phoneNumber.parseNumber(),
-              "countryCode":property.phoneNumber.dialCode,
-              "isoCode":property.phoneNumber.isoCode,
+              "createdAt": property.createdAt?.toString() ?? DateTime.now().toString(),
+              "images": property.images.join(","),
+              "phoneNumber": property.phoneNumber.parseNumber(),
+              "countryCode": property.phoneNumber.dialCode,
+              "isoCode": property.phoneNumber.isoCode,
             },
-              "propertyFeatures":property.features.map((e) => {
-                "featureId":e.featureId,
-                "headId":e.headId,
-                "quantity":e.quantity,
-                "featureOption":e.featureOption
-              }).toList(),
-        });
-
+            "propertyFeatures": property.features.map((e) => {
+              "featureId": e.featureId,
+              "headId": e.headId,
+              "quantity": e.quantity,
+              "featureOption": e.featureOption,
+            }).toList(),
+          },
+        );
 
         response.fold((l) {
           EasyLoading.dismiss();
-          showSnackBar(
-              message: l.message!);
+          showSnackBar(message: l.message!);
           status(Status.error);
         }, (r) async {
-          var imagesResponse = await gApiProvider
-              .post(path: "property/SaveImages",isFormData: true,
-              authorization: true,
-              body: {
-                "propertyId":r.data["propertyId"].toString(),
+          // ✅ Compress images before upload
+          final originalImages = images.value.whereType<File>().toList();
+          final compressedImages = await compressImages(originalImages);
 
-              },files: images.value.whereType<File>().toList());
+          var imagesResponse = await gApiProvider.post(
+            path: "property/SaveImages",
+            isFormData: true,
+            authorization: true,
+            body: {
+              "propertyId": r.data["propertyId"].toString(),
+            },
+            files: compressedImages,
+          );
+
           EasyLoading.dismiss();
+
           imagesResponse.fold((l) {
             Get.find<PropertyController>().getProperties();
-            showSnackBar(
-                message: l.message!);
+            showSnackBar(message: l.message!);
             status(Status.error);
           }, (x) async {
-
-       await    showAlertDialog(title: "Success",message: r.message);
-       Get.back();
-      Get.find<MyPropertyController>().getProperties();
-          status(Status.success);
+            await showAlertDialog(title: "Success", message: r.message);
+            Get.back();
+            Get.find<MyPropertyController>().getProperties();
+            status(Status.success);
           });
-
         });
       }
     } catch (e) {
@@ -262,6 +303,7 @@ EasyLoading.dismiss();
       status(Status.error);
     }
   }
+
 }
 
 

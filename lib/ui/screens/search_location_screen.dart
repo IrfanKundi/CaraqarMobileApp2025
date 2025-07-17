@@ -7,82 +7,47 @@ import 'package:get/get.dart';
 
 
 class SearchLocationScreen extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
-    var controller=Get.find<LocationController>();
+    final controller = Get.find<LocationController>();
 
-    int id =  int.parse(Get.parameters["cityId"]!);
-    City city= controller.cityModel.value.cities.firstWhere((element) => element.cityId==id);
+    int id = int.parse(Get.parameters["cityId"]!);
+
     return Scaffold(
-      appBar: buildAppBar(context,title: "SearchLocation".tr),
-      body:
-          ListView.separated(
-            padding: kScreenPadding,
-              shrinkWrap: true,
-              separatorBuilder: (context,index){
-                return Divider();
+      appBar: buildAppBar(context, title: "SearchLocation".tr),
+      body: Obx(() {
+        // Wait for data to be available
+        if (controller.cityModel.value.cities.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        // Now safely access city
+        final cities = controller.cityModel.value.cities;
+        final city = cities.firstWhere(
+              (element) => element.cityId == id, // fallback
+        );
+
+        if (city.cityId == -1) {
+          return Center(child: Text("City not found"));
+        }
+
+        return ListView.separated(
+          padding: kScreenPadding,
+          shrinkWrap: true,
+          separatorBuilder: (context, index) => Divider(),
+          itemCount: city.locations.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text("${city.locations[index].title}", style: kTextStyle14),
+              onTap: () {
+                Get.back(result: city.locations[index]);
               },
-              itemCount: city.locations.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    "${city.locations[index].title}",
-                    style: kTextStyle14,
-                  ),
-                  onTap: () {
-
-                    Get.back(result:city.locations[index]);
-
-                  },
-                );
-              }),
-
-
-          // Padding(
-          //   padding: kScreenPadding,
-          //   child: Column(
-          //     children: [
-          //       SearchLocationField(
-          //       ),
-          //       kHorizontalSpace16,
-          //       Expanded(
-          //         child: controller.status.value == Status.loading?
-          //             CircularLoader():
-          //
-          //         controller.status.value == Status.error?
-          //
-          //         Text("Couldn't search places",style: kTextStyle16,):
-          //
-          //        controller.searchPlaceModel.value.places.isEmpty?
-          //
-          //        Text("No places found",style: kTextStyle16,):
-          //        ListView.separated(
-          //             shrinkWrap: true,
-          //             separatorBuilder: (context,index){
-          //               return Divider();
-          //             },
-          //             itemCount: controller.searchPlaceModel.value.places.length,
-          //             itemBuilder: (context, index) {
-          //               return ListTile(
-          //                 contentPadding: EdgeInsets.zero,
-          //                 title: Text(
-          //                   "${controller.searchPlaceModel.value.places[index].description}",
-          //                   style: kTextStyle14,
-          //                 ),
-          //                 onTap: () {
-          //
-          //                   Get.back(result: controller.searchPlaceModel.value.places[index].description);
-          //
-          //                     },
-          //               );
-          //             }),
-          //       )
-          //     ],
-          //   ),
-          // ),
+            );
+          },
+        );
+      }),
     );
   }
 }
+

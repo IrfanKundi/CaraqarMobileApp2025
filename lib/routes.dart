@@ -71,6 +71,9 @@ class Routes {
   static const chooseModelYearScreen = "/chooseModelYearScreen";
   static const chooseTypeScreen = "/chooseTypeScreen";
   static const selectConditionScreen = "/selectConditionScreen";
+  static const selectRegistrationYearScreen = "/selectRegistrationYearScreen";
+  static const selectProvinceScreen = "/selectProvinceScreen";
+  static const selectOriginScreen = "/selectOriginScreen";
   static const chooseTransmissionScreen = "/selectTransmissionScreen";
   static const selectPlateDigitsScreen = "/selectPlateDigitsScreen";
   static const selectPlateTypeScreen = "/selectPlateTypeScreen";
@@ -80,6 +83,7 @@ class Routes {
   static const selectPaymentMethodScreen = "/selectPaymentMethodScreen";
   static const selectCityScreen = "/selectCityScreen";
   static const selectLocationScreen = "/selectLocationScreen";
+  static const selectAdLocationScreen = "/selectAdLocationScreen";
   static const enterMileageScreen = "/enterMileageScreen";
   static const enterEngineScreen = "/enterEngineScreen";
   static const enterSeatsScreen = "/enterSeatsScreen";
@@ -99,4 +103,5 @@ class Routes {
 
   static const requirementDetailScreen = "/requirementDetailScreen";
   static const showroomsScreen = "/showroomsScreen";
+
 }

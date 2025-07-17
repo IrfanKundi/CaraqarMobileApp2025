@@ -55,7 +55,6 @@ class CurrentLocationScreen extends StatelessWidget{
                       ButtonWidget(text: "UseCurrentLocation", onPressed: ()async{
                         //gCurrentLocation=LatLng(25.387255,51.523644);
                         await locationController.determinePosition();
-
                           if (UserSession.firstLaunch) {
                             Get.offNamed(Routes.introScreen);
                           } else {

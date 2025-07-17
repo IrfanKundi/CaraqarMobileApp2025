@@ -1,4 +1,5 @@
 import 'package:careqar/models/car_model.dart';
+import 'package:careqar/models/city_model.dart';
 import 'package:careqar/models/company_model.dart';
 import 'package:careqar/models/number_plate_model.dart';
 import 'package:careqar/models/property_model.dart';
@@ -17,6 +18,7 @@ class CompanyController extends GetxController {
   var status = Status.initial.obs;
   var companyStatus = Status.initial.obs;
   var adsStatus = Status.initial.obs;
+  late City selectedCity;
   RxList<Company> companies = RxList<Company>([]);
 
   RxList<Company> searchedCompanies =  RxList<Company>([]);

@@ -57,7 +57,8 @@ class EnterMileageScreen extends GetView<VehicleController> {
                   if(Get.arguments==true){
                     Navigator.pop(context);
     }else {
-                    Get.toNamed(Routes.enterEngineScreen);
+                   // Get.toNamed(Routes.enterEngineScreen);
+                    Get.toNamed(Routes.enterSeatsScreen);
                   }
                 }
 

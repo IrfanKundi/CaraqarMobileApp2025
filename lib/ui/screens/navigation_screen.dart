@@ -36,7 +36,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         () => Scaffold(
           resizeToAvoidBottomInset: false,
           key: gScaffoldStateKey,
-          drawer: const DrawerWidget(),
+          drawer:  DrawerWidget(),
           body: Stack(
             alignment: Alignment.bottomCenter,
             children: [

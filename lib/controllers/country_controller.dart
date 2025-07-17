@@ -30,9 +30,6 @@ class CountryController extends GetxController {
           }else{
             gSelectedCountry= countries.firstWhere((element) => element.countryId ==UserSession.country);
           }
-
-
-
       });
     } catch (e) {
       //await FlutterRestart.restartApp();

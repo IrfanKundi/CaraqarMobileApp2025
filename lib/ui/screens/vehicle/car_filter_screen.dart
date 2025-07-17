@@ -61,9 +61,10 @@ class CarFilterScreen extends GetView<VehicleController> {
                             
                             InkWell(
                               onTap: () async {
-                                var result = await Get.toNamed(Routes.selectCityScreen,arguments: true) as City;
-                                if (result != null) {
-                                  controller.selectedCity = result;
+                                var result = await Get.toNamed(Routes.selectCityScreen, arguments: true);
+                                if (result != null && result is Map) {
+                                  controller.selectedCity = result['city'];
+                                  controller.selectedLocation = result['location'];
                                   controller.update(["filter"]);
                                 }
                               },
@@ -119,7 +120,6 @@ class CarFilterScreen extends GetView<VehicleController> {
                                       });
                                   if (result != null) {
                                     controller.selectedLocation = result;
-
                                     controller.update(["filter"]);
                                   }
                                 }

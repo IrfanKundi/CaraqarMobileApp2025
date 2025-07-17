@@ -35,6 +35,9 @@ var gContentController = Get.put(ContentController());
 
 final priceFormat = NumberFormat("#,##0", "en_US");
 String getPrice(double price){
+  if (price == 0) {
+    return "Call for Price".tr;
+  }
   return "${priceFormat.format(price)} ${gSelectedCountry?.currency}";
 }
 
@@ -56,14 +59,30 @@ final gVehicleColors=[
   VehicleColor("Black", Colors.black),
   VehicleColor("Red", Colors.red),
   VehicleColor("Green", Colors.green),
-  VehicleColor("Blue", Colors.blue),
   VehicleColor("Orange", Colors.deepOrange),
   VehicleColor("Brown", Colors.brown),
   VehicleColor("Gold", Colors.orangeAccent),
   VehicleColor("Grey", Colors.grey),
   VehicleColor("Silver", Colors.grey.shade300),
   VehicleColor("DarkBlue", Colors.indigoAccent),
-
+  VehicleColor("Silver", Colors.grey.shade300),
+  VehicleColor("Grey", Colors.grey),
+  VehicleColor("Blue", Colors.indigo[900]!),
+  VehicleColor("Green", Colors.green[800]!),
+  VehicleColor("Red", Colors.red),
+  VehicleColor("Gold", Color(0xFFFFD700)), // Custom gold
+  VehicleColor("Maroon", Colors.brown[900]!),
+  VehicleColor("Beige", Color(0xFFF5F5DC)), // Custom beige
+  VehicleColor("Pink", Colors.pink),
+  VehicleColor("Brown", Colors.brown),
+  VehicleColor("Burgundy", Color(0xFF800020)), // Custom burgundy
+  VehicleColor("Yellow", Colors.yellow[700]!),
+  VehicleColor("Bronze", Color(0xFFCD7F32)), // Custom bronze
+  VehicleColor("Purple", Colors.purple[800]!),
+  VehicleColor("Turquoise", Colors.cyanAccent[400]!),
+  VehicleColor("Orange", Colors.orange),
+  VehicleColor("Indigo", Colors.indigo),
+  VehicleColor("Magenta", Color(0xFFFF00FF)), // Custom magenta
 ];
 
 class VehicleColor{

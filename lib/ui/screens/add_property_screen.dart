@@ -1,40 +1,38 @@
 import 'dart:io';
 
-import 'package:careqar/global_variables.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
+import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/add_property_controller.dart';
 import 'package:careqar/controllers/property_controller.dart';
 import 'package:careqar/enums.dart';
-import 'package:careqar/locale/app_localizations.dart';
+import 'package:careqar/global_variables.dart';
 import 'package:careqar/models/city_model.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
-import 'package:careqar/ui/widgets/app_bar.dart';
+import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/cities_bottom_sheet.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:careqar/constants/colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:careqar/constants/style.dart';
-import 'package:careqar/ui/widgets/button_widget.dart';
-import 'package:careqar/ui/widgets/dropdown_widget.dart';
 import 'package:careqar/ui/widgets/text_button_widget.dart';
 import 'package:careqar/ui/widgets/text_field_widget.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
+import '../../locale/convertor.dart';
 import '../widgets/phone_number_text_field.dart';
 
 class AddPropertyScreen extends GetView<AddPropertyController> {
-  const AddPropertyScreen({Key? key}) : super(key: key);
+  const AddPropertyScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
-
+    final List<String> plotSizes = ["Marla", "Kanal", "Acre"];
     return Scaffold(
       //appBar: buildAppBar(context,title: "AddProperty")
       //,
@@ -55,7 +53,7 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
                     ],
                   )
                   ,kVerticalSpace12,
-                  GetBuilder<AddPropertyController>(builder:(controller)=> TextFieldWidget(hintText: "SearchCity",onTap: ()async{
+                  GetBuilder<AddPropertyController>(builder:(controller)=> TextFieldWidget(hintText: "Select Region",onTap: ()async{
                     var result =  await showCitiesSheet(context) as City;
                     if(result!=null){
                       controller.property.cityNameAr=result.nameAr;
@@ -70,7 +68,7 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
                     text: controller.property.cityName,
                   )),
                   kVerticalSpace12,
-                  GetBuilder<AddPropertyController>(builder:(controller)=> TextFieldWidget(hintText: "SearchLocation",onTap: ()async{
+                  GetBuilder<AddPropertyController>(builder:(controller)=> TextFieldWidget(hintText: "Select City",onTap: ()async{
                     if(controller.property.cityId!=null){
                       Location location = await  Get.toNamed(Routes.searchLocationScreen,
                           parameters: {"cityId":controller.property.cityId.toString()}) as Location;
@@ -298,23 +296,77 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
                   )
                   ,kVerticalSpace12,
 
-                  TextFieldWidget(hintText: "Area",
-                    keyboardType: TextInputType.number,
-                    text: controller.property.area?.toString(),
-                    onChanged: (String val){
-                      if(val==""){
-                        controller.property.area=null;
-                      }else{
-                        controller.property.area=double.parse(val);
-                      }
-                    },
-                    validator: (String? val){
-                      if(val!.trim().isEmpty)
-                        return kRequiredMsg.tr;
-                      else
-                        return null;
-                    },),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFieldWidget(
+                        hintText: "Area",
+                        keyboardType: TextInputType.number,
+                        text: controller.property.area?.toString(),
+                        onChanged: (String val) {
+                          if (val == "") {
+                            controller.property.area = null;
+                          } else {
+                            controller.property.area = double.tryParse(val);
+                          }
+                          controller.update(); // Update UI conditionally
+                        },
+                        validator: (String? val) {
+                          if (val!.trim().isEmpty)
+                            return kRequiredMsg.tr;
+                          return null;
+                        },
+                      ),
+                      // 👇 Conditionally render the ListView if area is not null
+                      GetBuilder<AddPropertyController>(
+                        builder: (controller) {
+                          if (controller.property.area == null) return SizedBox.shrink();
+
+                          final List<String> plotSizes = ["Marla", "Kanal", "Acre"];
+                          return Padding(
+                            padding: EdgeInsets.only(top: 12.w),
+                            child: SizedBox(
+                              height: 30.h,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: plotSizes.length,
+                                separatorBuilder: (context, index) => SizedBox(width: 12.w),
+                                itemBuilder: (context, index) {
+                                  final item = plotSizes[index];
+                                  final isSelected = controller.selectedPlotSize.value == item;
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      controller.selectedPlotSize.value = item;
+                                      controller.update();
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.symmetric(vertical: 2.w, horizontal: 8.w),
+                                      decoration: BoxDecoration(
+                                        borderRadius: kBorderRadius12,
+                                        color: isSelected ? kAccentColor : Colors.grey.shade300,
+                                      ),
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          color: isSelected ? kWhiteColor : kBlackColor,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+
                   kVerticalSpace12,
+                  //sahar work
 
                   Row(
                     children: [
@@ -324,22 +376,46 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
                     ],
                   )
                   ,kVerticalSpace12,
-                  TextFieldWidget(hintText: "Price",  keyboardType: TextInputType.number,
-                    text: controller.property.price?.toString(),
-                    onChanged: (String val){
-                    if(val==""){
-                      controller.property.price=null;
-                    }else{
-                      controller.property.price=double.parse(val);
-                    }
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFieldWidget(
+                        hintText: "Price",
+                        keyboardType: TextInputType.number,
+                        text: controller.property.price?.toString(),
+                        onChanged: (String val) {
+                          if (val == "") {
+                            controller.property.price = null;
+                            controller.priceInWords.value = '';
+                          } else {
+                            try {
+                              controller.property.price = double.parse(val);
+                              final formatted = formatIndianNumber(controller.property.price!.toInt());
+                              controller.priceInWords.value = '${formatted.capitalize!.trim() ?? ''}';
+                            } catch (_) {
+                              controller.priceInWords.value = '';
+                            }
+                          }
+                        },
+                        validator: (String? val) {
+                          if (val!.trim().isEmpty) return kRequiredMsg.tr;
+                          return null;
+                        },
+                      ),
 
-                    },
-                    validator: (String? val){
-                      if(val!.trim().isEmpty)
-                        return kRequiredMsg.tr;
-                      else
-                        return null;
-                    },),
+                      // 👇 Place this right below the TextFieldWidget
+                      Obx(() {
+                        if (controller.priceInWords.isEmpty) return SizedBox.shrink();
+                        return Padding(
+                          padding: EdgeInsets.only(top: 6.w),
+                          child: Text(
+                            controller.priceInWords.value,
+                            style: TextStyle(fontSize: 13.sp, color: Theme.of(context).colorScheme.primary),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
                   kVerticalSpace12,
                   Row(
                     children: [
@@ -403,7 +479,7 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.symmetric(vertical: 2.w,horizontal: 8.w),
                                             decoration: BoxDecoration(
-                                              borderRadius: kBorderRadius30,
+                                              borderRadius: kBorderRadius12,
                                               color: controller.property.subTypeId==e.subTypes[index].subTypeId? kAccentColor : Colors.grey.shade300,
                                             ),
                                             child: Text(e.subTypes[index].subType!,style: TextStyle(color:  controller.property.subTypeId==e.subTypes[index].subTypeId? kWhiteColor: kBlackColor,fontSize: 15.sp),),
@@ -434,196 +510,301 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
                   controller.property.typeId==1?
                   Column(
                     children: [
-                      if(controller.selectedSubtype?.floors??false)
+                      if(controller.selectedSubtype?.floors ?? false)
                         GetBuilder<AddPropertyController>(
-                            id: "floors",
-                            builder: (controller) {
-                              return  Padding(
-                                padding: EdgeInsets.only(bottom: 12.w),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(Icons.business,color: kBlackColor,size: 20.sp,),
-                                        kHorizontalSpace4,
-                                        Text("${"Floors".tr} (${controller.property.floors})",style: kTextStyle14,)
-                                      ],
-                                    )
-                                    ,kVerticalSpace12,
-                                    Slider(
-                                      value: controller.property.floors!.toDouble(),
-                                      onChanged: (val) {
-                                        controller.property.floors=val.toInt();
-                                        controller.update(["floors"]);
-                                      },
-                                      label:  controller.property.floors!.toStringAsFixed(0),
-                                      divisions: 50,
-                                      min: 0,
-                                      max: 50,
-                                    )
-
-                                  ],
-                                ),
-                              );
-
-
-                            }
+                          id: "floors",
+                          builder: (controller) {
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 12.w),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.business, color: kBlackColor, size: 20.sp),
+                                      kHorizontalSpace4,
+                                      Text("${"Floors".tr} (${controller.property.floors})", style: kTextStyle14),
+                                    ],
+                                  ),
+                                  kVerticalSpace12,
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.remove, color: Theme.of(context).colorScheme.primary),
+                                        onPressed: () {
+                                          if (controller.property.floors! > 0) {
+                                            controller.property.floors = controller.property.floors! - 1;
+                                            controller.update(["floors"]);
+                                          }
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: Slider(
+                                          value: controller.property.floors!.toDouble(),
+                                          onChanged: (val) {
+                                            controller.property.floors = val.toInt();
+                                            controller.update(["floors"]);
+                                          },
+                                          label: controller.property.floors!.toStringAsFixed(0),
+                                          divisions: 50,
+                                          min: 0,
+                                          max: 50,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
+                                        onPressed: () {
+                                          if (controller.property.floors! < 50) {
+                                            controller.property.floors = controller.property.floors! + 1;
+                                            controller.update(["floors"]);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       if(controller.selectedSubtype?.rooms??false)
                         GetBuilder<AddPropertyController>(
                           id: "bedrooms",
                           builder: (controller) {
-                            return  Padding(
+                            final primaryColor = Theme.of(context).colorScheme.primary;
+
+                            return Padding(
                               padding: EdgeInsets.only(bottom: 12.w),
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.king_bed_outlined,color: kBlackColor,size: 20.sp,),
+                                      Icon(Icons.king_bed_outlined, color: kBlackColor, size: 20.sp),
                                       kHorizontalSpace4,
-                                      Text("${"Bedrooms".tr} (${controller.property.bedrooms})",style: kTextStyle14,)
-                                    ],
-                                  )
-                                  ,kVerticalSpace12,
-                                  Slider(
-                                    value: controller.property.bedrooms!.toDouble(),
-                                    onChanged: (val) {
-                                      controller.property.bedrooms=val.toInt();
-                                      controller.update(["bedrooms"]);
-                                    },
-                                    label:  controller.property.bedrooms!.toStringAsFixed(0),
-                                    divisions: 10,
-                                    min: 0,
-                                    max: 10,
-                                  )
-
-                                ],
-                              ),
-                            );
-
-
-                          }
-                      ),
-                      if(controller.selectedSubtype?.bathrooms??false)
-                        GetBuilder<AddPropertyController>(
-                          id: "baths",
-                          builder: (controller) {
-                            return  Padding(
-                              padding: EdgeInsets.only(bottom: 12.w),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.bathtub_outlined,color: kBlackColor,size: 20.sp,),
-                                      kHorizontalSpace4,
-                                      Text("${"Baths".tr} (${controller.property.baths})",style: kTextStyle14,)
-                                    ],
-                                  )
-                                  ,kVerticalSpace12,
-                                  Slider(
-                                    value: controller.property.baths!.toDouble(),
-                                    onChanged: (val) {
-                                      controller.property.baths=val.toInt();
-                                      controller.update(["baths"]);
-                                    },
-                                    label:  controller.property.baths!.toStringAsFixed(0),
-                                    divisions: 10,
-                                    min:0,
-                                    max: 10,
-                                  )
-
-                                ],
-                              ),
-                            );
-
-
-                          }
-                      ),
-                      if(controller.selectedSubtype?.kitchens??false)
-                        GetBuilder<AddPropertyController>(
-                          id: "kitchens",
-                          builder: (controller) {
-                            return  Padding(
-                              padding: EdgeInsets.only(bottom: 12.w),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.kitchen_outlined,color: kBlackColor,size: 20.sp,),
-                                      kHorizontalSpace4,
-                                      Text("${"Kitchens".tr} (${controller.property.kitchens})",style: kTextStyle14,)
-                                    ],
-                                  )
-                                  ,kVerticalSpace12,
-                                  Slider(
-                                    value: controller.property.kitchens!.toDouble(),
-                                    onChanged: (val) {
-                                      controller.property.kitchens=val.toInt();
-                                      controller.update(["kitchens"]);
-                                    },
-                                    label:  controller.property.kitchens!.toStringAsFixed(0),
-                                    divisions: 5,
-                                    min: 0,
-                                    max: 5,
-                                  )
-
-                                ],
-                              ),
-                            );
-
-
-                          }
-                      ),
-                      if(controller.selectedSubtype?.furnish??false)
-                        GetBuilder<AddPropertyController>(
-                        id: "furnished",
-                        builder: (controller)=>
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 12.w),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.brush_outlined,color: kBlackColor,size: 20.sp,),
-                                      kHorizontalSpace4,
-                                      Text("Furnished".tr,style: kTextStyle14,)
+                                      Text(
+                                        "${"Bedrooms".tr} (${controller.property.bedrooms})",
+                                        style: kTextStyle14,
+                                      ),
                                     ],
                                   ),
                                   kVerticalSpace12,
                                   Row(
-                                      children: furnished.map((e) =>
-                                          Expanded(
-                                            child: Row(
-                                                children:[
-                                                  SizedBox(
-                                                    width: 20.w,
-                                                    height: 20.w,
-                                                    child: Checkbox(
-                                                      value: controller.property.furnished==e,
-                                                      onChanged: (val) {
-                                                        if(e==controller.property.furnished){
-                                                          controller.property.furnished="";
-                                                        }else{
-                                                          controller.property.furnished=e;
-                                                        }
-                                                        controller.update();
-                                                      },
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(" ${e.tr}",style: TextStyle(fontSize: 14.sp),
-
-                                                    ),
-                                                  )
-                                                ]
-                                            ),
-                                          )
-                                      ).toList()
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.remove, color: primaryColor),
+                                        onPressed: () {
+                                          if (controller.property.bedrooms! > 0) {
+                                            controller.property.bedrooms = controller.property.bedrooms! - 1;
+                                            controller.update(["bedrooms"]);
+                                          }
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: Slider(
+                                          value: controller.property.bedrooms!.toDouble(),
+                                          onChanged: (val) {
+                                            controller.property.bedrooms = val.toInt();
+                                            controller.update(["bedrooms"]);
+                                          },
+                                          label: controller.property.bedrooms!.toStringAsFixed(0),
+                                          divisions: 10,
+                                          min: 0,
+                                          max: 10,
+                                          activeColor: primaryColor,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.add, color: primaryColor),
+                                        onPressed: () {
+                                          if (controller.property.bedrooms! < 10) {
+                                            controller.property.bedrooms = controller.property.bedrooms! + 1;
+                                            controller.update(["bedrooms"]);
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
+                            );
+                          },
+                        ),
+
+                      if(controller.selectedSubtype?.bathrooms??false)
+                        GetBuilder<AddPropertyController>(
+                          id: "baths",
+                          builder: (controller) {
+                            final primaryColor = Theme.of(context).colorScheme.primary;
+
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 12.w),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.bathtub_outlined, color: kBlackColor, size: 20.sp),
+                                      kHorizontalSpace4,
+                                      Text(
+                                        "${"Baths".tr} (${controller.property.baths})",
+                                        style: kTextStyle14,
+                                      ),
+                                    ],
+                                  ),
+                                  kVerticalSpace12,
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.remove, color: primaryColor),
+                                        onPressed: () {
+                                          if (controller.property.baths! > 0) {
+                                            controller.property.baths = controller.property.baths! - 1;
+                                            controller.update(["baths"]);
+                                          }
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: Slider(
+                                          value: controller.property.baths!.toDouble(),
+                                          onChanged: (val) {
+                                            controller.property.baths = val.toInt();
+                                            controller.update(["baths"]);
+                                          },
+                                          label: controller.property.baths!.toStringAsFixed(0),
+                                          divisions: 10,
+                                          min: 0,
+                                          max: 10,
+                                          activeColor: primaryColor,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.add, color: primaryColor),
+                                        onPressed: () {
+                                          if (controller.property.baths! < 10) {
+                                            controller.property.baths = controller.property.baths! + 1;
+                                            controller.update(["baths"]);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      if(controller.selectedSubtype?.kitchens??false)
+                        GetBuilder<AddPropertyController>(
+                          id: "kitchens",
+                          builder: (controller) {
+                            final primaryColor = Theme.of(context).colorScheme.primary;
+
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 12.w),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.kitchen_outlined, color: kBlackColor, size: 20.sp),
+                                      kHorizontalSpace4,
+                                      Text(
+                                        "${"Kitchens".tr} (${controller.property.kitchens})",
+                                        style: kTextStyle14,
+                                      ),
+                                    ],
+                                  ),
+                                  kVerticalSpace12,
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.remove, color: primaryColor),
+                                        onPressed: () {
+                                          if (controller.property.kitchens! > 0) {
+                                            controller.property.kitchens = controller.property.kitchens! - 1;
+                                            controller.update(["kitchens"]);
+                                          }
+                                        },
+                                      ),
+                                      Expanded(
+                                        child: Slider(
+                                          value: controller.property.kitchens!.toDouble(),
+                                          onChanged: (val) {
+                                            controller.property.kitchens = val.toInt();
+                                            controller.update(["kitchens"]);
+                                          },
+                                          label: controller.property.kitchens!.toStringAsFixed(0),
+                                          divisions: 5,
+                                          min: 0,
+                                          max: 5,
+                                          activeColor: primaryColor,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.add, color: primaryColor),
+                                        onPressed: () {
+                                          if (controller.property.kitchens! < 5) {
+                                            controller.property.kitchens = controller.property.kitchens! + 1;
+                                            controller.update(["kitchens"]);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      if(controller.selectedSubtype?.furnish??false)
+                        GetBuilder<AddPropertyController>(
+                          id: "furnished",
+                          builder: (controller) => Padding(
+                            padding: EdgeInsets.only(bottom: 12.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.brush_outlined, color: kBlackColor, size: 20.sp),
+                                    kHorizontalSpace4,
+                                    Text("Furnished".tr, style: kTextStyle14),
+                                  ],
+                                ),
+                                kVerticalSpace12,
+                                Wrap(
+                                  spacing: 10.w,
+                                  runSpacing: 8.w,
+                                  children: furnished.map((e) {
+                                    final isSelected = controller.property.furnished == e;
+                                    return SizedBox(
+                                      width: 140.w,
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 20.w,
+                                            height: 20.w,
+                                            child: Checkbox(
+                                              value: isSelected,
+                                              onChanged: (val) {
+                                                controller.property.furnished = isSelected ? "" : e;
+                                                controller.update(["furnished"]);
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(width: 6.w),
+                                          Expanded(
+                                            child: Text(
+                                              e.tr,
+                                              style: TextStyle(fontSize: 14.sp),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
                             ),
-                      ),
+                          ),
+                        ),
                     ],
                   )
                       :
@@ -769,7 +950,7 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
                             Row(
                               children: [
                                 Icon(Icons.brush_outlined,color: kBlackColor,size: 20.sp,),
-                                kHorizontalSpace4,
+                                kHorizontalSpace2,
                                 Text("Furnished".tr,style: kTextStyle14,)
                               ],
                             ),

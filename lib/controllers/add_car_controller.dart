@@ -11,7 +11,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-
+import 'package:image/image.dart' as img;
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import '../enums.dart';
 import '../global_variables.dart';
 import 'location_controller.dart';
@@ -159,18 +161,65 @@ EasyLoading.dismiss();
     }
   }
 
-  Future<void> uploadImages()async{
+// Add this compression function to your class
+// Add this compression function to your class
+  Future<File?> compressAndConvertToWebP(File originalFile) async {
+    try {
+      // Read original image bytes
+      final bytes = await originalFile.readAsBytes();
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true,allowCompression: true,type: FileType.custom,
-    allowedExtensions: ["jpg","jpeg","png"]
+      // Decode image (jpg, png, etc.)
+      final image = img.decodeImage(bytes);
+      if (image == null) return null;
+
+      // Encode to JPEG with quality control (quality: 40)
+      final compressedBytes = img.encodeJpg(image, quality: 40);
+
+      // Get temp directory
+      final dir = await getTemporaryDirectory();
+
+      // Generate new file path
+      final filename = path.basenameWithoutExtension(originalFile.path);
+      final compressedPath = path.join(dir.path, '${filename}.jpg');
+
+      // Write to file
+      final compressedFile = File(compressedPath);
+      await compressedFile.writeAsBytes(compressedBytes);
+
+      return compressedFile;
+    } catch (e) {
+      print('Compression error: $e');
+      return null;
+    }
+  }
+
+// Compress multiple images
+  Future<List<File>> compressImages(List<File> originalImages) async {
+    List<File> compressedImages = [];
+
+    for (File image in originalImages) {
+      final compressedImage = await compressAndConvertToWebP(image);
+      if (compressedImage != null) {
+        compressedImages.add(compressedImage);
+      }
+    }
+
+    return compressedImages;
+  }
+
+  Future<void> uploadImages() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        allowCompression: true,
+        type: FileType.custom,
+        allowedExtensions: ["jpg", "jpeg", "png"]
     );
 
     if (result != null) {
-      for(var item in result.files){
+      for (var item in result.files) {
         images.value.add(File(item.path!));
         update();
       }
-
     } else {
       // User canceled the picker
     }
@@ -178,81 +227,85 @@ EasyLoading.dismiss();
 
   Future<void> addCar() async {
     try {
-
-      if( car.cityId==null){
+      if (car.cityId == null) {
         showSnackBar(message: "SelectCity");
-      }
-      else if(car.typeId==null){
+      } else if (car.typeId == null) {
         showSnackBar(message: "SelectCarType");
-  } else if(images.value.isEmpty){
+      } else if (images.value.isEmpty) {
         showSnackBar(message: "UploadCarImages");
-      }else
-      if (formKey.value.currentState!.validate()) {
+      } else if (formKey.value.currentState!.validate()) {
         Get.focusScope?.unfocus();
         formKey.value.currentState?.save();
         status(Status.loading);
         EasyLoading.show(status: "ProcessingPleaseWait".tr);
 
-        var response = await gApiProvider
-            .post(path: "car/save",
+        var response = await gApiProvider.post(
+            path: "car/save",
             authorization: true,
-            body: {"car": {
-              "model": car.modelYear,
-              "condition": car.condition,
-              "brandId": car.brandId,
-              "fuelType": car.fuelType,
-              "transmission": car.transmission,
-              "color": car.color,
-              "mileage": car.mileage,
-              "seats": car.seats,
-              "engin": car.engine,
-              "title": car.titleEn,
-              "titleAr": car.titleAr,
-              "description": car.descriptionEn,
-              "descriptionAr": car.descriptionAr,
-              "typeId": car.typeId,
-              "cityId": car.cityId,
-              "countryId": gSelectedCountry?.countryId,
-              "price": car.price,
-              "carId":car.carId,
-              "createdAt":car.createdAt ?? DateTime.now().toString(),
-              "images":car.images.join(",")
-            },
-              "carFeatures":car.features.map((e) => {
-                "featureId":e.featureId,
-                "headId":e.headId,
-                "quantity":e.quantity,
-                "featureOption":e.featureOption
+            body: {
+              "car": {
+                "model": car.modelYear,
+                "condition": car.condition,
+                "brandId": car.brandId,
+                "fuelType": car.fuelType,
+                "transmission": car.transmission,
+                "color": car.color,
+                "mileage": car.mileage,
+                "seats": car.seats,
+                "engin": car.engine,
+                "title": car.titleEn,
+                "titleAr": car.titleAr,
+                "description": car.descriptionEn,
+                "descriptionAr": car.descriptionAr,
+                "typeId": car.typeId,
+                "cityId": car.cityId,
+                "countryId": gSelectedCountry?.countryId,
+                "price": car.price,
+                "carId": car.carId,
+                "createdAt": car.createdAt ?? DateTime.now().toString(),
+                "images": car.images.join(",")
+              },
+              "carFeatures": car.features.map((e) => {
+                "featureId": e.featureId,
+                "headId": e.headId,
+                "quantity": e.quantity,
+                "featureOption": e.featureOption
               }).toList(),
-        });
-
+            }
+        );
 
         response.fold((l) {
-          showSnackBar(
-              message: l.message!);
+          EasyLoading.dismiss();
+          showSnackBar(message: l.message!);
           status(Status.error);
         }, (r) async {
-          var imagesResponse = await gApiProvider
-              .post(path: "car/SaveImages",isFormData: true,
-              authorization: true,
-              body: {
-                "carId":r.data["carId"].toString(),
 
-              },files: images.value.whereType<File>().toList());
+          // Compress images before uploading
+          final originalImages = images.value.whereType<File>().toList();
+          final compressedImages = await compressImages(originalImages);
+
+          var imagesResponse = await gApiProvider.post(
+            path: "car/SaveImages",
+            isFormData: true,
+            authorization: true,
+            body: {
+              "carId": r.data["carId"].toString(),
+            },
+            files: compressedImages, // Use compressed images
+          );
+
           EasyLoading.dismiss();
+
           imagesResponse.fold((l) {
             Get.find<CarController>().getCars();
-            showSnackBar(
-                message: l.message!);
+            showSnackBar(message: l.message!);
             status(Status.error);
           }, (x) async {
-
-       await    showAlertDialog(title: "Success",message: r.message);
-       Get.back();
-      Get.find<MyCarController>().getCars();
-          status(Status.success);
+            await showAlertDialog(title: "Success", message: r.message);
+            Get.back();
+            Get.find<MyCarController>().getCars();
+            status(Status.success);
           });
-
         });
       }
     } catch (e) {

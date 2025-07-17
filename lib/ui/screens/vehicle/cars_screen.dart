@@ -19,15 +19,6 @@ import 'package:get/get.dart';
 class CarsScreen extends GetView<CarController> {
    CarsScreen({Key? key}) : super(key: key){
 
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //
-    //   String title=Get.parameters["title"];
-    //   if(controller.cars.value.isEmpty){
-    //     controller.resetFilters();
-    //     controller.getFilteredCars();
-    //   }
-    //
-    // });
   }
 
   @override
@@ -68,6 +59,8 @@ class AllCars extends StatelessWidget {
                   onPressed: (){
                     controller.isGridView=!controller.isGridView;
                     controller.update();
+                    controller.page.value = 1;
+                    controller.getFilteredCars();
                   },icon:controller.isGridView?
                   MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
                   ,)

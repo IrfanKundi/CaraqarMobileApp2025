@@ -20,5 +20,5 @@ const kGoogleApiKey = "AIzaSyD335q2UCsBOhE4Sv3L2r6yJEoZntCrJfo";
 
 const kCurrency = "QAR";
 
-const kRealStateVideo = "assets/videos/realestate.mp4";
-const kVehicleVideo = "assets/videos/vehicle.mp4";
+const kRealStateVideo = "assets/videos/realestate.webp";
+const kVehicleVideo = "assets/videos/vehicle.webp";

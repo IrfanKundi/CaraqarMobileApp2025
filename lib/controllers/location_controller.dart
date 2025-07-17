@@ -1,5 +1,5 @@
 
-
+import 'package:flutter/foundation.dart';
 import 'package:careqar/models/city_model.dart';
 import 'package:careqar/models/search_place_model.dart';
 import 'package:careqar/services/location_service.dart';
@@ -19,7 +19,7 @@ class LocationController extends GetxController {
       Rx<SearchPlaceModel>(SearchPlaceModel());
   Rx<PlaceModel> selectedPlace = Rx<PlaceModel>(PlaceModel());
   Rx<CityModel> cityModel = Rx<CityModel>(CityModel());
-
+  RxList<City> allCitiesForName = <City>[].obs;
   Rx<City?> selectedCity = Rx<City?>(null);
 
   @override
@@ -29,45 +29,6 @@ class LocationController extends GetxController {
     // TODO: implement onInit
     super.onInit();
   }
-
-
-  // determinePosition() async {
-  //   mapLocation.Location location =  mapLocation.Location();
-  //
-  //   bool _serviceEnabled;
-  //   mapLocation.PermissionStatus _permissionGranted;
-  //   mapLocation.LocationData _locationData;
-  //
-  //   _serviceEnabled = await location.serviceEnabled();
-  //   if (!_serviceEnabled) {
-  //     _serviceEnabled = await location.requestService();
-  //     if (!_serviceEnabled) {
-  //       if(Platform.isAndroid){
-  //         showAlertDialog(title: "Location",message: "Enable location services.");
-  //
-  //       }
-  //      return false;
-  //     }
-  //   }
-  //
-  //   _permissionGranted = await location.hasPermission();
-  //   if (_permissionGranted != mapLocation.PermissionStatus.granted) {
-  //     _permissionGranted = await location.requestPermission();
-  //     if (_permissionGranted != mapLocation.PermissionStatus.granted) {
-  //      // showAlertDialog(title: "Location Permission",message: "Location permissions are denied for this app, please grant permissions first to continue.");
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  //
-  //  // EasyLoading.show();
-  //
-  //  //  _locationData = await location.getLocation();
-  //  // // EasyLoading.dismiss();
-  //  //  gCurrentLocation=LatLng(_locationData.latitude, _locationData.longitude);
-  // }
-
-
   determinePosition() async {
     bool serviceEnabled;
     mapLocation.LocationPermission permission;
@@ -101,7 +62,7 @@ class LocationController extends GetxController {
   }
 
 
-
+//get all cities
   Future<void> getCities() async {
     try {
       status(Status.loading);
@@ -115,7 +76,9 @@ class LocationController extends GetxController {
         status(Status.error);
       }, (r) async {
         status(Status.success);
+        CityModel parsedModel = CityModel.fromMap(r.data);
         cityModel.value = CityModel.fromMap(r.data);
+        allCitiesForName.assignAll(parsedModel.cities);
         selectedCity.value = cityModel.value.cities.first;
         update(["city"]);
       });
@@ -144,4 +107,32 @@ class LocationController extends GetxController {
       status(Status.error);
     }
   }
+  String getLocationTitleFromId(int? locationId) {
+    if (locationId == null) {
+      debugPrint("❌ locationId is null");
+      return "N/A";
+    }
+
+    debugPrint("🔍 Searching for locationId: $locationId in allCitiesForName");
+
+    for (final city in allCitiesForName) {
+      for (final loc in city.locations) {
+        debugPrint("➡️ Checking City: ${city.name}, Location: ${loc.locationId} - ${loc.title}");
+
+        if (loc.locationId == locationId) {
+          final title = gSelectedLocale?.locale?.languageCode == "ar"
+              ? loc.titleAr ?? "Unknown"
+              : loc.title ?? "Unknown";
+
+          debugPrint("✅ Found location match: $title");
+          return title;
+        }
+      }
+    }
+
+    debugPrint("❌ LocationId $locationId not found in any city");
+    return "Unknown";
+  }
+
+
 }

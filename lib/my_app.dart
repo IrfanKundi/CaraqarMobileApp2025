@@ -1,9 +1,13 @@
+import 'package:careqar/services/route_observer.dart';
 import 'package:careqar/ui/screens/choose_foreigner_city_screen.dart';
 import 'package:careqar/ui/screens/companies_screen.dart';
 import 'package:careqar/ui/screens/new_property_ad_screen.dart';
 import 'package:careqar/ui/screens/news_detail_screen.dart';
 import 'package:careqar/ui/screens/requirement_detail_screen.dart';
 import 'package:careqar/ui/screens/requirements_screen.dart';
+import 'package:careqar/ui/screens/vehicle/SelectOriginScreen.dart';
+import 'package:careqar/ui/screens/vehicle/SelectProvinceScreen.dart';
+import 'package:careqar/ui/screens/vehicle/SelectRegistrationYearScreen.dart';
 import 'package:careqar/ui/screens/vehicle/add_to_cart_screen.dart';
 import 'package:careqar/ui/screens/vehicle/add_vehicle_features_screen.dart';
 import 'package:careqar/ui/screens/vehicle/add_car_screen.dart';
@@ -37,6 +41,7 @@ import 'package:careqar/ui/screens/vehicle/order_detail_screen.dart';
 import 'package:careqar/ui/screens/vehicle/pick_location_screen.dart';
 import 'package:careqar/ui/screens/vehicle/products_screen.dart';
 import 'package:careqar/ui/screens/vehicle/review_ad_screen.dart';
+import 'package:careqar/ui/screens/vehicle/select_ad_location_screen.dart';
 import 'package:careqar/ui/screens/vehicle/select_city_screen.dart';
 import 'package:careqar/ui/screens/vehicle/select_color_screen.dart';
 import 'package:careqar/ui/screens/vehicle/select_condition_screen.dart';
@@ -101,6 +106,9 @@ import 'package:careqar/ui/widgets/init_easy_loading.dart';
 import 'bindings.dart';
 import 'constants/colors.dart';
 import 'constants/style.dart';
+import 'controllers/city_controller.dart';
+import 'controllers/location_controller.dart';
+import 'controllers/view_car_controller.dart';
 import 'global_variables.dart';
 import 'my_route_observer.dart';
 import 'ui/screens/vehicle/choose_type_screen.dart';
@@ -112,7 +120,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent,
-
             systemNavigationBarColor: Colors.white
             ,statusBarIconBrightness: Brightness.dark));
     return ScreenUtilInit(
@@ -159,7 +166,7 @@ class MyApp extends StatelessWidget {
     return  [
 
       GetPage(name: Routes.checkoutScreen, page: () => CheckoutScreen(),binding: CheckoutBindings()),
-      GetPage(name: Routes.myOrdersScreen, page: () => MyOrdersScreen(),binding: OrderBindings()), 
+      GetPage(name: Routes.myOrdersScreen, page: () => MyOrdersScreen(),binding: OrderBindings()),
       GetPage(name: Routes.orderDetailScreen, page: () => OrderDetailScreen()),
       GetPage(name: Routes.cartScreen, page: () => const CartScreen()),
       GetPage(name: Routes.chooseSubServiceScreen, page: () => ChooseSubSubServiceScreen()),
@@ -190,6 +197,9 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.chooseBrandScreen, page: () => ChooseBrandScreen()),
       GetPage(name: Routes.chooseModelScreen, page: () => const ChooseModelScreen()),
       GetPage(name: Routes.selectConditionScreen, page: () => const SelectConditionScreen()),
+      GetPage(name: Routes.selectRegistrationYearScreen, page: () => const SelectRegistrationYearScreen()),
+      GetPage(name: Routes.selectProvinceScreen, page: () => const SelectProvinceScreen()),
+      GetPage(name: Routes.selectOriginScreen, page: () => const SelectOriginScreen()),
       GetPage(name: Routes.chooseModelYearScreen, page: () => ChooseModelYearScreen()),
       GetPage(name: Routes.chooseTypeScreen, page: () => ChooseTypeScreen()),
       GetPage(name: Routes.chooseTransmissionScreen, page: () => const SelectTransmissionScreen()),
@@ -197,6 +207,13 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.selectColorScreen, page: () => const SelectColorScreen()),
       GetPage(name: Routes.selectCityScreen, page: () => SelectCityScreen()),
       GetPage(name: Routes.selectLocationScreen, page: () => SelectLocationScreen()),
+      GetPage(
+        name: Routes.selectAdLocationScreen,
+        page: () => SelectAdLocationScreen(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<LocationController>(() => LocationController());
+        }),
+      ),
       GetPage(name: Routes.enterEngineScreen, page: () => EnterEngineScreen()),
       GetPage(name: Routes.enterMileageScreen, page: () => EnterMileageScreen()),
       GetPage(name: Routes.enterSeatsScreen, page: () => EnterSeatsScreen()),
@@ -206,7 +223,7 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.initialScreen, page: () => const InitialScreen()),
       GetPage(name: Routes.favoritesScreen, page: () => const FavoritesScreen()),
       GetPage(name: Routes.addFeaturesScreen, page: () => const AddFeaturesScreen()),
-     GetPage(name: Routes.companyScreen, page: () => CompanyScreen()),
+      GetPage(name: Routes.companyScreen, page: () => CompanyScreen()),
       GetPage(name: Routes.addPropertyScreen, page: () => const AddPropertyScreen(),binding: AddPropertyBindings()),
       GetPage(name: Routes.foreignerScreen, page: () => const ForeignerScreen(),binding: CityBindings()),
       GetPage(name: Routes.cityScreen, page: () => CityScreen()),
@@ -223,10 +240,18 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.comingSoonScreen, page: () => ComingSoonScreen()),
 
 
-      GetPage(name: Routes.viewImageScreen, page: () => const ViewImageScreen(),binding: ViewImageBindings()),
+    GetPage(name: Routes.viewImageScreen, page: () => const ViewImageScreen(),binding: ViewImageBindings()),
       GetPage(name: Routes.numberPlatesScreen, page: () => NumberPlatesScreen(),binding: NumberPlateBindings()),
       GetPage(name: Routes.viewNumberPlateScreen, page: () => ViewNumberPlateScreen(),binding: ViewNumberPlateBindings()),
-      GetPage(name: Routes.viewCarScreen, page: () => ViewCarScreen(),binding: ViewCarBindings()),
+      GetPage(
+        name: Routes.viewCarScreen,
+        page: () => ViewCarScreen(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<ViewCarController>(() => ViewCarController());
+          Get.lazyPut<LocationController>(() => LocationController());
+        }),
+      ),
+
       GetPage(name: Routes.viewMyBikeScreen, page: () => ViewMyBikeScreen(),binding: ViewMyBikeBindings()),
       GetPage(name: Routes.viewBikeScreen, page: () => ViewBikeScreen(),binding: ViewBikeBindings()),
       GetPage(name: Routes.addCarScreen, page: () => const AddCarScreen(),binding: AddCarBindings()),

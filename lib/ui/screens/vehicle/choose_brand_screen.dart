@@ -16,90 +16,110 @@ import 'package:get/get.dart';
 import '../../../controllers/vehicle_controller.dart';
 
 class ChooseBrandScreen extends GetView<VehicleController> {
-   ChooseBrandScreen({Key? key}) : super(key: key){
-  Get.put(BrandController()).getBrands(EnumToString.convertToString(controller.vehicleType));
+  ChooseBrandScreen({super.key}) {
+    if (controller.vehicleType == null) {
+      controller.vehicleType = VehicleType.Car; // default fallback
+    }
+    final typeStr = EnumToString.convertToString(controller.vehicleType);
+    Get.put(BrandController()).getBrands(typeStr);
   }
-
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: buildAppBar(context,title: "ChooseBrand"),
-      body: GetBuilder<BrandController>(builder: (brandController)=> brandController
-          .brandsStatus.value ==
-          Status.loading
-          ? CircularLoader():
-
-      brandController.brandsStatus.value ==
-          Status.error
-          ? Center(
-            child: Text(kCouldNotLoadData.tr,
-            style: kTextStyle16),
-          )
-          :
-
-
-      Column(
-        children: [
-          Padding(
-            padding:kHorizontalScreenPadding,
-            child: CupertinoSearchTextField(onChanged: (val) => brandController.search(val),
-            placeholder: "Search".tr),
-          ),
-        Expanded(
-            child:   brandController.searchedBrands.isEmpty?
-            Center(
-              child: Text("NoDataFound".tr,
-                  style: kTextStyle16),
-            ):  ListView.separated(
-              shrinkWrap: true,
-              padding: kScreenPadding,
+      appBar: buildAppBar(context, title: "ChooseBrand"),
+      body: GetBuilder<BrandController>(
+        builder: (brandController) => brandController.brandsStatus.value == Status.loading
+            ? CircularLoader()
+            : brandController.brandsStatus.value == Status.error
+            ? Center(
+          child: Text(kCouldNotLoadData.tr, style: kTextStyle16),
+        )
+            : Column(
+          children: [
+            Padding(
+              padding: kHorizontalScreenPadding,
+              child: CupertinoSearchTextField(
+                onChanged: (val) => brandController.search(val),
+                placeholder: "Search".tr,
+              ),
+            ),
+            Expanded(
+              child: brandController.searchedBrands.isEmpty
+                  ? Center(
+                child: Text("NoDataFound".tr, style: kTextStyle16),
+              )
+                  : ListView.separated(
+                shrinkWrap: true,
+                padding: kScreenPadding,
                 itemCount: brandController.searchedBrands.length,
-              separatorBuilder: (context,index){
-                return kVerticalSpace12;
-    },
-              itemBuilder: (context, index) {
-                  var item = brandController.searchedBrands[index];
+                separatorBuilder: (context, index) => kVerticalSpace12,
+                itemBuilder: (context, index) {
+                  final item = brandController.searchedBrands[index];
+                  final isSelected = controller.brandId == item.brandId;
+                  final isPriority = ['Toyota', 'Honda', 'Suzuki'].contains(item.brandName);
+
                   return InkWell(
-                    onTap: (){
+                    onTap: () {
                       controller.brand = item;
-                        if(Get.arguments==false){
-                          Navigator.pop(context,item);
-                        }else{
-
-                          brandController.getModels(item.brandId!);
-                          Get.toNamed(Routes.chooseModelScreen,arguments: Get.arguments);
-
-                        }
-
-
+                      controller.brandId = item.brandId!;
+                      if (Get.arguments == false) {
+                        Navigator.pop(context, item);
+                      } else {
+                        brandController.getModels(item.brandId!);
+                        Get.toNamed(Routes.chooseModelScreen, arguments: Get.arguments);
+                      }
                     },
-                    child:Container(
+                    child: Container(
                       decoration: BoxDecoration(
-                        color: controller.brandId==item.brandId?kLightBlueColor:null,
-                        border: Border.all(color: controller.brandId==item.brandId?kLightBlueColor:kGreyColor),
+                        color: isSelected ? kLightBlueColor : null,
+                        border: Border.all(
+                          color: isSelected ? kLightBlueColor : kGreyColor,
+                        ),
                         borderRadius: kBorderRadius12,
                       ),
                       padding: EdgeInsets.all(8.w),
-                              child: Row(
-                                children: [
-                                  ImageWidget(item.image,width: 40.w,height: 40.w),
-                                  kHorizontalSpace12,
-                                  Text(
-                      item.brandName!,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: kBlackColor, fontWeight: FontWeight.w700, fontSize: 15.sp),
+                      child: Row(
+                        children: [
+                          ImageWidget(item.image, width: 40.w, height: 40.w),
+                          kHorizontalSpace12,
+                          Expanded(
+                            child: Text(
+                              item.brandName!,
+                              style: TextStyle(
+                                color: kBlackColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                          ),
+                          if (isPriority)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.orange.shade100,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                "Popular",
+                                style: TextStyle(
+                                  color: Colors.orange.shade800,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
-                                ],
-                              )));
-
-                }
-                ),
-          ),
-        ],
-      ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+

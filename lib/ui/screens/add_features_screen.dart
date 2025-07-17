@@ -39,13 +39,13 @@ class AddFeaturesScreen extends GetView<AddPropertyController> {
                             width: 0.5.sw,
                             height: 30.h,
                             child: TextFieldWidget(
-                                text: controller.property.features.firstWhere((element) => element.featureId==item.featureId,orElse: ()=>null!).quantity?.toString(),
+                                text: controller.property.features
+                                    .firstWhereOrNull((element) => element.featureId == item.featureId)
+                                    ?.quantity?.toString(),
                                 keyboardType: TextInputType.number,
                                 onChanged: (String val) {
                                   var x = controller.property.features
-                                      .firstWhere((element) =>
-                                  element.featureId == item.featureId,
-                                      orElse: () => null!);
+                                      .firstWhereOrNull((element) => element.featureId == item.featureId);
                                   if (x != null) {
                                     if (val.trim() != "") {
                                       x.quantity = int.parse(val);
@@ -55,7 +55,6 @@ class AddFeaturesScreen extends GetView<AddPropertyController> {
                                   } else {
                                     if (val.trim() != "") {
                                       var f = PropertyFeature();
-
                                       f.quantity = int.parse(val);
                                       f.headId = item.headId;
                                       f.featureAr = item.titleAr;
@@ -78,27 +77,30 @@ class AddFeaturesScreen extends GetView<AddPropertyController> {
                             width: 0.5.sw,
                             height: 30.h,
                             child: DropdownWidget(
-                              value: controller.property.features.firstWhere((element) => element.featureId==item.featureId,orElse: ()=>null!).featureOption,
-                              onChanged: (val){
-                                var x = controller.property.features.firstWhere((element) => element.featureId==item.featureId,orElse: ()=>null!);
-
-                                if(x!=null){
-                                  x.featureOption=val;
-                                }else{
-                                  var f=PropertyFeature();
-
-                                  f.headId=item.headId;
+                              value: controller.property.features
+                                  .firstWhereOrNull((element) => element.featureId == item.featureId)
+                                  ?.featureOption,
+                              onChanged: (val) {
+                                var x = controller.property.features
+                                    .firstWhereOrNull((element) => element.featureId == item.featureId);
+                                if (x != null) {
+                                  x.featureOption = val;
+                                } else {
+                                  var f = PropertyFeature();
+                                  f.headId = item.headId;
                                   f.featureAr = item.titleAr;
                                   f.featureEn = item.titleEn;
-                                  f.featureOption=val;
-                                  f.featureId=item.featureId;
+                                  f.featureOption = val;
+                                  f.featureId = item.featureId;
                                   controller.property.features.add(f);
                                 }
-
                                 controller.update();
                               },
                               hint: "SelectOption",
-                              items: item.options!.split(",").map((e) => DropdownMenuItem(child: Text(e,style: kTextStyle14,),value: e,)).toList(),
+                              items: item.options!.split(",").map((e) => DropdownMenuItem(
+                                child: Text(e, style: kTextStyle14),
+                                value: e,
+                              )).toList(),
                             ),
                           ),
                         );

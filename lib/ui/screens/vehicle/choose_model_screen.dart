@@ -60,7 +60,7 @@ class ChooseModelScreen extends GetView<VehicleController> {
                       if(Get.arguments==true){
                         Navigator.pop(context,item);
                       }else{
-
+                        //add model type sahar
                         Get.toNamed(Routes.chooseModelYearScreen);
                       }
 

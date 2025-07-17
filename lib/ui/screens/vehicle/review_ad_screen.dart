@@ -22,6 +22,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/vehicle_controller.dart';
+import '../../../locale/convertor.dart';
 import '../../widgets/phone_number_text_field.dart';
 
 class ReviewAdScreen extends GetView<VehicleController> {
@@ -74,8 +75,20 @@ class ReviewAdScreen extends GetView<VehicleController> {
                             await Get.toNamed(Routes.selectFuelTypeScreen,arguments: true);
                             controller.update();
                           },),
-                        ReviewAdItem(title:"Condition".tr,  value: "${controller.condition}".tr,onPressed: ()async{
+                        ReviewAdItem(title:"Vehicle Origin".tr,  value: "${controller.origin}".tr,onPressed: ()async{
+                          await Get.toNamed(Routes.selectOriginScreen,arguments: true);
+                          controller.update();
+                        },),
+                        ReviewAdItem(title:"Registration".tr,  value: "${controller.province}".tr,onPressed: ()async{
+                          await Get.toNamed(Routes.selectProvinceScreen,arguments: true);
+                          controller.update();
+                        },),
+                        ReviewAdItem(title:"Vehicle Condition".tr,  value: "${controller.condition}".tr,onPressed: ()async{
                           await Get.toNamed(Routes.selectConditionScreen,arguments: true);
+                          controller.update();
+                        },),
+                        ReviewAdItem(title:"Registration Year".tr,  value: "${controller.registrationYear}".tr,onPressed: ()async{
+                          await Get.toNamed(Routes.selectRegistrationYearScreen,arguments: true);
                           controller.update();
                         },),
                         if(VehicleType.Car==controller.vehicleType)
@@ -260,31 +273,52 @@ class ReviewAdScreen extends GetView<VehicleController> {
                     ),
                   )
                   ,
-                  Container(  decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: kGreyColor))
-                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: kGreyColor))
+                    ),
                     padding: EdgeInsets.symmetric(vertical: 8.w,horizontal: 16.w),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text("${"Price".tr} (${gSelectedCountry?.currency})",style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
+
                         kVerticalSpace12,
-                        TextFieldWidget(hintText: "Price",  keyboardType: TextInputType.number,
+                        TextFieldWidget(
+                          hintText: "Price (Optional)",
+                          keyboardType: TextInputType.number,
                           borderRadius: kBorderRadius4,
                           text: controller.price?.toString(),
                           onChanged: (String val){
                             if(val==""){
-                              controller.price=null;
+                              controller.price = 0.0; // Set to 0 when empty
+                              controller.priceInWords.value = '';
                             }else{
-                              controller.price=double.parse(val);
+                              try {
+                                controller.price=double.parse(val);
+                                final formatted = formatIndianNumber(controller.price!.toInt());
+                                controller.priceInWords.value = formatted.capitalize!.trim() ?? '';
+                              } catch (_) {
+                                controller.priceInWords.value = '';
+                              }
                             }
-
                           },
+                          // Remove validator entirely or make it always return null
                           validator: (String? val){
-                            if(val!.trim().isEmpty)
-                              return kRequiredMsg.tr;
-                            else
-                              return null;
-                          },),
+                            return null; // No validation - field is optional
+                          },
+                        ),
+                        kVerticalSpace8,
+                        Text("Skip the price to display 'Call for Price'", style: TextStyle(fontSize: 12.sp, color: kGreyColor)),
+                        Obx(() {
+                          if (controller.priceInWords.isEmpty) return SizedBox.shrink();
+                          return Padding(
+                            padding: EdgeInsets.only(top: 6.w),
+                            child: Text(
+                              controller.priceInWords.value,
+                              style: TextStyle(fontSize: 13.sp, color: Theme.of(context).colorScheme.primary),
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -296,7 +330,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                         padding: EdgeInsets.symmetric(vertical: 8.w,horizontal: 16.w),
                         child:  Column(crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text("${"Features".tr}",style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
+                            Text("Features".tr,style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
                             kVerticalSpace12,
                         GetBuilder<VehicleController>(builder: (controller)=> GestureDetector(
                           onTap: ()async{
@@ -358,7 +392,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                       padding: EdgeInsets.symmetric(vertical: 8.w,horizontal: 16.w),
                       child:  Column(crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text("${"PhoneNumber".tr}",style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
+                          Text("PhoneNumber".tr,style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
                           kVerticalSpace12,
                           PhoneNumberTextField(hintText: "PhoneNumber",
 
@@ -384,7 +418,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("${"Images".tr}",style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),), kHorizontalSpace12,
+                            Text("Images".tr,style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),), kHorizontalSpace12,
 
                             TextButtonWidget(
                                 onPressed: controller.uploadImages,
@@ -460,11 +494,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                     padding:kScreenPadding,
 
                     child:     ButtonWidget(onPressed: controller.uploadNow,text: "UploadNow",
-
                     ),)
-
-
-
                 ],
               );
             }

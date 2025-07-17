@@ -99,7 +99,7 @@ class Bike{
     phoneNumber= map["PhoneNumber"]!=""?PhoneNumber(dialCode: map["CountryCode"],isoCode: map["IsoCode"]==""?gSelectedCountry?.isoCode:map["IsoCode"],
         phoneNumber: map["PhoneNumber"]
     ):phoneNumber;
-    email=map["Email"]??"devirfankundi@gmail.com";
+    email=map["Email"]??"no email";
     isAgentAd=map["IsAgentAd"];
     purpose=map["Purpose"];
     paymentMethod=map["PaymentMethod"];

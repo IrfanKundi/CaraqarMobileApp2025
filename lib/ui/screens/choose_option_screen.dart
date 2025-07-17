@@ -18,6 +18,7 @@ import 'package:hive/hive.dart';
 
 import '../../controllers/content_controller.dart';
 import '../../controllers/country_controller.dart';
+import '../../controllers/type_controller.dart';
 import '../../global_variables.dart';
 import '../../models/content_model.dart';
 
@@ -210,11 +211,18 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreen> {
 }
 
 loadRealEstate() async {
-  // EasyLoading.show();
+  EasyLoading.show();
   gIsVehicle = false;
-  getAppContent();
+  TypeController typeController = Get.put(TypeController());
+  //typeController.searchedTypes.clear();
+  typeController.allTypes.clear();
+  typeController.subTypes.clear();
+
+  await typeController.getTypes();
+  await typeController.getTypesWithSubTypes();
+  await getAppContent();
   Future.delayed(Duration(seconds:2),() {
-    // EasyLoading.dismiss();
+    EasyLoading.dismiss();
     Get.offAllNamed(Routes.navigationScreen);
   },);
 }
@@ -284,15 +292,15 @@ Future<void> loadFiles(Box box, String key, Content content) async {
         }
         else if (content.images.isNotEmpty) {
           content.files.addAll((await Future.wait(content.images
-                  .map((e) => DefaultCacheManager().downloadFile(e))
-                  .toList()))
+              .map((e) => DefaultCacheManager().downloadFile(e))
+              .toList()))
               .map((e) => e.file)
               .toList());
         }
         else {
           content.files.addAll((await Future.wait(content.videos
-                  .map((e) => DefaultCacheManager().downloadFile(e))
-                  .toList()))
+              .map((e) => DefaultCacheManager().downloadFile(e))
+              .toList()))
               .map((e) => e.file)
               .toList());
         }
@@ -304,15 +312,15 @@ Future<void> loadFiles(Box box, String key, Content content) async {
         }
         else if (content.images.isNotEmpty) {
           content.files.addAll((await Future.wait(content.images
-                  .map((e) => DefaultCacheManager().getSingleFile(e))
-                  .toList()))
+              .map((e) => DefaultCacheManager().getSingleFile(e))
+              .toList()))
               .map((e) => e)
               .toList());
         }
         else {
           content.files.addAll((await Future.wait(content.videos
-                  .map((e) => DefaultCacheManager().getSingleFile(e))
-                  .toList()))
+              .map((e) => DefaultCacheManager().getSingleFile(e))
+              .toList()))
               .map((e) => e)
               .toList());
         }
@@ -334,6 +342,6 @@ Future<void> loadFiles(Box box, String key, Content content) async {
 
 
   } catch (e) {
-     // EasyLoading.showError(e.toString());
+    // EasyLoading.showError(e.toString());
   }
 }

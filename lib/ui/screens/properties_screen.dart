@@ -180,6 +180,7 @@ class PropertiesScreen extends GetView<PropertyController> {
                                      height: 45.h,
                                      child: Row(
                                        children: [
+                                         // ---------------------- City Selection ----------------------
                                          Expanded(
                                            child: InkWell(
                                              onTap: () async {
@@ -190,6 +191,7 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                }
                                              },
                                              child: Row(
+                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                children: [
                                                  Icon(
                                                    MaterialCommunityIcons.map_marker_outline,
@@ -197,34 +199,39 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                    size: 20.sp,
                                                  ),
                                                  kHorizontalSpace16,
-                                                 Column(
-                                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                                   mainAxisAlignment: MainAxisAlignment.center,
-                                                   children: [
-                                                     Text(
-                                                       "City".tr,
-                                                       style: TextStyle(
+                                                 Expanded(
+                                                   child: Column(
+                                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                                     mainAxisAlignment: MainAxisAlignment.center,
+                                                     children: [
+                                                       Text(
+                                                         "City".tr,
+                                                         style: TextStyle(
                                                            color: kBlackColor,
                                                            fontSize: 14.sp,
-                                                           fontWeight: FontWeight.w600),
-                                                     ),
-                                                     Expanded(
-                                                       child: FittedBox(
-                                                         fit: BoxFit.scaleDown,
-                                                         child: Text(
-                                                           controller.selectedCity.value?.name ?? 'SelectCity'.tr,
-                                                           style: TextStyle(
-                                                             color: kPrimaryColor,
-                                                             fontSize: 14.sp,),
+                                                           fontWeight: FontWeight.w600,
                                                          ),
                                                        ),
-                                                     )
-                                                   ],
+                                                       SizedBox(height: 4),
+                                                       Text(
+                                                         controller.selectedCity.value?.name ?? 'SelectCity'.tr,
+                                                         style: TextStyle(
+                                                           color: kPrimaryColor,
+                                                           fontSize: 14.sp,
+                                                         ),
+                                                         maxLines: 1,
+                                                         overflow: TextOverflow.ellipsis,
+                                                         softWrap: false,
+                                                       ),
+                                                     ],
+                                                   ),
                                                  ),
                                                ],
                                              ),
                                            ),
                                          ),
+
+                                         // ---------------------- Location Selection ----------------------
                                          Expanded(
                                            child: InkWell(
                                              onTap: () async {
@@ -232,17 +239,18 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                  showSnackBar(message: "SelectCity");
                                                } else {
                                                  var result = await Get.toNamed(
-                                                     Routes.searchLocationScreen,
-                                                     parameters: {
-                                                       "cityId": controller.selectedCity.value!.cityId
-                                                           .toString()
-                                                     });
+                                                   Routes.searchLocationScreen,
+                                                   parameters: {
+                                                     "cityId": controller.selectedCity.value!.cityId.toString()
+                                                   },
+                                                 );
                                                  if (result != null) {
                                                    controller.selectedLocation.value = result;
                                                  }
                                                }
                                              },
                                              child: Row(
+                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                children: [
                                                  Icon(
                                                    MaterialCommunityIcons.map_outline,
@@ -250,27 +258,32 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                    size: 20.sp,
                                                  ),
                                                  kHorizontalSpace16,
-                                                 Column(
-                                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                                   children: [
-                                                     Text(
-                                                       "Location".tr,
-                                                       style: TextStyle(
+                                                 Expanded(
+                                                   child: Column(
+                                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                                     mainAxisAlignment: MainAxisAlignment.center,
+                                                     children: [
+                                                       Text(
+                                                         "Location".tr,
+                                                         style: TextStyle(
                                                            color: kBlackColor,
                                                            fontSize: 14.sp,
-                                                           fontWeight: FontWeight.w600),
-                                                     ),
-                                                  Expanded(
-                                                    child: FittedBox(
-                                                        fit: BoxFit.scaleDown,
-                                                        child:   Text(
+                                                           fontWeight: FontWeight.w600,
+                                                         ),
+                                                       ),
+                                                       SizedBox(height: 4),
+                                                       Text(
                                                          controller.selectedLocation.value?.title ?? 'SelectLocation'.tr,
                                                          style: TextStyle(
                                                            color: kPrimaryColor,
-                                                           fontSize: 14.sp,),
-                                                       )),
-                                                  )
-                                                   ],
+                                                           fontSize: 14.sp,
+                                                         ),
+                                                         maxLines: 1,
+                                                         overflow: TextOverflow.ellipsis,
+                                                         softWrap: false,
+                                                       ),
+                                                     ],
+                                                   ),
                                                  ),
                                                ],
                                              ),
@@ -340,44 +353,106 @@ class PropertiesScreen extends GetView<PropertyController> {
 
                                  const Divider(),
                                           controller.typeId.value!=3?
-                                 Column(
-                                   children: [
-                                     Row(
-                                         children: [
-                                           Icon(
-                                             Icons.king_bed_outlined,
-                                             size: 20.sp,
-                                             color: kGreyColor,
-                                           ),
-                                           kHorizontalSpace12,
-                                           Text(
-                                             "Bedrooms".tr,
-                                             style: TextStyle(
-                                                 color: kBlackColor,
-                                                 fontSize: 14.sp,
-                                                 fontWeight: FontWeight.w600),
-                                           ),
-                                         ],
-                                     ),
-                                     kVerticalSpace4,
-                                     RangeSlider(
-                                       values: controller.rooms,
-                                       onChanged: (val) {
-                                         controller.rooms=val;
-                                         controller.update(["filters"]);
-                                         //  if (val.end > val.start) {
-                                         //   controller.startPrice = val.start;
-                                         // }
-                                         //  controller.endPrice = val.end;
-                                       },
-                                       labels: RangeLabels(controller.rooms.start.toStringAsFixed(0),controller.rooms.end.toStringAsFixed(0)),
-                                       divisions: 7,
-                                       min: 0,
-                                       max: 7,
-                                     ),
-                                     const Divider(),
-                                   ],
-                                 ):Column(children: [
+                                          Column(
+                                            children: [
+                                              // --- Bedrooms ---
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.king_bed_outlined, size: 20.sp, color: kGreyColor),
+                                                  kHorizontalSpace12,
+                                                  Text(
+                                                    "Bedrooms".tr,
+                                                    style: TextStyle(
+                                                      color: kBlackColor,
+                                                      fontSize: 14.sp,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              kVerticalSpace4,
+                                              RangeSlider(
+                                                values: controller.rooms,
+                                                onChanged: (val) {
+                                                  controller.rooms = val;
+                                                  controller.update(["filters"]);
+                                                },
+                                                labels: RangeLabels(
+                                                  controller.rooms.start.toStringAsFixed(0),
+                                                  controller.rooms.end.toStringAsFixed(0),
+                                                ),
+                                                divisions: 7,
+                                                min: 0,
+                                                max: 7,
+                                              ),
+                                              const Divider(),
+
+                                              // --- Kitchen ---
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.kitchen_outlined, size: 20.sp, color: kGreyColor),
+                                                  kHorizontalSpace12,
+                                                  Text(
+                                                    "Kitchen".tr,
+                                                    style: TextStyle(
+                                                      color: kBlackColor,
+                                                      fontSize: 14.sp,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              kVerticalSpace4,
+                                              RangeSlider(
+                                                values: controller.kitchens,
+                                                onChanged: (val) {
+                                                  controller.kitchens = val;
+                                                  controller.update(["filters"]);
+                                                },
+                                                labels: RangeLabels(
+                                                  controller.kitchens.start.toStringAsFixed(0),
+                                                  controller.kitchens.end.toStringAsFixed(0),
+                                                ),
+                                                divisions: 7,
+                                                min: 0,
+                                                max: 7,
+                                              ),
+                                              const Divider(),
+
+                                              // --- Washroom ---
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.bathtub_outlined, size: 20.sp, color: kGreyColor),
+                                                  kHorizontalSpace12,
+                                                  Text(
+                                                    "Washroom".tr,
+                                                    style: TextStyle(
+                                                      color: kBlackColor,
+                                                      fontSize: 14.sp,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              kVerticalSpace4,
+                                              RangeSlider(
+                                                values: controller.washrooms,
+                                                onChanged: (val) {
+                                                  controller.washrooms = val;
+                                                  controller.update(["filters"]);
+                                                },
+                                                labels: RangeLabels(
+                                                  controller.washrooms.start.toStringAsFixed(0),
+                                                  controller.washrooms.end.toStringAsFixed(0),
+                                                ),
+                                                divisions: 7,
+                                                min: 0,
+                                                max: 7,
+                                              ),
+                                              const Divider(),
+                                            ],
+                                          )
+                                              :Column(children: [
                                             Row(
                                               children: [
                                                 Icon(

@@ -54,6 +54,8 @@ class Car{
   String? registrationCityEn;
   String? modelYear;
   String? condition;
+  String? importedLocal;
+  String? registrationYear;
   int? brandId;
   int? modelId;
   String? brandNameEn;
@@ -90,7 +92,7 @@ class Car{
     phoneNumber= map["PhoneNumber"]!=""?PhoneNumber(dialCode: map["CountryCode"],isoCode: map["IsoCode"]==""?gSelectedCountry?.isoCode:map["IsoCode"],
         phoneNumber: map["PhoneNumber"]
     ):phoneNumber;
-    email=map["Email"]??"devirfankundi@gmail.com";
+    email=map["Email"]?? "no email";
     purpose=map["Purpose"];
     isAgentAd=map["IsAgentAd"];
     paymentMethod=map["PaymentMethod"];
@@ -111,6 +113,8 @@ class Car{
     brandId=map["BrandId"];
     modelId=map["ModelId"];
     condition=map["Condition"];
+    importedLocal=map["ImportedLocal"];
+    registrationYear=map["RegistrationYear"];
     isSold=map["IsSold"];
   createdAt=DateTime.parse(map["CreatedAt"]);
   companyId=map["CompanyId"]==0?null:map["CompanyId"];
