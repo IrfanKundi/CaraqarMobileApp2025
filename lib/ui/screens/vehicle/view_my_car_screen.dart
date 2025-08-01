@@ -158,7 +158,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                                             color: kWhiteColor,),
                                             Expanded(
                                               child: Text(
-                                                  "${car?.cityName}", style: kTextStyle14.copyWith(color: kWhiteColor)),
+                                                  "${car?.location}", style: kTextStyle14.copyWith(color: kWhiteColor)),
                                             ),
 
                                           ],
@@ -516,7 +516,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                         Text("City".tr, style: kTextStyle16.copyWith(fontWeight: FontWeight.bold),),
                         kVerticalSpace8,
                         Text(
-                          "${car.cityName}",
+                          "${car.location}",
                           style: kTextStyle16.copyWith(color: kAccentColor),),
                       ],
                     ),

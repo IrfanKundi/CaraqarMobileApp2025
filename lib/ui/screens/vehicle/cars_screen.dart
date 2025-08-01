@@ -67,73 +67,64 @@ class AllCars extends StatelessWidget {
               ],
             ),
           ),
-
-
-
-      Expanded(
-        child:NotificationListener<ScrollEndNotification>(
-          onNotification: (notification) {
-            if (notification.metrics.atEdge &&
-                notification.metrics.pixels ==
-                    notification.metrics.maxScrollExtent &&
-                controller.loadMore.value) {
-              controller.page.value+=1;
-              controller.getFilteredCars();
-            }
-            return true;
-          },
-          child: Column(
-              children: [
-                Expanded(
-                  child: controller
-                      .status.value ==
-                      Status.loading
-                      ? CircularLoader():
-
-                  controller.status.value ==
-                      Status.error
-                      ? Text(kCouldNotLoadData.tr,
-                      style: kTextStyle16)
-                      :
-
-                  controller.cars.value.isEmpty?
-                  Text("NoDataFound".tr,
-                      style: kTextStyle16):
-
-        controller.isGridView?
-                  GridView.builder(
+          Expanded(
+            child: NotificationListener<ScrollEndNotification>(
+              onNotification: (notification) {
+                if (notification.metrics.atEdge &&
+                    notification.metrics.pixels ==
+                        notification.metrics.maxScrollExtent &&
+                    controller.loadMore.value) {
+                  controller.page.value += 1;
+                  controller.getFilteredCars();
+                }
+                return true;
+              },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: controller.status.value == Status.loading
+                        ? CircularLoader()
+                        : controller.status.value == Status.error
+                        ? Text(kCouldNotLoadData.tr, style: kTextStyle16)
+                        : controller.cars.value.isEmpty
+                        ? Text("NoDataFound".tr, style: kTextStyle16)
+                        : controller.isGridView
+                        ? GridView.builder(
                       padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      itemCount:controller.cars.value.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                      childAspectRatio: 0.48, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
+                      // Remove shrinkWrap: true
+                      itemCount: controller.cars.value.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisExtent: 250.h, // Use fixed height instead of aspectRatio
+                        crossAxisSpacing: 8.w,
+                        mainAxisSpacing: 8.w,
+                      ),
                       itemBuilder: (context, index) {
-
                         var item = controller.cars.value[index];
-                        return CarItem(item: item,isGridView: true,);
-
-
-                      }):
-        ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            itemCount:controller.cars.value.length,
-            itemBuilder: (context, index) {
-
-              var item = controller.cars.value[index];
-              return CarItem(item: item,isGridView: false,);
-
-
-            })
-                  ,
-                ),   controller.isLoadingMore.value?
-                Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 8.w),
-                  child: CircularLoader(),
-                ):Container()
-              ],
+                        return CarItem(item: item, isGridView: true);
+                      },
+                    )
+                        : ListView.builder(
+                      padding: EdgeInsets.zero,
+                      // Remove shrinkWrap: true here too
+                      itemCount: controller.cars.value.length,
+                      itemBuilder: (context, index) {
+                        var item = controller.cars.value[index];
+                        return CarItem(item: item, isGridView: false);
+                      },
+                    ),
+                  ),
+                  controller.isLoadingMore.value
+                      ? Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.w),
+                    child: CircularLoader(),
+                  )
+                      : Container()
+                ],
+              ),
             ),
-        ),
-      )],
+          )
+        ],
       ),
     );
   }

@@ -14,7 +14,7 @@ class SearchLocationScreen extends StatelessWidget {
     int id = int.parse(Get.parameters["cityId"]!);
 
     return Scaffold(
-      appBar: buildAppBar(context, title: "SearchLocation".tr),
+      appBar: buildAppBar(context, title: "SearchCity".tr),
       body: Obx(() {
         // Wait for data to be available
         if (controller.cityModel.value.cities.isEmpty) {

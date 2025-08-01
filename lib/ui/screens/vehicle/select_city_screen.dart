@@ -15,7 +15,7 @@ import '../../../routes.dart';
 
 class SelectCityScreen extends GetView<VehicleController> {
   SelectCityScreen({super.key}) {
-    Get.put(CityController()).getCities();
+    Get.lazyPut(() => CityController(), fenix: true);
   }
 
   @override
@@ -64,6 +64,8 @@ class SelectCityScreen extends GetView<VehicleController> {
                                   );
 
                                   if (selectedLocation == null) return; // user cancelled
+                                  controller.city?.locationId = selectedLocation.locationId;
+                                  controller.locationId= selectedLocation.locationId;
                                   if (Get.arguments == true) {
                                     // Just return selected city + location
                                     Get.back(result: {
@@ -71,6 +73,7 @@ class SelectCityScreen extends GetView<VehicleController> {
                                       'location': selectedLocation,
                                     });
                                   } else {
+
                                     // Continue to next screen
                                     if (controller.vehicleType != VehicleType.NumberPlate) {
                                       //Get.toNamed(Routes.enterMileageScreen);
@@ -79,8 +82,7 @@ class SelectCityScreen extends GetView<VehicleController> {
                                       Get.toNamed(Routes.reviewAdScreen);
                                     }
                                   }
-                                }
-                                ,
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: controller.cityId == item.cityId

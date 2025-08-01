@@ -54,6 +54,7 @@ class Car{
   String? registrationCityEn;
   String? modelYear;
   String? condition;
+  String? registrationProvince;
   String? importedLocal;
   String? registrationYear;
   int? brandId;
@@ -113,6 +114,7 @@ class Car{
     brandId=map["BrandId"];
     modelId=map["ModelId"];
     condition=map["Condition"];
+    registrationProvince=map["RegistrationProvince"];
     importedLocal=map["ImportedLocal"];
     registrationYear=map["RegistrationYear"];
     isSold=map["IsSold"];

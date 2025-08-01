@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
@@ -103,8 +104,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                             aspectRatio: 16 / 9,
                             viewportFraction: 1,
                             enlargeCenterPage: true,
-                            enlargeStrategy:
-                            CenterPageEnlargeStrategy.height,
+                            enlargeStrategy: CenterPageEnlargeStrategy.height,
                             initialPage: controller.sliderIndex.value,
                             onPageChanged: (index, reason) {
                               controller.sliderIndex.value = index;
@@ -116,19 +116,33 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                               builder: (BuildContext context) {
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(Routes.viewImageScreen,
-                                        arguments: property.images,
-                                        parameters: {
-                                          "index": property.images.indexOf(item)
-                                              .toString()
-                                        });
+                                    // Images are already preloaded, navigation will be instant
+                                    Get.toNamed(
+                                      Routes.staggeredGalleryScreen,
+                                      arguments: property.images,
+                                    );
                                   },
-                                  child: ImageWidget(
-                                    item,
+                                  child: CachedNetworkImage(
+                                    imageUrl: item,
                                     width: double.infinity,
                                     height: double.infinity,
                                     fit: BoxFit.cover,
-
+                                    placeholder: (context, url) => Container(
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) => Container(
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: Icon(Icons.error, size: 50),
+                                      ),
+                                    ),
+                                    memCacheWidth: 800,
+                                    memCacheHeight: 600,
+                                    maxWidthDiskCache: 1000,
+                                    maxHeightDiskCache: 1000,
                                   ),
                                 );
                               },
@@ -633,7 +647,39 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                     ],
                   ),
 
-
+                  Transform.translate(
+                    offset: const Offset(0, -8
+                    ), //
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(0),
+                              topRight: Radius.circular(0),
+                              bottomLeft: Radius.circular(0),
+                              bottomRight: Radius.circular(12),
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.directions_car, color: kAccentColor),
+                              const SizedBox(width: 12),
+                              Text(
+                                "Ad ID: Pk ${property.propertyId ?? 'N/A'}",
+                                style: const TextStyle(
+                                    fontSize: 12, color: kAccentColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Text("CurrentPrice".tr,
                     textAlign: TextAlign.center,
                     style: kTextStyle14.copyWith(color: kAccentColor),),
@@ -641,13 +687,11 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                   Text(
                     property.price == null || property.price == 0
                         ? "Call for Price".tr
-                        : "${getPrice(property.price!)}",
+                        : getPrice(property.price!),
                     textAlign: TextAlign.center,
                     textDirection: TextDirection.ltr,
                     style: kTextStyle18.copyWith(color: kPrimaryColor),
                   ),
-
-
                   Padding(
                     padding: kScreenPadding,
                     child: Column(
@@ -856,7 +900,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                 )).toList(),
                           ),
 
-
+// sahar comment
                           GetBuilder<ViewPropertyController>(
                               id: "comments",
                               builder: (controller) =>
@@ -942,8 +986,6 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                   )
                           ),
                           kVerticalSpace20,
-
-
                           Form(
                             key: controller.formKey,
                             autovalidateMode: AutovalidateMode
@@ -971,10 +1013,8 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                             ),
                           ),
                           kVerticalSpace16,
-
                           ButtonWidget(text: "Comment",
                               onPressed: controller.saveComment)
-
                         ]
                     ),
                   )

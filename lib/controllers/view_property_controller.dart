@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/controllers/profile_controller.dart';
 import 'package:careqar/models/comment_model.dart';
 import 'package:careqar/models/property_model.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/user_session.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +23,10 @@ class ViewPropertyController extends GetxController {
 
   List<Comment> comments=[];
 
+  // Add these for preloading
+  var isImagesPreloaded = false.obs;
+  var preloadingProgress = 0.0.obs;
+
   @override
   void onInit() {
     status(Status.loading);
@@ -29,7 +35,40 @@ class ViewPropertyController extends GetxController {
     super.onInit();
   }
 
+  Future<void> preloadCarImages() async {
+    if (property.value?.images.isEmpty ?? true) return;
 
+    try {
+      List<String> imageUrls = property.value!.images;
+      int totalImages = imageUrls.length;
+      int loadedImages = 0;
+
+      // Preload all images
+      List<Future> preloadTasks = imageUrls.map((imageUrl) async {
+        try {
+          await precacheImage(
+            CachedNetworkImageProvider(imageUrl),
+            Get.context!,
+          );
+          loadedImages++;
+          preloadingProgress.value = loadedImages / totalImages;
+        } catch (e) {
+          print('Failed to preload image: $imageUrl - $e');
+          loadedImages++; // Still count as processed
+          preloadingProgress.value = loadedImages / totalImages;
+        }
+      }).toList();
+
+      // Wait for all images to load
+      await Future.wait(preloadTasks);
+      isImagesPreloaded.value = true;
+
+      print('Successfully preloaded ${imageUrls.length} images');
+    } catch (e) {
+      print('Error preloading images: $e');
+      isImagesPreloaded.value = true; // Continue anyway
+    }
+  }
   Future<void> getProperty(var propertyId) async {
     try {
       status(Status.loading);
@@ -46,6 +85,9 @@ class ViewPropertyController extends GetxController {
         status(Status.success);
         property.value = PropertyModel.fromMap(r.data["properties"]).properties.first;
         getComments(propertyId);
+        if (property.value != null && property.value!.images.isNotEmpty) {
+          await preloadCarImages();
+        }
         updateClicks();
       });
     } catch (e) {

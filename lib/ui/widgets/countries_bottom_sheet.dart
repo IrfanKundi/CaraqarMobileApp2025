@@ -58,10 +58,10 @@ showCountriesSheet(BuildContext context) async{
                     return InkWell(
                         onTap: ()async{
                           gSelectedCountry=item;
-
-                          await   UserSession.changeCountry(item.countryId!);
-                          Get.offNamedUntil(Routes.chooseOptionScreen, (route) => false);
-
+                          if (!deepLinkHandled) {
+                            await   UserSession.changeCountry(item.countryId!);
+                            Get.offNamedUntil(Routes.chooseOptionScreen, (route) => false);
+                          }
                         },
                         child: SizedBox(
                             height: 30.h,

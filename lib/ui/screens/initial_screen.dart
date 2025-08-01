@@ -30,11 +30,12 @@ class _InitialScreenState extends State<InitialScreen> {
     if (init) {
       init = false;
 
-      if (!AppLocalizations.isFirstLaunch) {
+      if (!AppLocalizations.isFirstLaunch && deepLinkHandled) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Get.offNamed(Routes.chooseOptionScreen);
+          Get.offNamed(Routes.chooseOptionScreenNew);
         });
       }
+
 
       if (await UserSession.getCountry() == null) { // Check if country is not null in Session
         Position? currentLocation = await LocationService.determinePosition(); // Get Current Location
@@ -93,7 +94,7 @@ class _InitialScreenState extends State<InitialScreen> {
                           await AppLocalizations.future;
                           await AppLocalizations.setLocale(supportedLocales[0]);
 
-                          Get.offNamed(Routes.chooseOptionScreen);
+                          Get.offNamed(Routes.chooseOptionScreenNew);
 
                         },
                         child: Container(
@@ -125,7 +126,7 @@ class _InitialScreenState extends State<InitialScreen> {
                           onTap: () async{
                             await AppLocalizations.future;
                             await AppLocalizations.setLocale(supportedLocales[1]);
-                              Get.offNamed(Routes.chooseOptionScreen);
+                              Get.offNamed(Routes.chooseOptionScreenNew);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -213,15 +214,15 @@ class _InitialScreenState extends State<InitialScreen> {
         break;
       case 11:
         countryName="WelcomeToPakistan";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 10:
         countryName="WelcomeToTunisia";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 9:
         countryName="WelcomeToBahrain";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 8:
         countryName="WelcomeToTurkey";
@@ -229,11 +230,11 @@ class _InitialScreenState extends State<InitialScreen> {
         break;
       case 7:
         countryName="WelcomeToOman";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 6:
         countryName="WelcomeToKuwait";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 5:
         countryName="WelcomeToUnitedArabEmirates";
@@ -249,7 +250,7 @@ class _InitialScreenState extends State<InitialScreen> {
         break;
       default:
         countryName="WelcomeToPakistan";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
     }
     if(isName) {

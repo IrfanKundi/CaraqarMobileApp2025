@@ -18,9 +18,11 @@ import 'package:careqar/user_session.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:gif_view/gif_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart';
 import 'package:video_player/video_player.dart';
 
@@ -115,10 +117,6 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
     super.dispose();
     _videoPlayerController.dispose();
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -234,9 +232,10 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                 kHorizontalSpace4,
                                 Text(
                                   "SearchForCar".tr,
-                                  style: TextStyle(
-                                    color: kWhiteColor,
+                                  style: GoogleFonts.poppins(
                                     fontSize: 14.sp,
+                                    color: kWhiteColor,
+                                    fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
                                   ),
                                 ),
                               ],
@@ -250,75 +249,32 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                         onTap: (){
                           showCountriesSheet(context);
                         },
-                        child: ImageWidget(
-                          gSelectedCountry!.flag
-                          ,height: 30.w,width: 30.w,),
+                        child: Container(
+                          width: 40.r,
+                          height: 40.r,
+                          margin: EdgeInsets.all(7.w),
+
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black26
+                          ),
+                          child: ImageWidget(
+                            gSelectedCountry!.flag
+                            ,height: 20.w,width: 20.w,)
+                        )
                       )
 
                     ],
                   )),
             ),
-            Positioned(bottom: Platform.isIOS? 0.095.sh:0.075.sh,
+            //change for IOS
+            Positioned(bottom: Platform.isIOS? 0.15.sh:0.14.sh,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8.w),
+                padding: EdgeInsets.symmetric(vertical: 12.w),
                 width: 1.sw,
                 child: Container(     margin: EdgeInsets.symmetric(horizontal: 8.w),
                   child: Column(
                     children: [
-                      Stack(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                if(UserSession.isLoggedIn!){
-                                  Get.toNamed(Routes.newAdScreen);
-                                }else{
-                                  Get.toNamed(Routes.loginScreen);
-                                }
-                              },
-                              child: Container(
-                                height: 40.h,
-                                // margin: EdgeInsets.symmetric(horizontal: 8.w),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: kBorderRadius8,
-                                    color: const Color(0xFF8B1538)
-                                  // gradient: LinearGradient(
-                                  // // colors: [
-                                  // //   Color(0xFFF88B62),
-                                  // // Color(0xFFFC5473)
-                                  // //
-                                  // // ],
-                                  //  //stops:[0,0.5,1]
-                                  // )
-                                ),
-                                child: Text(
-                                  "PostNewAd".tr,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color:  kWhiteColor,
-
-                                    fontSize: 16.sp,),
-                                ),
-                              ),
-                            ),
-                            PositionedDirectional(
-                              top: -8.h,
-                              start: -10.w,
-
-                              child: ClipRect(
-                                child: Banner(
-                                  message: "Free".tr,
-                                  location: BannerLocation.topStart,
-                                  color: Colors.red,
-                                  child: Container(
-                                    height: 50.h,
-                                    width: 50.w,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]),
-
                       kVerticalSpace8,
                       Row(
                         children: [
@@ -336,12 +292,13 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                     borderRadius: kBorderRadius8
                                 ),
                                 child: Text(
-                                  "Personal".tr,
+                                  "Buy".tr,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color:  kWhiteColor,
-
-                                    fontSize: 16.sp,),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14.sp,
+                                    color: kWhiteColor,
+                                    fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
+                                  ),
                                 ),
                               ),
                             ),
@@ -364,9 +321,11 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                   child: Text(
                                     "Showroom".tr,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14.sp,
                                       color: kWhiteColor,
-                                      fontSize: 16.sp,),
+                                      fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
+                                    ),
                                   ),
                                 ),
                               ),
@@ -382,15 +341,17 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                                 decoration: BoxDecoration(
-                                    color: kLightBlueColor,
+                                    color: kMehrunColor,
                                     borderRadius: kBorderRadius8
                                 ),
                                 child: Text(
                                   "Services".tr,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14.sp,
                                     color: kWhiteColor,
-                                    fontSize: 16.sp,),
+                                    fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
+                                  ),
                                 ),
                               ),
                             ),
@@ -423,35 +384,25 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                 ),
                                 padding:
                                 EdgeInsets.all(8.w),
-                                height: 60.h,
                                 child: Column(
                                   crossAxisAlignment:
                                   CrossAxisAlignment
                                       .start,
                                   children: [
-                                    Expanded(
-                                      child:
-                                      ImageWidget(
-                                        "assets/icon/car.png",
-                                        width: 22.w,
-                                        height: 22.w,
-                                        isLocalImage: true,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: FittedBox(
-                                        fit: BoxFit
-                                            .scaleDown,
-                                        child: Text(
-                                          "Car".tr,
-                                          style: TextStyle(
-                                              color:
-                                              kWhiteColor,
-                                              fontSize:
-                                              16.sp),
-                                        ),
-                                      ),
-                                    ),
+                                     Padding(
+                                       padding: const EdgeInsets.all(5.0),
+                                       child: Center(
+                                         child: Text(
+                                              "Car".tr,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14.sp,
+                                                color: kWhiteColor,
+                                                fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
+                                              ),
+                                            ),
+                                       ),
+                                     ),
                                   ],
                                 ),
                               ),
@@ -478,35 +429,25 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                 ),
                                 padding:
                                 EdgeInsets.all(8.w),
-                                height: 60.h,
                                 child: Column(
                                   crossAxisAlignment:
                                   CrossAxisAlignment
                                       .start,
                                   children: [
-                                    Expanded(
-                                      child:
-                                      ImageWidget(
-                                        "assets/icon/bike.png",
-                                        width: 22.w,
-                                        height: 22.w,
-                                        isLocalImage: true,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: FittedBox(
-                                        fit: BoxFit
-                                            .scaleDown,
-                                        child: Text(
-                                          "Bike".tr,
-                                          style: TextStyle(
-                                              color:
-                                              kWhiteColor,
-                                              fontSize:
-                                              16.sp),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Center(
+                                          child: Text(
+                                              "Bike".tr,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14.sp,
+                                                color: kWhiteColor,
+                                                fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
+                                              ),
+                                            ),
                                         ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -527,41 +468,31 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                   gradient:
                                   LinearGradient(
                                       colors: [
-                                        Color(0xff9bcbff),
+                                        Color(0xFF8B1538),
                                         Color(0xff24695c),
                                       ]),
                                 ),
                                 padding:
                                 EdgeInsets.all(8.w),
-                                height: 60.h,
                                 child: Column(
                                   crossAxisAlignment:
                                   CrossAxisAlignment
                                       .start,
                                   children: [
-                                    Expanded(
-                                      child:
-                                      ImageWidget(
-                                        "assets/icon/noPlate.png",
-                                        width: 22.w,
-                                        height: 22.w,
-                                        isLocalImage: true,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: FittedBox(
-                                        fit: BoxFit
-                                            .scaleDown,
-                                        child: Text(
-                                          "No.Plate".tr,
-                                          style: TextStyle(
-                                              color:
-                                              kWhiteColor,
-                                              fontSize:
-                                              16.sp),
-                                        ),
-                                      ),
-                                    ),
+                                     Padding(
+                                       padding: const EdgeInsets.all(5.0),
+                                       child: Center(
+                                         child: Text(
+                                              "No.Plate".tr,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 14.sp,
+                                                color: kWhiteColor,
+                                                fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
+                                              ),
+                                            ),
+                                       ),
+                                     ),
                                   ],
                                 ),
                               ),
@@ -603,400 +534,615 @@ class _CarItemState extends State<CarItem> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(
-            Routes.viewCarScreen,
-            arguments: widget.item)?.then((value) {
-          if(mounted){
-            setState(() {
-
-            });
+        Get.toNamed(Routes.viewCarScreen, arguments: widget.item)?.then((value) {
+          if (mounted) {
+            setState(() {});
           }
         });
       },
       child: Card(
-        margin:  widget.isGridView?
-        EdgeInsets.all(5.w):
-        EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.w),
-
-
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        child:
-        widget.isGridView?
-
-        Column(
-            crossAxisAlignment:
-            CrossAxisAlignment
-                .stretch,
-            children: [
-              Expanded(flex: 6,
-                child:
-                Stack(
+        margin: widget.isGridView
+            ? EdgeInsets.all(5.w)
+            : EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
+        shape: widget.isGridView
+            ? RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+          side: BorderSide(
+            color: Colors.grey.shade300, // Light grey border
+            width: 1,
+          ),
+        )
+            : RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+          side: BorderSide(
+            color: Colors.grey.shade300,
+            width: 1,
+          ),
+        ),
+        elevation: 0, // No shadow for both
+        child: widget.isGridView
+            ? Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // ---------- IMAGE SECTION ----------
+            Expanded(
+              flex: 6,
+              child: Padding(
+                padding: EdgeInsets.all(8.w), // Same padding as list view
+                child: Stack(
                   children: [
-                    ImageWidget(
-                      widget.item.images
-                          .first,
-                      fit: BoxFit
-                          .cover,
-                    ),
-                    PositionedDirectional( top: 4.w,
-                      start: 4.w,
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if(DateTime.now().difference(widget.item.createdAt!).inDays<2)
-                            Container(
-                              margin: EdgeInsets.only(top: 4.h),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 3, horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: kRedColor,
-                                borderRadius: kBorderRadius30,
-                              ),
-                              child: Text(
-                                "New".tr,
-                                style: TextStyle(
-                                    color:kWhiteColor, fontSize: 10.sp),),
-                            ),
-                        ],
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15.r), // Inner radius like list view
+                      child: ImageWidget(
+                        widget.item.images.first,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
                       ),
                     ),
-                    PositionedDirectional(
-                        top: 4.w,
-                        end: 4.w,
-                        child: Column(
+
+                    // New Badge
+                    if (DateTime.now()
+                        .difference(widget.item.createdAt!)
+                        .inDays <
+                        2)
+                      Positioned(
+                        top: 8.h,
+                        left: 8.w,
+                        child: Container(
+                          padding:
+                          EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF4CAF50),
+                            border: Border.all(color: Colors.white, width: 1.5),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Text(
+                            "New".tr,
+                            style: GoogleFonts.poppins(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    // Image Count
+                    Positioned(
+                      bottom: 8.h,
+                      right: 8.w,
+                      child: Container(
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.black38,
-                                borderRadius: kBorderRadius30,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
-                                  Text(
-                                    " ${widget.item.clicks}",
-                                    style: TextStyle(
-                                        color: kWhiteColor, fontSize: 12.sp),),
-                                ],
+                            Icon(
+                              Icons.photo_library_outlined,
+                              color: Colors.white,
+                              size: 12.sp,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              "${widget.item.images.length}",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            kVerticalSpace4,
-                            Container(     decoration: const BoxDecoration(
-                                color: Colors.black38,
-                                shape: BoxShape.circle
-                            ),
-                              child:    IconButtonWidget(
-                                icon: widget.item.favoriteId!>0?
-                                MaterialCommunityIcons.heart:
-                                MaterialCommunityIcons
-                                    .heart_outline,
-                                color:widget.item.favoriteId!>0? kRedColor:kWhiteColor,
-                                width: 30.w,
-                                onPressed: ()async {
-                                  var controller =  Get.put(FavoriteController());
-                                  if(widget.item.favoriteId!>0){
-
-                                    if(await controller.deleteFavorite(car: widget.item)){
-                                      setState(() {
-
-                                      });
-                                    }
-                                  }else{
-                                    if(await controller.addToFavorites(car:widget.item)){
-                                      setState(() {
-
-                                      });
-                                    }
-                                  }
-
-                                },),)
                           ],
-                        ))
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Expanded(flex: 7,
-                  child:
-                  Padding(
-                    padding: EdgeInsets.all(8.w),
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+            ),
+
+            // ---------- DETAILS SECTION ----------
+            Expanded(
+              flex: 7,
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Car Title + Heart
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
-                        Text("${widget.item.brandName} ${widget.item.modelName} ${widget.item.modelYear}",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: kTextStyle16.copyWith(color: kAccentColor),),
-                        kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  " ${widget.item.cityName}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.car,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  " ${widget.item.type}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),    kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.speedometer,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  " ${widget.item.mileage} ${"KM".tr}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),    kVerticalSpace4,
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerRight,
+                        Expanded(
                           child: Text(
-                            "${format(widget.item.createdAt!,locale: gSelectedLocale?.locale?.languageCode)}",textDirection: TextDirection.ltr, maxLines:
-                          1,
-                            style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
-                          ),
-                        )
-                        ,
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(getPrice(widget.item.price!),
-                            textDirection: TextDirection.ltr,
-                            style: TextStyle(
-                                color: kPrimaryColor,
-                                height: 1.3,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600),
+                            "${widget.item.brandName} ${widget.item.modelName}",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF1E3A5F),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-
+                        SizedBox(
+                          height: 24.w,
+                          width: 24.w,
+                          child: IconButtonWidget(
+                            icon: widget.item.favoriteId! > 0
+                                ? MaterialCommunityIcons.heart
+                                : MaterialCommunityIcons.heart_outline,
+                            color: widget.item.favoriteId! > 0
+                                ? kRedColor
+                                : Colors.black54,
+                            width: 16.w,
+                            onPressed: () async {
+                              var controller =
+                              Get.put(FavoriteController());
+                              if (widget.item.favoriteId! > 0) {
+                                if (await controller.deleteFavorite(
+                                    car: widget.item)) {
+                                  setState(() {});
+                                }
+                              } else {
+                                if (await controller.addToFavorites(
+                                    car: widget.item)) {
+                                  setState(() {});
+                                }
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
-                  ))
-            ]):
-        Container(
-          height: 140.h,
-          child: Row(
-              crossAxisAlignment:
-              CrossAxisAlignment
-                  .stretch,
-              children: [
-                Expanded(flex: 2,
-                  child:
-                  Stack(
-                    children: [
-                      ImageWidget(
-                        widget.item.images
-                            .first,
-                        fit: BoxFit
-                            .cover,
-                      ),
-                      PositionedDirectional( top: 4.w,
-                        start: 4.w,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                    SizedBox(height: 4.h),
 
-                            if(DateTime.now().difference(widget.item.createdAt!).inDays<2)
-                              Container(
-                                margin: EdgeInsets.only(top: 4.h),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 3, horizontal: 8),
-                                decoration: BoxDecoration(
-                                  color: kRedColor,
-                                  borderRadius: kBorderRadius30,
-                                ),
-                                child: Text(
-                                  "New".tr,
-                                  style: TextStyle(
-                                      color:kWhiteColor, fontSize: 10.sp),),
+                    // Row 1: Year + Fuel
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon/calendar.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2), // Match your previous icon color
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          "${widget.item.modelYear}",
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                        SizedBox(width: 10.w),
+                        SvgPicture.asset(
+                          'assets/icon/pump.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2), // Match your previous icon color
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          "${widget.item.type}",
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Row 2: Location + Mileage
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon/marker.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2), // Match your previous icon color
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          "${widget.item.location}",
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon/dashboard.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2), // Match your previous icon color
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          "${widget.item.mileage} KM",
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Posted Time
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${format(widget.item.createdAt!, locale: gSelectedLocale?.locale?.languageCode)}",
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 2.h),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                MaterialCommunityIcons.eye_outline,
+                                color: Colors.white,
+                                size: 12.sp,
                               ),
-                          ],
+                              SizedBox(width: 4.w),
+                              Text(
+                                "${widget.item.clicks}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 2.h),
+
+
+                    // Price
+                    Text(
+                      getPrice(widget.item.price!),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF91c11b),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
+            : // ---------- LIST VIEW ----------
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Image Section
+                Container(
+                width: 120.w,
+                height: 100.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15.r),
+                  border: Border.all(
+                    color: Colors.black54, // Light grey like screenshot
+                    width: 1, // 1px border
+                  ),
+                ),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.r),
+                        child: ImageWidget(
+                          widget.item.images.first,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
                       ),
-                      PositionedDirectional(
-                          top: 4.w,
-                          end: 4.w,
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.black38,
-                                  borderRadius: kBorderRadius30,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
-                                    Text(
-                                      " ${widget.item.clicks}",
-                                      style: TextStyle(
-                                          color: kWhiteColor, fontSize: 12.sp),),
-                                  ],
-                                ),
-                              ), kVerticalSpace4,
-                              Container(     decoration: const BoxDecoration(
-                                  color: Colors.black38,
-                                  shape: BoxShape.circle
+
+                      // New Badge
+                      if (DateTime.now()
+                          .difference(widget.item.createdAt!)
+                          .inDays <
+                          2)
+                        Positioned(
+                          top: 8.h,
+                          left: 8.w,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 4.h),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF4CAF50),
+                              border: Border.all(
+                                  color: Colors.white, width: 1.5),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Text(
+                              "New".tr,
+                              style: GoogleFonts.poppins(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
                               ),
-                                child:
-                                IconButtonWidget(
-                                  icon: widget.item.favoriteId!>0?
-                                  MaterialCommunityIcons.heart:
-                                  MaterialCommunityIcons
-                                      .heart_outline,
-                                  color:widget.item.favoriteId!>0? kRedColor:kWhiteColor,
-                                  width: 30.w,
-                                  onPressed: ()async {
-                                    var controller =  Get.put(FavoriteController());
-                                    if(widget.item.favoriteId!>0){
+                            ),
+                          ),
+                        ),
 
-                                      if(await controller.deleteFavorite(car: widget.item)){
-                                        setState(() {
-
-                                        });
-                                      }
-                                    }else{
-                                      if(await controller.addToFavorites(car:widget.item)){
-                                        setState(() {
-
-                                        });
-                                      }
-                                    }
-
-
-                                  },),)
+                      // Image Count
+                      Positioned(
+                        bottom: 8.h,
+                        right: 8.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.photo_library_outlined,
+                                color: Colors.white,
+                                size: 12.sp,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                "${widget.item.images.length}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ],
-                          ))
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Expanded(flex: 3,
-                    child:
-                    Padding(
-                      padding: EdgeInsets.all(8.w),
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+
+                SizedBox(width: 16.w),
+
+                // Details Section
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-
-
-                          Text("${widget.item.brandName} ${widget.item.modelName} ${widget.item.modelYear}",
-                            maxLines: 1,
-                            style: kTextStyle16.copyWith(color: kAccentColor),),
-                          kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${widget.item.cityName}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),
-                          kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.car,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${widget.item.type}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),    kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.speedometer,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${widget.item.mileage} ${"KM".tr}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),    kVerticalSpace4,
-
-
-                          Text(
-                            "${format(widget.item.createdAt!,locale: gSelectedLocale?.locale?.languageCode)}",textDirection: TextDirection.ltr, maxLines:
-                          1,
-                            style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
-                          ),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Text(getPrice(widget.item.price!), textDirection: TextDirection.ltr,
+                          Expanded(
+                            child: Text(
+                              "${widget.item.brandName} ${widget.item.modelName}",
                               style: TextStyle(
-                                  color: kPrimaryColor,
-                                  height: 1.3,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600),
+                                color: const Color(0xFF1E3A5F),
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              height: 20.w, // Tight height
+                              width: 20.w,  // Tight width
+                              child: IconButtonWidget(
+                                icon: widget.item.favoriteId! > 0
+                                    ? MaterialCommunityIcons.heart
+                                    : MaterialCommunityIcons.heart_outline,
+                                color: widget.item.favoriteId! > 0 ? kRedColor : Colors.black54,
+                                width: 14.w,
+                                onPressed: () async {
+                                  var controller = Get.put(FavoriteController());
+                                  if (widget.item.favoriteId! > 0) {
+                                    if (await controller.deleteFavorite(car: widget.item)) {
+                                      setState(() {});
+                                    }
+                                  } else {
+                                    if (await controller.addToFavorites(car: widget.item)) {
+                                      setState(() {});
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                    ))
-              ]),
-        ),
 
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icon/marker.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2), // Match your previous icon color
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            "${widget.item.location}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          SvgPicture.asset(
+                            'assets/icon/pump.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2), // Match your previous icon color
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              "${widget.item.type}",
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 12.sp,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 5.h),
+
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icon/dashboard.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2), // Match your previous icon color
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            "${widget.item.mileage} ${"KM".tr}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                          SizedBox(width: 16.w),
+                          SvgPicture.asset(
+                            'assets/icon/calendar.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2), // Match your previous icon color
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            "${widget.item.modelYear}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // Time + Views
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            format(widget.item.createdAt!,
+                                locale: gSelectedLocale
+                                    ?.locale
+                                    ?.languageCode),
+                            style: TextStyle(
+                              color: Colors.grey.shade500,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5.w, vertical: 2.h),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  MaterialCommunityIcons.eye_outline,
+                                  color: Colors.white,
+                                  size: 12.sp,
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  "${widget.item.clicks}",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      // Price
+                      Text(
+                        getPrice(widget.item.price!),
+                        style: TextStyle(
+                          color: const Color(0xFF91c11b),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

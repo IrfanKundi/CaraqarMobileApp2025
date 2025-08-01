@@ -484,7 +484,7 @@ class _BikeItemState extends State<BikeItem> {
                               color: kLightBlueColor,),
                               Expanded(
                                 child: Text(
-                                  " ${widget.item.cityName}",
+                                  " ${widget.item.location}",
                                   maxLines:
                                   1,
                                   style:

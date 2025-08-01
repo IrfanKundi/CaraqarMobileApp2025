@@ -52,6 +52,8 @@ class VehicleController extends GetxController {
   String? condition;
   String? origin;
   String? registrationYear;
+  int? registrationCityId;
+  int? locationId;
   String? province;
   Brand? brand;
   Model? model;
@@ -59,6 +61,7 @@ class VehicleController extends GetxController {
   String? transmission;
   String? color;
   String? mileage;
+
   int? seats;
   int? typeId;
   int? brandId;
@@ -205,6 +208,8 @@ if(formKey.currentState!.validate()){
               "descriptionAr": descriptionAr,
               "cityId": city?.cityId,
               "countryId": gSelectedCountry?.countryId,
+              "RegistrationCity": registrationCityId,
+              "LocationId":locationId,
               "price": price,
               "purpose": purpose,
               "number": number,
@@ -246,7 +251,7 @@ if(formKey.currentState!.validate()){
           }, (x) async {
             await showAlertDialog(title: "Success", message: r.message);
             reset();
-            Get.offAllNamed(Routes.allAdsScreen);
+            Get.offAllNamed(Routes.navigationScreen, arguments: {'initialTab': 2});
           });
         });
       }
@@ -274,7 +279,9 @@ if(formKey.currentState!.validate()){
                 "condition": condition,
                 "ImportedLocal": origin,
                 "RegistrationYear": registrationYear,
-                "RegistrationCity": province,
+                "RegistrationCityId": registrationCityId,
+                "RegistrationCity": registrationCityId,
+                "LocationId":locationId,
                 "brandId": brand?.brandId,
                 "modelId": model?.modelId,
                 "fuelType": fuelType,
@@ -334,7 +341,7 @@ if(formKey.currentState!.validate()){
             await showAlertDialog(title: "Success", message: r.message);
             reset();
             // update my car screen ali
-            Get.offAllNamed(Routes.allAdsScreen);
+            Get.offAllNamed(Routes.navigationScreen, arguments: {'initialTab': 2});
           });
         });
       }
@@ -361,7 +368,9 @@ if(formKey.currentState!.validate()){
                 "modelYear": modelYear,
                 "condition": condition,
                 "origin": origin,
-                "registrationYear;": registrationYear,
+                "registrationYear": registrationYear,
+                "RegistrationCity": registrationCityId,
+                "LocationId":locationId,
                 "province": province,
                 "brandId": brand?.brandId,
                 "modelId": model?.modelId,
@@ -420,7 +429,7 @@ if(formKey.currentState!.validate()){
             await showAlertDialog(title: "Success", message: r.message);
             reset();
             Get.find<HomeController>().index.value = 0;
-            Get.offAllNamed(Routes.allAdsScreen);
+            Get.offAllNamed(Routes.navigationScreen, arguments: {'initialTab': 2});
           });
         });
       }
@@ -463,6 +472,8 @@ if(formKey.currentState!.validate()){
       condition=data.condition;
       origin=data.origin;
       registrationYear= data.registrationYear;
+      registrationCityId= data.registrationCityId;
+      locationId= data.locationId;
       province=data.province;
       brandId=data.brandId;
       modelId=data.modelId;
@@ -508,6 +519,8 @@ if(formKey.currentState!.validate()){
     condition=null;
     origin=null;
     registrationYear=null;
+    registrationCityId=null;
+    locationId=null;
     province=null;
     brandId=null;
     modelId=null;

@@ -104,7 +104,10 @@ class BikeFilterScreen extends GetView<VehicleController> {
 
                                 InkWell(
                                   onTap: () async {
-                                    var result = await Get.toNamed(Routes.chooseBrandScreen,arguments: false) as Brand;
+                                    var result = await Get.toNamed(
+                                      Routes.chooseBrandScreen,
+                                      arguments: VehicleType.Bike,
+                                    ) as Brand;
                                     if (result != null) {
                                       controller.brand = result;
                                       controller.update(["filter"]);

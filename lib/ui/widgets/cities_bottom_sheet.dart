@@ -38,7 +38,7 @@ EasyLoading.dismiss();
               ),
               kVerticalSpace12,
               Text(
-                "SelectCity".tr,
+                "Select Province".tr,
                 style:
                 TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
               ),

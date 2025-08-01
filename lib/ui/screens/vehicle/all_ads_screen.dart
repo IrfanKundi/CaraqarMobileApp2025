@@ -604,8 +604,7 @@ class MyBikeItem extends StatelessWidget {
                       ),
                     ))
               ]),
-        )
-        ,
+        ),
       ),
     );
   }

@@ -44,12 +44,14 @@ class Routes {
   static const profileScreen = "/profileScreen";
   static const propertiesScreen = "/propertiesScreen";
   static const viewImageScreen = "/viewImageScreen";
+  static const staggeredGalleryScreen = "/staggeredGalleryScreen";
   static const brandsScreen = "/brandsScreen";
   static const currentLocationScreen = "/currentLocationScreen";
   static const introScreen = "/introScreen";
   static const allAdsScreen = "/allAdsScreen";
   static const chooseSignInScreen = "/chooseSignInScreen";
   static const chooseOptionScreen = "/chooseOptionScreen";
+  static const chooseOptionScreenNew = "/chooseOptionScreenNew";
   static const chooseSubtypeScreen = "/chooseSubtypeScreen";
   static const addFeaturesScreen = "/addFeaturesScreen";
   static const addPropertyScreen = "/addPropertyScreen";

@@ -32,13 +32,13 @@ LatLng? gCurrentLocation;
 final ApiProvider gApiProvider=ApiProvider();
 var gBox;
 var gContentController = Get.put(ContentController());
-
+bool deepLinkHandled = false;
 final priceFormat = NumberFormat("#,##0", "en_US");
 String getPrice(double price){
   if (price == 0) {
     return "Call for Price".tr;
   }
-  return "${priceFormat.format(price)} ${gSelectedCountry?.currency}";
+  return "${gSelectedCountry?.currency} ${priceFormat.format(price)} ";
 }
 
 

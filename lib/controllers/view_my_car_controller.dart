@@ -1,6 +1,8 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/models/car_model.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
+import 'package:flutter/material.dart' show precacheImage;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +16,9 @@ class ViewMyCarController extends GetxController {
   var delStatus = Status.initial.obs;
   var refreshStatus = Status.initial.obs;
   Rx<Car?> car=Rx(null);
+  // Add these for preloading
+  var isImagesPreloaded = false.obs;
+  var preloadingProgress = 0.0.obs;
 
   @override
   void onReady() {
@@ -23,7 +28,40 @@ class ViewMyCarController extends GetxController {
     super.onReady();
   }
 
+  Future<void> preloadCarImages() async {
+    if (car.value?.images.isEmpty ?? true) return;
 
+    try {
+      List<String> imageUrls = car.value!.images;
+      int totalImages = imageUrls.length;
+      int loadedImages = 0;
+
+      // Preload all images
+      List<Future> preloadTasks = imageUrls.map((imageUrl) async {
+        try {
+          await precacheImage(
+            CachedNetworkImageProvider(imageUrl),
+            Get.context!,
+          );
+          loadedImages++;
+          preloadingProgress.value = loadedImages / totalImages;
+        } catch (e) {
+          print('Failed to preload image: $imageUrl - $e');
+          loadedImages++; // Still count as processed
+          preloadingProgress.value = loadedImages / totalImages;
+        }
+      }).toList();
+
+      // Wait for all images to load
+      await Future.wait(preloadTasks);
+      isImagesPreloaded.value = true;
+
+      print('Successfully preloaded ${imageUrls.length} images');
+    } catch (e) {
+      print('Error preloading images: $e');
+      isImagesPreloaded.value = true; // Continue anyway
+    }
+  }
 
   Future<void> refreshCar({Car? car}) async {
     try {

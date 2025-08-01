@@ -614,7 +614,7 @@ class MyCarItem extends StatelessWidget {
                             color: kLightBlueColor,),
                             Expanded(
                               child: Text(
-                                " ${item.cityName}",
+                                " ${item.location}",
                                 maxLines:
                                 1,
                                 style:

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
@@ -20,11 +21,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:timeago/timeago.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../constants/strings.dart';
 import '../../../controllers/favorite_controller.dart';
 import '../../../controllers/view_bike_controller.dart';
 import '../../../global_variables.dart';
+import '../../widgets/button_widget.dart';
+import '../../widgets/text_field_widget.dart';
 
 class ViewBikeScreen extends GetView<ViewBikeController> {
   ViewBikeScreen({Key? key}) : super(key: key) {
@@ -34,6 +39,7 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: kWhiteColor,
       body: Obx(() {
@@ -94,37 +100,50 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                   height: double.infinity,
                                   autoPlayCurve: Curves.linearToEaseOut,
                                   autoPlay: true,
-                                  scrollPhysics: BouncingScrollPhysics(),
+                                  scrollPhysics: const BouncingScrollPhysics(),
                                   enableInfiniteScroll: false,
                                   aspectRatio: 16 / 9,
                                   viewportFraction: 1,
                                   enlargeCenterPage: true,
-                                  enlargeStrategy:
-                                      CenterPageEnlargeStrategy.height,
+                                  enlargeStrategy: CenterPageEnlargeStrategy.height,
                                   initialPage: controller.sliderIndex.value,
                                   onPageChanged: (index, reason) {
                                     controller.sliderIndex.value = index;
                                     controller.update();
                                   },
                                 ),
-                                items: bike?.images.map((item) {
+                                items: bike.images.map((item) {
                                   return Builder(
                                     builder: (BuildContext context) {
                                       return GestureDetector(
                                         onTap: () {
-                                          Get.toNamed(Routes.viewImageScreen,
-                                              arguments: bike.images,
-                                              parameters: {
-                                                "index": bike.images
-                                                    .indexOf(item)
-                                                    .toString()
-                                              });
+                                          // Images are already preloaded, navigation will be instant
+                                          Get.toNamed(
+                                            Routes.staggeredGalleryScreen,
+                                            arguments: bike.images,
+                                          );
                                         },
-                                        child: ImageWidget(
-                                          item,
+                                        child: CachedNetworkImage(
+                                          imageUrl: item,
                                           width: double.infinity,
                                           height: double.infinity,
                                           fit: BoxFit.cover,
+                                          placeholder: (context, url) => Container(
+                                            color: Colors.grey[200],
+                                            child: Center(
+                                              child: CircularProgressIndicator(),
+                                            ),
+                                          ),
+                                          errorWidget: (context, url, error) => Container(
+                                            color: Colors.grey[200],
+                                            child: Center(
+                                              child: Icon(Icons.error, size: 50),
+                                            ),
+                                          ),
+                                          memCacheWidth: 800,
+                                          memCacheHeight: 600,
+                                          maxWidthDiskCache: 1000,
+                                          maxHeightDiskCache: 1000,
                                         ),
                                       );
                                     },
@@ -883,6 +902,120 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                           ))
                                       .toList(),
                                 ),
+                                GetBuilder<ViewBikeController>(
+                                    id: "comments",
+                                    builder: (controller) =>
+
+                                        Column(crossAxisAlignment: CrossAxisAlignment
+                                            .stretch,
+                                          children: [
+                                            Text(
+                                              "${"Comments".tr} (${controller.comments
+                                                  .length})",
+                                              style: kTextStyle16.copyWith(
+                                                  color: kAccentColor),
+                                            ),
+
+                                            kVerticalSpace16,
+
+                                            if (controller.comments.isEmpty) Text(
+                                              "NoComments".tr, style: kTextStyle14,
+                                              textAlign: TextAlign.center,) else
+                                              ListView.separated(
+
+                                                physics: const PageScrollPhysics(),
+                                                padding: EdgeInsets.zero,
+                                                itemBuilder: (context, index) {
+                                                  var item = controller
+                                                      .comments[index];
+                                                  return Row(
+                                                    crossAxisAlignment: CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      ImageWidget(item.image ??
+                                                          "assets/images/profile2.jpg",
+                                                        isLocalImage: item.image ==
+                                                            null,
+                                                        width: 50.r,
+                                                        height: 50.r,
+                                                        isCircular: true,
+                                                      ),
+                                                      kHorizontalSpace12,
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment
+                                                              .stretch,
+                                                          children: [
+                                                            Text("${item.name}",
+                                                              style: TextStyle(
+                                                                  fontSize: 15.sp,
+                                                                  color: kAccentColor,
+                                                                  fontWeight: FontWeight
+                                                                      .w600
+                                                              ),),
+                                                            Text("${format(
+                                                              item.createdAt!,
+                                                              locale: gSelectedLocale
+                                                                  ?.locale
+                                                                  ?.languageCode,
+                                                            )}", style: TextStyle(
+
+                                                                color: kGreyColor,
+                                                                fontSize: 12.sp
+                                                            ),),
+                                                            kVerticalSpace8,
+                                                            Text("${item.comment}",
+                                                              style: TextStyle(
+                                                                  fontSize: 14.sp,
+                                                                  color: kAccentColor
+                                                              ),),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  );
+                                                },
+                                                separatorBuilder: (context, index) {
+                                                  return const Divider();
+                                                },
+                                                shrinkWrap: true,
+                                                itemCount: controller.comments
+                                                    .length,)
+
+
+                                          ],
+                                        )
+                                ),
+                                kVerticalSpace20,
+                                Form(
+                                  key: controller.formKey,
+                                  autovalidateMode: AutovalidateMode
+                                      .onUserInteraction,
+                                  child: TextFieldWidget(maxLines: 3,
+                                    borderRadius: kBorderRadius4,
+                                    hintText: "TypeComment",
+                                    text: controller.comment,
+                                    onChanged: (val) {
+                                      controller.comment = val.toString().trim();
+                                    },
+                                    onSaved: (val) {
+                                      controller.comment = val.toString().trim();
+                                    },
+                                    validator: (val) {
+                                      if (val
+                                          .toString()
+                                          .isEmpty) {
+                                        return kRequiredMsg.tr;
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+
+                                  ),
+                                ),
+                                kVerticalSpace16,
+                                ButtonWidget(text: "Comment",
+                                    onPressed: controller.saveComment)
                               ]),
                         )
                       ],

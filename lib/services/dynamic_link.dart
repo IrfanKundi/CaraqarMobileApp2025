@@ -13,14 +13,14 @@ class DynamicLink {
     FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
 
     final DynamicLinkParameters parameters = DynamicLinkParameters(
-      link: Uri.parse("https://www.caraqar.co$uri"),
-      uriPrefix: 'https://careqar.page.link',
+      link: Uri.parse("https://caraqaar.com$uri"),
+      uriPrefix: 'https://caraqaar.page.link',
       androidParameters: const AndroidParameters(
-        packageName: 'com.careqar.app',
+        packageName: 'com.caraqaar.app',
         minimumVersion: 0,
       ),
       iosParameters: const IOSParameters(
-        bundleId: 'com.careqar.app',
+        bundleId: 'com.caraqaar.app',
         minimumVersion: '0',
       ),
       socialMetaTagParameters:metaTag? SocialMetaTagParameters(

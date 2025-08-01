@@ -205,7 +205,7 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                      children: [
                                                        Text(
-                                                         "City".tr,
+                                                         "Province".tr,
                                                          style: TextStyle(
                                                            color: kBlackColor,
                                                            fontSize: 14.sp,
@@ -214,7 +214,7 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                        ),
                                                        SizedBox(height: 4),
                                                        Text(
-                                                         controller.selectedCity.value?.name ?? 'SelectCity'.tr,
+                                                         controller.selectedCity.value?.name ?? 'SelectProvince'.tr,
                                                          style: TextStyle(
                                                            color: kPrimaryColor,
                                                            fontSize: 14.sp,
@@ -264,7 +264,7 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                      children: [
                                                        Text(
-                                                         "Location".tr,
+                                                         "City".tr,
                                                          style: TextStyle(
                                                            color: kBlackColor,
                                                            fontSize: 14.sp,
@@ -273,7 +273,7 @@ class PropertiesScreen extends GetView<PropertyController> {
                                                        ),
                                                        SizedBox(height: 4),
                                                        Text(
-                                                         controller.selectedLocation.value?.title ?? 'SelectLocation'.tr,
+                                                         controller.selectedLocation.value?.title ?? 'SelectCity'.tr,
                                                          style: TextStyle(
                                                            color: kPrimaryColor,
                                                            fontSize: 14.sp,

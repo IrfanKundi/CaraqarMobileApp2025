@@ -259,6 +259,7 @@ EasyLoading.dismiss();
                 "descriptionAr": car.descriptionAr,
                 "typeId": car.typeId,
                 "cityId": car.cityId,
+                "LocationId":car.locationId,
                 "countryId": gSelectedCountry?.countryId,
                 "price": car.price,
                 "carId": car.carId,

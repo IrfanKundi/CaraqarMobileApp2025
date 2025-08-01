@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
@@ -74,33 +75,48 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                             height: double.infinity,
                             autoPlayCurve: Curves.linearToEaseOut,
                             autoPlay: true,
-                            scrollPhysics: BouncingScrollPhysics(),
+                            scrollPhysics: const BouncingScrollPhysics(),
                             enableInfiniteScroll: false,
                             aspectRatio: 16 / 9,
                             viewportFraction: 1,
                             enlargeCenterPage: true,
-                            enlargeStrategy:
-                            CenterPageEnlargeStrategy.height,
+                            enlargeStrategy: CenterPageEnlargeStrategy.height,
                             initialPage: controller.sliderIndex.value,
                             onPageChanged: (index, reason) {
-                              controller.sliderIndex.value=index;
+                              controller.sliderIndex.value = index;
                               controller.update();
                             },
                           ),
-                          items:  bike!.images.map((item) {
+                          items: bike.images.map((item) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GestureDetector(
-                                  onTap: (){
-                                    Get.toNamed(Routes.viewImageScreen,
-                                        arguments: bike.images,parameters: {"index":bike.images.indexOf(item).toString()});
+                                  onTap: () {
+                                    // Images are already preloaded, navigation will be instant
+                                    Get.toNamed(
+                                      Routes.staggeredGalleryScreen,
+                                      arguments: bike.images,
+                                    );
                                   },
-                                  child: ImageWidget(
-                                    item,
+                                  child: CachedNetworkImage(
+                                    imageUrl: item,
                                     width: double.infinity,
                                     height: double.infinity,
                                     fit: BoxFit.cover,
-
+                                    placeholder: (context, url) => Container(
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) => Container(
+                                      color: Colors.grey[200],
+                                      child: Center(
+                                        child: Icon(Icons.error, size: 50),
+                                      ),
+                                    ),
+                                    maxWidthDiskCache: 1000,
+                                    maxHeightDiskCache: 1000,
                                   ),
                                 );
                               },

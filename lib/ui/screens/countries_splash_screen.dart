@@ -70,15 +70,15 @@ class _CountriesSplashScreenState extends State<CountriesSplashScreen> {
         break;
       case 11:
         countryName="WelcomeToPakistan";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 10:
         countryName="WelcomeToTunisia";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 9:
         countryName="WelcomeToBahrain";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 8:
         countryName="WelcomeToTurkey";
@@ -86,11 +86,11 @@ class _CountriesSplashScreenState extends State<CountriesSplashScreen> {
         break;
       case 7:
         countryName="WelcomeToOman";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 6:
         countryName="WelcomeToKuwait";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
       case 5:
         countryName="WelcomeToUnitedArabEmirates";
@@ -106,7 +106,7 @@ class _CountriesSplashScreenState extends State<CountriesSplashScreen> {
         break;
       default:
         countryName="WelcomeToPakistan";
-        countryImage="Pakistan.jpg";
+        countryImage="pakistan.jpg";
         break;
     }
     if(isName) {

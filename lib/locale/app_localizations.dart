@@ -81,7 +81,7 @@ class AppLocalizations {
         }
       }else{
         //await showAlertDialog(title: "Error",message: "Something went wrong");
-        Get.offNamedUntil(Routes.chooseOptionScreen, (route) => false);
+        Get.offNamedUntil(Routes.chooseOptionScreenNew, (route) => false);
       }
     }
   }

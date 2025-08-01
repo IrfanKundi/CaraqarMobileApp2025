@@ -17,11 +17,27 @@ import '../../../controllers/vehicle_controller.dart';
 
 class ChooseBrandScreen extends GetView<VehicleController> {
   ChooseBrandScreen({super.key}) {
-    if (controller.vehicleType == null) {
-      controller.vehicleType = VehicleType.Car; // default fallback
+    try{
+      final VehicleType? passedVehicleType = Get.arguments as VehicleType?;
+
+      if (passedVehicleType != null) {
+        controller.vehicleType = passedVehicleType;
+      } else if (controller.vehicleType == null) {
+        controller.vehicleType = VehicleType.Car; // fallback
+      }
+
+      debugPrint('Selected vehicle type: ${controller.vehicleType.toString()}');
+      final typeStr = EnumToString.convertToString(controller.vehicleType);
+      debugPrint('Selected vehicle type: $typeStr');
+      Get.put(BrandController()).getBrands(typeStr);
+    }catch (e){
+      if (controller.vehicleType == null) {
+        controller.vehicleType = VehicleType.Car; // default fallback
+      }
+      final typeStr = EnumToString.convertToString(controller.vehicleType);
+      debugPrint('Selected vehicle type: $typeStr');
+      Get.put(BrandController()).getBrands(typeStr);
     }
-    final typeStr = EnumToString.convertToString(controller.vehicleType);
-    Get.put(BrandController()).getBrands(typeStr);
   }
 
   @override

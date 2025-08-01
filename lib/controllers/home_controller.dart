@@ -76,15 +76,11 @@ class HomeController extends GetxController {
       }
     }
     else{
-      if( gIsVehicle){
-
-        Get.toNamed(Routes.allAdsScreen);
+      if(gIsVehicle){
+        Get.toNamed(Routes.newAdScreen);
       }else{
-        propertyController.resetFilters();
-        propertyController.getFilteredProperties();
         Get.toNamed(Routes.propertiesScreen);
       }
-
     }
   }
 
@@ -104,7 +100,7 @@ class HomeController extends GetxController {
       //   return Future.value(false);
       // }
       Get.find<ContentController>().reset();
-      Get.offAllNamed(Routes.chooseOptionScreen);
+      Get.offAllNamed(Routes.chooseOptionScreenNew);
       return Future.value(true);
     }
   }

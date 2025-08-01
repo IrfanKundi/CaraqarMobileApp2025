@@ -1,5 +1,6 @@
 import 'package:careqar/services/route_observer.dart';
 import 'package:careqar/ui/screens/choose_foreigner_city_screen.dart';
+import 'package:careqar/ui/screens/choose_option_screen_new.dart';
 import 'package:careqar/ui/screens/companies_screen.dart';
 import 'package:careqar/ui/screens/new_property_ad_screen.dart';
 import 'package:careqar/ui/screens/news_detail_screen.dart';
@@ -61,6 +62,7 @@ import 'package:careqar/ui/screens/vehicle/view_car_screen.dart';
 import 'package:careqar/ui/screens/vehicle/view_my_car_screen.dart';
 import 'package:careqar/ui/screens/vehicle/view_my_number_plate_screen.dart';
 import 'package:careqar/ui/screens/vehicle/view_number_plate_screen.dart';
+import 'package:careqar/ui/widgets/staggered_gallery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -102,6 +104,7 @@ import 'package:careqar/ui/screens/view_my_request_screen.dart';
 import 'package:careqar/ui/screens/view_property_screen.dart';
 import 'package:careqar/ui/screens/view_request_screen.dart';
 import 'package:careqar/ui/widgets/init_easy_loading.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'bindings.dart';
 import 'constants/colors.dart';
@@ -119,44 +122,55 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent,
-            systemNavigationBarColor: Colors.white
-            ,statusBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+    ));
+
     return ScreenUtilInit(
-      designSize: const Size(360, 690),minTextAdapt: true,
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_,widget) => GetMaterialApp(
+      builder: (_, widget) => GetMaterialApp(
         translationsKeys: Get.translations,
-        locale:Get.locale,
+        locale: Get.locale,
         fallbackLocale: supportedLocales.first.locale,
         navigatorObservers: [MyRouteObserver()],
         navigatorKey: gNavigatorKey,
         initialBinding: AppBindings(), // Putting Controllers using Getx
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-
           primaryColor: kPrimaryColor,
           dividerTheme: const DividerThemeData(color: Colors.grey),
           floatingActionButtonTheme:
           const FloatingActionButtonThemeData(backgroundColor: kAccentColor),
           buttonTheme: const ButtonThemeData(buttonColor: kAccentColor),
           cardTheme: CardThemeData(
-              shadowColor: Colors.white,
-              elevation: kCardElevation,
-              shape: RoundedRectangleBorder(
-                borderRadius: kCardBorderRadius,
-              )),
+            shadowColor: Colors.white,
+            elevation: kCardElevation,
+            shape: RoundedRectangleBorder(
+              borderRadius: kCardBorderRadius,
+            ),
+          ),
           scaffoldBackgroundColor: kBgColor,
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
           }),
-          fontFamily: 'AppFonts', colorScheme: ColorScheme.fromSwatch(primarySwatch: kPrimarySwatch).copyWith(secondary: kAccentColor),
+          // Apply Poppins font to the entire app
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme,
+          ),
+          primaryTextTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).primaryTextTheme,
+          ),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: kPrimarySwatch)
+              .copyWith(secondary: kAccentColor),
         ),
-        // builder: initEasyLoading(),
         builder: initEasyLoading(), // Initialize easyLoading
         initialRoute: Routes.initialScreen,
-        getPages: _getPages(),  // Routes Initialization
+        getPages: _getPages(), // Routes Initialization
       ),
     );
   }
@@ -198,7 +212,7 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.chooseModelScreen, page: () => const ChooseModelScreen()),
       GetPage(name: Routes.selectConditionScreen, page: () => const SelectConditionScreen()),
       GetPage(name: Routes.selectRegistrationYearScreen, page: () => const SelectRegistrationYearScreen()),
-      GetPage(name: Routes.selectProvinceScreen, page: () => const SelectProvinceScreen()),
+      GetPage(name: Routes.selectProvinceScreen, page: () => SelectProvinceScreen()),
       GetPage(name: Routes.selectOriginScreen, page: () => const SelectOriginScreen()),
       GetPage(name: Routes.chooseModelYearScreen, page: () => ChooseModelYearScreen()),
       GetPage(name: Routes.chooseTypeScreen, page: () => ChooseTypeScreen()),
@@ -235,10 +249,15 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.currentLocationScreen, page: () => const CurrentLocationScreen()),
       GetPage(name: Routes.propertiesScreen, page: () => PropertiesScreen()),
       GetPage(name: Routes.chooseOptionScreen, page: () => const ChooseOptionScreen()),
+      GetPage(name: Routes.chooseOptionScreenNew, page: () => const ChooseOptionScreenNew()),
       GetPage(name: Routes.chooseSignInScreen, page: () => const ChooseSignInScreen()),
       GetPage(name: Routes.chooseSubtypeScreen, page: () => const ChooseSubtypeScreen()),
       GetPage(name: Routes.comingSoonScreen, page: () => ComingSoonScreen()),
-
+      GetPage(
+        name: Routes.staggeredGalleryScreen,
+        page: () => const StaggeredGalleryScreen(),
+          binding: ViewImageBindings()
+      ),
 
     GetPage(name: Routes.viewImageScreen, page: () => const ViewImageScreen(),binding: ViewImageBindings()),
       GetPage(name: Routes.numberPlatesScreen, page: () => NumberPlatesScreen(),binding: NumberPlateBindings()),
