@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-  const kPrimaryColorCode = 0xFF91c11b;
+
 const kPrimarySwatch = MaterialColor(kPrimaryColorCode, {
   50: Color(kPrimaryColorCode),
   100: Color(kPrimaryColorCode),
@@ -14,13 +14,16 @@ const kPrimarySwatch = MaterialColor(kPrimaryColorCode, {
   800: Color(kPrimaryColorCode),
   900: Color(kPrimaryColorCode),
 });
-
+const kPrimaryColorCode = 0xFF91c11b;
 const kPrimaryColor = Color(kPrimaryColorCode);
 const kAccentColor = Color(0xFF001a42);
 const kLogoColor = Color(0xff9A3553);
+const kTableColor = Color(0xff4b4b4b);
 
 const kMehrunColor = Color(0xFF8B1538);
+const kHeaderTitle = Color(0xFF334868);
 const kBlackColor=Colors.black;
+const kBlackLightColor=Colors.black87;
 const kGreyColor =Colors.grey;
 const kBorderColor = Colors.grey;
 const kDisabledColor =Colors.grey;

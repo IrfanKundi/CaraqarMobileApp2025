@@ -1,43 +1,90 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'colors.dart';
 
 
-final kTextFieldStyle = TextStyle(
-    color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.w500);
 
-final kTextStyle12 = TextStyle(
-    color: kBlackColor, fontSize: 12.sp, fontWeight: FontWeight.w500);
+// 16.sp, Medium weight
+final kTextFieldStyle = GoogleFonts.poppins(
+  color: Colors.black,
+  fontSize: 16.sp,
+  fontWeight: FontWeight.w500,
+);
 
+// 12.sp, Medium weight
+final kTextStyle12 = GoogleFonts.poppins(
+  color: kBlackColor,
+  fontSize: 12.sp,
+  fontWeight: FontWeight.w500,
+);
 
-final kLightTextStyle12 = TextStyle(
-    color: kWhiteColor, fontSize: 12.sp, fontWeight: FontWeight.w500);
+// 12.sp, Medium weight (White)
+final kLightTextStyle12 = GoogleFonts.poppins(
+  color: kWhiteColor,
+  fontSize: 12.sp,
+  fontWeight: FontWeight.w500,
+);
 
-final kTextStyle16 = TextStyle(
-    color: kBlackColor, fontSize: 16.sp, fontWeight: FontWeight.w600);
+// 16.sp, SemiBold
+final kTextStyle16 = GoogleFonts.poppins(
+  color: kBlackColor,
+  fontSize: 16.sp,
+  fontWeight: FontWeight.w600,
+);
 
-final kLightTextStyle16 = TextStyle(
-    color: kWhiteColor, fontSize: 16.sp, fontWeight: FontWeight.w600);
+// 16.sp, SemiBold (White)
+final kLightTextStyle16 = GoogleFonts.poppins(
+  color: kWhiteColor,
+  fontSize: 16.sp,
+  fontWeight: FontWeight.w600,
+);
 
+// 14.sp, Medium weight
+final kTextStyle14 = GoogleFonts.poppins(
+  color: kBlackColor,
+  fontSize: 14.sp,
+  fontWeight: FontWeight.w500,
+);
 
-final kTextStyle14 = TextStyle(
-    color: kBlackColor, fontSize: 14.sp, fontWeight: FontWeight.w500);
+// 14.sp, Medium weight (White)
+final kLightTextStyle14 = GoogleFonts.poppins(
+  color: kWhiteColor,
+  fontSize: 14.sp,
+  fontWeight: FontWeight.w500,
+);
+final kLocationPostStyle12 = GoogleFonts.poppins(
+  color: kWhiteColor,
+  fontSize: 12.sp,
+  fontWeight: FontWeight.w300,
+);
 
+// 18.sp, Bold
+final kTextStyle18 = GoogleFonts.poppins(
+  color: kBlackColor,
+  fontSize: 18.sp,
+  fontWeight: FontWeight.bold,
+);
 
-final kLightTextStyle14 = TextStyle(
-    color: kWhiteColor, fontSize: 14.sp, fontWeight: FontWeight.w500);
+final kHeadingStyle = GoogleFonts.poppins(
+  color: kHeaderTitle,
+  fontSize: 18.sp,
+  fontWeight: FontWeight.w700,
+);
+// 18.sp, Bold (Black, AppBar)
+final kAppBarStyle = GoogleFonts.poppins(
+  color: kBlackColor,
+  fontSize: 18.sp,
+  fontWeight: FontWeight.w700,
+);
 
-final kTextStyle18 = TextStyle(
-    color: kBlackColor, fontSize: 18.sp, fontWeight: FontWeight.bold);
-
-
-final kAppBarStyle=TextStyle(
-    color: kBlackColor, fontSize: 18.sp, fontWeight: FontWeight.w700);
-
-final kLightTextStyle18 = TextStyle(
-    color: kWhiteColor, fontSize: 18.sp, fontWeight: FontWeight.bold);
+// 18.sp, Bold (White)
+final kLightTextStyle18 = GoogleFonts.poppins(
+  color: kWhiteColor,
+  fontSize: 18.sp,
+  fontWeight: FontWeight.bold,
+);
 
 final kHintStyle =
 TextStyle(color: kGreyColor, fontSize: 16.sp, fontWeight: FontWeight.w500);

@@ -17,13 +17,16 @@ class StaggeredGalleryScreen extends StatelessWidget {
     final List<String> images = List<String>.from(Get.arguments);
 
     return Scaffold(
-      appBar: buildAppBar(context,title: "Thumbnail"),
+      appBar: buildAppBar(context, title: "Pictures"),
       body: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: MasonryGridView.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 4,
-          crossAxisSpacing: 4,
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.2, // This makes the items slightly wider than tall
+          ),
           itemCount: images.length,
           itemBuilder: (context, index) {
             final imageUrl = images[index];
@@ -40,15 +43,23 @@ class StaggeredGalleryScreen extends StatelessWidget {
                 );
               },
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(24),
                 child: CachedNetworkImage(
                   imageUrl: imageUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Container(
-                    height: 150,
                     color: Colors.grey.shade800,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey.shade300,
+                    child: const Icon(
+                      Icons.error,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
             );

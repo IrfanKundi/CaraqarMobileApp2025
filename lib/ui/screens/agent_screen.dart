@@ -45,10 +45,6 @@ class AgentScreen extends GetView<AgentController> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
-
     return    Get.parameters["type"]=="Real State"?
         GetBuilder<AgentController>(builder: (controller)=>
             Scaffold(backgroundColor: kWhiteColor,
