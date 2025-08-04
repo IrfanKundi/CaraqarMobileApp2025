@@ -14,9 +14,9 @@ const kPrimarySwatch = MaterialColor(kPrimaryColorCode, {
   800: Color(kPrimaryColorCode),
   900: Color(kPrimaryColorCode),
 });
-const kPrimaryColorCode = 0xFF91c11b;
+const kPrimaryColorCode = 0xFF91c11B;
 const kPrimaryColor = Color(kPrimaryColorCode);
-const kAccentColor = Color(0xFF001a42);
+const kAccentColor = Color(0xFF011A42);
 const kLogoColor = Color(0xff9A3553);
 const kTableColor = Color(0xff4b4b4b);
 

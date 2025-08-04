@@ -746,18 +746,24 @@ kVerticalSpace8,
                         style: kTextStyle16):
 
           controller.isGridView?
-                    GridView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        itemCount:controller.properties.value.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                        childAspectRatio: 0.60, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
-                        itemBuilder: (context, index) {
-
-                          var item = controller.properties.value[index];
-                          return PropertyItem(item: item,isGridView: true,);
-
-
-                        }):
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: GridView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.properties.value.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: 230.h, // consistent fixed height
+                crossAxisSpacing: 0.w,
+                mainAxisSpacing: 0.w,
+              ),
+              itemBuilder: (context, index) {
+                var item = controller.properties.value[index];
+                return PropertyItem(item: item, isGridView: true);
+              },
+            ),
+          )
+              :
           ListView.builder(
               padding: EdgeInsets.zero,
               shrinkWrap: true,

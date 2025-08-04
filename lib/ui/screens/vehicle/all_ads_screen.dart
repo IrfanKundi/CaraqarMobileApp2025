@@ -22,7 +22,7 @@ import 'cars_screen.dart';
 
 class AllAdsScreen extends StatefulWidget {
 
-  const AllAdsScreen({Key? key}) : super(key: key);
+  const AllAdsScreen({super.key});
 
   @override
   State<AllAdsScreen> createState() => _AllAdsScreenState();
@@ -113,9 +113,9 @@ class _AllAdsScreenState extends State<AllAdsScreen> with TickerProviderStateMix
 
 class MyCarItem extends StatelessWidget {
   const MyCarItem({
-    Key? key,
+    super.key,
     required this.item,  this.isGridView=true
-  }) : super(key: key);
+  });
 
   final Car item;
 
@@ -363,9 +363,9 @@ class MyCarItem extends StatelessWidget {
 
 class MyBikeItem extends StatelessWidget {
   const MyBikeItem({
-    Key? key,
+    super.key,
     required this.item,  this.isGridView=true
-  }) : super(key: key);
+  });
 
   final Bike item;
 

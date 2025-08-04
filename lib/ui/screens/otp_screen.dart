@@ -11,9 +11,6 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpScreen extends GetView<OtpController> {
-
-
-
   @override
   Widget build(BuildContext context) {
     controller.isCompanyReg= Get.parameters["isCompanyReg"] =="true" ;

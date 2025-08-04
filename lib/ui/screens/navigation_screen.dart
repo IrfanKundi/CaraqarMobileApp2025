@@ -79,7 +79,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 controller.index.value == 0
                     ? const SizedBox(width: 40) // Space for FAB
                     : _buildNavItem(
-                  svgPath: 'assets/icon/plus.svg',
+                  svgPath: 'assets/icon/add_plus.svg',
                   label: "Post Ads".tr,
                   index: 2,
                   isSelected: controller.index.value == 2,
@@ -130,7 +130,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
               shape: const CircleBorder(),
               backgroundColor: const Color(0xFF8B1538),
               child: SvgPicture.asset(
-                'assets/icon/post_ad.svg', // Replace with your SVG path
+                'assets/icon/add_plus.svg', // Replace with your SVG path
                 width: 44,
                 height: 44,
                 colorFilter: const ColorFilter.mode(
@@ -210,7 +210,7 @@ Widget _buildNavItem({
           overflow: TextOverflow.ellipsis,
           style: GoogleFonts.poppins(
             fontSize: 12,
-            fontWeight: FontWeight.w300,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w300,
             color: isSelected ? kAccentColor : Colors.white,
           ),
         ),

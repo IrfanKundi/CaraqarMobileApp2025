@@ -14,6 +14,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -307,11 +308,14 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Icon(
-                                              MaterialCommunityIcons
-                                                  .clock_alert_outline,
-                                              size: 14.sp,
-                                              color: kGreyColor,
+                                            SvgPicture.asset(
+                                              'assets/icon/post_ago.svg',
+                                              width: 12.w, //
+                                              height: 12.w,
+                                              colorFilter: ColorFilter.mode(
+                                                kBlackLightColor,
+                                                BlendMode.srcIn,
+                                              ),
                                             ),
                                             SizedBox(width: 4.w),
                                             Text(
@@ -331,11 +335,14 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                               ),
                                             ),
                                             SizedBox(width: 8.w),
-                                            Icon(
-                                              MaterialCommunityIcons
-                                                  .map_marker_outline,
-                                              size: 14.sp,
-                                              color: kBlackLightColor,
+                                            SvgPicture.asset(
+                                              'assets/icon/marker.svg',
+                                              width: 12.w, // match your .sp style
+                                              height: 12.w,
+                                              colorFilter: ColorFilter.mode(
+                                                kBlackLightColor,
+                                                BlendMode.srcIn,
+                                              ),
                                             ),
                                             SizedBox(width: 4.w),
                                             Expanded(
@@ -385,11 +392,14 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                             Row(
                                               children: [
                                                 _buildCircleIconButton(
-                                                  icon: Icon(
-                                                    MaterialCommunityIcons
-                                                        .phone,
-                                                    color: Colors.black87,
-                                                    size: 20.sp,
+                                                  icon: SvgPicture.asset(
+                                                    'assets/icon/post_telephone.svg',
+                                                    width: 20.w, // match your .sp style
+                                                    height: 20.w,
+                                                    colorFilter: ColorFilter.mode(
+                                                      kBlackLightColor,
+                                                      BlendMode.srcIn,
+                                                    ),
                                                   ),
                                                   onTap: () async {
                                                     controller.updateClicks(
@@ -402,11 +412,14 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                 ),
                                                 SizedBox(width: 8.w),
                                                 _buildCircleIconButton(
-                                                  icon: Icon(
-                                                    MaterialCommunityIcons
-                                                        .message_text_outline,
-                                                    color: Colors.black87,
-                                                    size: 20.sp,
+                                                  icon: SvgPicture.asset(
+                                                    'assets/icon/post_chat.svg',
+                                                    width: 12.w, // match your .sp style
+                                                    height: 12.w,
+                                                    colorFilter: ColorFilter.mode(
+                                                      kBlackLightColor,
+                                                      BlendMode.srcIn,
+                                                    ),
                                                   ),
                                                   onTap: () {
                                                     // Add your SMS or chat logic
@@ -414,9 +427,14 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                 ),
                                                 SizedBox(width: 8.w),
                                                 _buildCircleIconButton(
-                                                  icon: Image.asset(
-                                                    "assets/images/whatsapp.png",
-                                                    width: 20.w,
+                                                  icon: SvgPicture.asset(
+                                                    'assets/icon/post_whatsapp.svg',
+                                                    width: 12.w, // match your .sp style
+                                                    height: 12.w,
+                                                    colorFilter: ColorFilter.mode(
+                                                      kBlackLightColor,
+                                                      BlendMode.srcIn,
+                                                    ),
                                                   ),
                                                   onTap: () async {
                                                     controller.updateClicks(
@@ -1146,13 +1164,21 @@ class ViewCarScreen extends GetView<ViewCarController> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(icon, width: 20.w, height: 20.w),
+          SvgPicture.asset(
+            icon,
+            width: 20.w,
+            height: 20.w,
+            colorFilter: ColorFilter.mode(
+              kTableColor, // optional tint — remove if you want original SVG colors
+              BlendMode.srcIn,
+            ),
+          ),
           SizedBox(height: 6.h),
           Text(
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: kTableColor, // text color similar to screenshot
+              color: kTableColor,
               fontWeight: FontWeight.bold,
               fontSize: 12.sp,
             ),

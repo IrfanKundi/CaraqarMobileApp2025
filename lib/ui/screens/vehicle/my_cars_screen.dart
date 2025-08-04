@@ -16,6 +16,7 @@ import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +27,7 @@ import 'package:careqar/ui/widgets/shimmer_widget.dart';
 import 'package:careqar/ui/widgets/text_button_widget.dart';
 import 'package:get/get.dart';
 import 'package:careqar/user_session.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart';
 
 import '../../../controllers/my_bike_controller.dart';
@@ -191,18 +193,23 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
                                 controller.searchedCarModel.cars.isEmpty?
                                 Text("NoDataFound".tr,
                                     style: kTextStyle16):
-                              controller.isGridView?  GridView.builder(
-                                    padding: EdgeInsets.only(bottom: 50.h),
-                                    shrinkWrap: true,
-                                    itemCount: controller.searchedCarModel.cars.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                                    childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
-                                    itemBuilder: (context, index) {
-
-                                      var item = controller.searchedCarModel.cars[index];
-                                      return MyCarItem(item: item,);
-
-
-                                    }):
+                              controller.isGridView?  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: GridView.builder(
+                                  padding: EdgeInsets.only(bottom: 50.h),
+                                  itemCount: controller.searchedCarModel.cars.length,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisExtent: 250.h, // fixed card height for consistency
+                                    crossAxisSpacing: 0.w,
+                                    mainAxisSpacing: 0.w,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    var item = controller.searchedCarModel.cars[index];
+                                    return MyCarItem(item: item, isGridView: true);
+                                  },
+                                ),
+                              ):
 
                               ListView.builder(
                                   padding: EdgeInsets.only(bottom: 50.h),
@@ -326,18 +333,23 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
                                       controller.searchedBikeModel.bikes.isEmpty?
                                       Text("NoDataFound".tr,
                                           style: kTextStyle16):
-                                      controller.isGridView?  GridView.builder(
+                                      controller.isGridView?  Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: GridView.builder(
                                           padding: EdgeInsets.only(bottom: 50.h),
-                                          shrinkWrap: true,
-                                          itemCount: controller.searchedBikeModel.bikes.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                                          childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
+                                          itemCount: controller.searchedBikeModel.bikes.length,
+                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            mainAxisExtent: 250.h, // fixed card height like Car/Bike grids
+                                            crossAxisSpacing: 0.w,
+                                            mainAxisSpacing: 0.w,
+                                          ),
                                           itemBuilder: (context, index) {
-
                                             var item = controller.searchedBikeModel.bikes[index];
-                                            return MyBikeItem(item: item,);
-
-
-                                          }):
+                                            return MyBikeItem(item: item, isGridView: true);
+                                          },
+                                        ),
+                                      ):
 
                                       ListView.builder(
                                           padding: EdgeInsets.only(bottom: 50.h),
@@ -516,625 +528,987 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
 class MyCarItem extends StatelessWidget {
   const MyCarItem({
     Key? key,
-    required this.item,  this.isGridView=true
+    required this.item,
+    this.isGridView = true,
   }) : super(key: key);
 
   final Car item;
-
   final bool isGridView;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(
-            Routes
-                .viewMyCarScreen,
-            arguments:
-            item);
+        Get.toNamed(Routes.viewMyCarScreen, arguments: item);
       },
       child: Card(
-        margin:  isGridView?
-        EdgeInsets.all(5.w):
-        EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.w),
-
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        child:
-        isGridView?
-        Column(
-            crossAxisAlignment:
-            CrossAxisAlignment
-                .stretch,
-            children: [
-              Expanded(
-                child:
-                Stack(
+        margin: isGridView
+            ? EdgeInsets.all(5.w)
+            : EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+          side: BorderSide(color: Colors.grey.shade300, width: 1),
+        ),
+        elevation: 0,
+        child: isGridView
+            ? Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // IMAGE SECTION
+            Expanded(
+              flex: 6,
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Stack(
                   children: [
-                    ImageWidget(
-                      item.images
-                          .first,
-                      fit: BoxFit
-                          .cover,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15.r),
+                      child: ImageWidget(
+                        item.images.first,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
                     ),
-                item.isSold!?Container():  PositionedDirectional(
-                                        top: 4.w,
-                                        start: 4.w,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 8),
-                                          decoration: BoxDecoration(
-                                            color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
-                                            borderRadius: kBorderRadius30,
-                                          ),
-                                          child:   Text(
-                                            "${item.status}".tr,
-                                            style: TextStyle(
-                                                color: kWhiteColor, fontSize: 12.sp),
-
-                                          ),
-                                        )),
-                    PositionedDirectional(
-                        top: 4.w,
-                        end: 4.w,
+                    // SOLD overlay
+                    if (item.isSold!)
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "SOLD",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    // STATUS badge
+                    if (!item.isSold!)
+                      Positioned(
+                        top: 8.h,
+                        left: 8.w,
                         child: Container(
                           padding: EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 8),
+                              vertical: 2.h, horizontal: 8.w),
                           decoration: BoxDecoration(
-                            color: Colors.black38,
-                            borderRadius: kBorderRadius30,
+                            color: item.status == "Approved"
+                                ? kSuccessColor
+                                : Colors.orangeAccent,
+                            borderRadius: BorderRadius.circular(30.r),
                           ),
-                          child: Row(
-                            children: [
-                              Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
-                              Text(
-                                " ${item.clicks}",
-                                style: TextStyle(
-                                    color: kWhiteColor, fontSize: 12.sp),),
-                            ],
+                          child: Text(
+                            "${item.status}".tr,
+                            style: TextStyle(
+                              color: kWhiteColor,
+                              fontSize: 12.sp,
+                            ),
                           ),
-                        ))
+                        ),
+                      ),
+                    // Click counter
+                    Positioned(
+                      top: 8.h,
+                      right: 8.w,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              MaterialCommunityIcons.eye_outline,
+                              color: Colors.white,
+                              size: 12.sp,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              "${item.clicks}",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Expanded(
-                  child:
-                  Padding(
-                    padding: EdgeInsets.all(8.w),
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+            ),
+
+            // DETAILS SECTION
+            Expanded(
+              flex: 7,
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title
+                    Text(
+                      "${item.brandName} ${item.modelName} ${item.modelYear}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF1E3A5F),
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Location
+                    Row(
                       children: [
-
-                        Text("${item.brandName} ${item.modelName} ${item.modelYear}",
-                          maxLines: 2,
-                          style: kTextStyle16.copyWith(color: kAccentColor),),
-                        kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: Text(
-                                " ${item.location}",
-                                maxLines:
-                                1,
-                                style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                              ),
-                            ),
-                          ],
-                        ),
-                        kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.car,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: Text(
-                                " ${item.type}",
-                                maxLines:
-                                1,
-                                style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                              ),
-                            ),
-                          ],
-                        ),    kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.speedometer,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: Text(
-                                " ${item.mileage} ${"KM".tr}",
-                                maxLines:
-                                1,
-                                style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                              ),
-                            ),
-                          ],
-                        ),    kVerticalSpace4,
-                        Text(
-                          "${format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode)}",textDirection: TextDirection.ltr, maxLines:
-                        1,
-                          style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
-                        ),
-
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            "${getPrice(item.price!)}", textDirection: TextDirection.ltr,
-                            style: TextStyle(
-                                color: kPrimaryColor,
-                                height: 1.3,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600),
+                        SvgPicture.asset(
+                          'assets/icon/marker.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2),
+                            BlendMode.srcIn,
                           ),
                         ),
-
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            item.cityName ?? item.location ?? '',
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 11.sp,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
                     ),
-                  ))
-            ]):
-        Container(
-          height:   140.h,
-          child: Row(
-              crossAxisAlignment:
-              CrossAxisAlignment
-                  .stretch,
-              children: [
-                Expanded(flex: 2,
-                  child:
-                  Stack(
-                    children: [
-                      ImageWidget(
-                        item.images
-                            .first,
-                        fit: BoxFit
-                            .cover,
+                    SizedBox(height: 4.h),
+
+                    // Type
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon/car.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            "${item.type}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 11.sp,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Mileage
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon/dashboard.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          "${item.mileage} KM",
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Posted Time
+                    Text(
+                      format(
+                        item.createdAt!,
+                        locale: gSelectedLocale?.locale?.languageCode,
                       ),
-                      item.isSold!?Container():  PositionedDirectional(
-                          top: 4.h,
-                          start: 4.w,
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 11.sp,
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+
+                    // Price
+                    Text(
+                      getPrice(item.price!),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
+            : // LIST VIEW
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // IMAGE
+                Container(
+                  width: 120.w,
+                  height: 100.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.r),
+                    border: Border.all(
+                      color: Colors.black54,
+                      width: 1,
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.r),
+                        child: ImageWidget(
+                          item.images.first,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      if (item.isSold!)
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "SOLD",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (!item.isSold!)
+                        Positioned(
+                          top: 8.h,
+                          left: 8.w,
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 8),
+                                vertical: 2.h, horizontal: 8.w),
                             decoration: BoxDecoration(
-                              color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
-                              borderRadius: kBorderRadius30,
+                              color: item.status == "Approved"
+                                  ? kSuccessColor
+                                  : Colors.orangeAccent,
+                              borderRadius: BorderRadius.circular(30.r),
                             ),
-                            child:   Text(
+                            child: Text(
                               "${item.status}".tr,
                               style: TextStyle(
-                                  color: kWhiteColor, fontSize: 12.sp),
-
+                                color: kWhiteColor,
+                                fontSize: 12.sp,
+                              ),
                             ),
-                          )),
-                      PositionedDirectional(
-                          top: 30.h,
-                          start: 4.w,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.black38,
-                              borderRadius: kBorderRadius30,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
-                                Text(
-                                  " ${item.clicks}",
-                                  style: TextStyle(
-                                      color: kWhiteColor, fontSize: 12.sp),),
-                              ],
-                            ),
-                          ))
+                          ),
+                        ),
+                      Positioned(
+                        bottom: 8.h,
+                        right: 8.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                MaterialCommunityIcons.eye_outline,
+                                color: Colors.white,
+                                size: 12.sp,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                "${item.clicks}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Expanded(flex: 3,
-                    child:
-                    Padding(
-                      padding: EdgeInsets.all(8.w),
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                SizedBox(width: 16.w),
+
+                // DETAILS
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      Text(
+                        "${item.brandName} ${item.modelName} ${item.modelYear}",
+                        style: TextStyle(
+                          color: const Color(0xFF1E3A5F),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 4.h),
+
+                      // Location
+                      Row(
                         children: [
-
-                          Text("${item.brandName} ${item.modelName} ${item.modelYear}",
-                            maxLines: 1,
-                            style: kTextStyle16.copyWith(color: kAccentColor),),
-                          kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${item.cityName}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),
-                          kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.car,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${item.type}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),    kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.speedometer,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${item.mileage} ${"KM".tr}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),    kVerticalSpace4,
-
-
-                          Text(
-                            "${format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode)}",textDirection: TextDirection.ltr, maxLines:
-                          1,
-                            style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
-                          ),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Text(
-                              "${getPrice(item.price!)}",textDirection: TextDirection.ltr,
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  height: 1.2,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600),
+                          SvgPicture.asset(
+                            'assets/icon/marker.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2),
+                              BlendMode.srcIn,
                             ),
                           ),
-
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              "${item.cityName ?? item.location ?? ''}",
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 12.sp,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ],
                       ),
-                    ))
-              ]),
-        )
-        ,
+                      SizedBox(height: 4.h),
+
+                      // Type
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icon/car.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              "${item.type}",
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 12.sp,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+
+                      // Mileage + Year
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icon/dashboard.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            "${item.mileage} KM",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+
+                      // Time
+                      Text(
+                        format(
+                          item.createdAt!,
+                          locale: gSelectedLocale?.locale?.languageCode,
+                        ),
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontSize: 11.sp,
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+
+                      // Price
+                      Text(
+                        getPrice(item.price!),
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
+
 
 class MyBikeItem extends StatelessWidget {
   const MyBikeItem({
     Key? key,
-    required this.item,  this.isGridView=true
+    required this.item,
+    this.isGridView = true,
   }) : super(key: key);
 
   final Bike item;
-
   final bool isGridView;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(
-            Routes
-                .viewMyBikeScreen,
-            arguments:
-            item);
+        Get.toNamed(Routes.viewMyBikeScreen, arguments: item);
       },
       child: Card(
-        margin:  isGridView?
-        EdgeInsets.all(5.w):
-        EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.w),
-
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        child:
-        isGridView?
-        Column(
-            crossAxisAlignment:
-            CrossAxisAlignment
-                .stretch,
-            children: [
-              Expanded(
-                child:
-                Stack(
+        margin: isGridView
+            ? EdgeInsets.all(5.w)
+            : EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+          side: BorderSide(color: Colors.grey.shade300, width: 1),
+        ),
+        elevation: 0,
+        child: isGridView
+            ? Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // IMAGE SECTION
+            Expanded(
+              flex: 6,
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Stack(
                   children: [
-                    ImageWidget(
-                      item.images
-                          .first,
-                      fit: BoxFit
-                          .cover,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15.r),
+                      child: ImageWidget(
+                        item.images.first,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
                     ),
-                    item.isSold!?Container():  PositionedDirectional(
-                        top: 4.w,
-                        start: 4.w,
+
+                    // SOLD overlay
+                    if (item.isSold!)
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "SOLD",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    // STATUS badge
+                    if (!item.isSold!)
+                      Positioned(
+                        top: 8.h,
+                        left: 8.w,
                         child: Container(
                           padding: EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 8),
+                              vertical: 2.h, horizontal: 8.w),
                           decoration: BoxDecoration(
-                            color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
-                            borderRadius: kBorderRadius30,
+                            color: item.status == "Approved"
+                                ? kSuccessColor
+                                : Colors.orangeAccent,
+                            borderRadius: BorderRadius.circular(30.r),
                           ),
-                          child:   Text(
+                          child: Text(
                             "${item.status}".tr,
                             style: TextStyle(
-                                color: kWhiteColor, fontSize: 12.sp),
+                              color: kWhiteColor,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ),
+                      ),
 
-                          ),
-                        )),
-                    PositionedDirectional(
-                        top: 4.w,
-                        end: 4.w,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 2, horizontal: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.black38,
-                            borderRadius: kBorderRadius30,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
-                              Text(
-                                " ${item.clicks}",
-                                style: TextStyle(
-                                    color: kWhiteColor, fontSize: 12.sp),),
-                            ],
-                          ),
-                        ))
+                    // Click counter
+                    Positioned(
+                      top: 8.h,
+                      right: 8.w,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.w, vertical: 4.h),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              MaterialCommunityIcons.eye_outline,
+                              color: Colors.white,
+                              size: 12.sp,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              "${item.clicks}",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Expanded(
-                  child:
-                  Padding(
-                    padding: EdgeInsets.all(8.w),
-                    child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+            ),
+
+            // DETAILS SECTION
+            Expanded(
+              flex: 7,
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title
+                    Text(
+                      "${item.brandName} ${item.modelName} ${item.modelYear}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF1E3A5F),
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Location
+                    Row(
                       children: [
-
-                        Text("${item.brandName} ${item.modelName} ${item.modelYear}",
-                          maxLines: 2,
-                          style: kTextStyle16.copyWith(color: kAccentColor),),
-                        kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: Text(
-                                " ${item.cityName}",
-                                maxLines:
-                                1,
-                                style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                              ),
-                            ),
-                          ],
-                        ),
-                        kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.bike,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: Text(
-                                " ${item.type}",
-                                maxLines:
-                                1,
-                                style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                              ),
-                            ),
-                          ],
-                        ),    kVerticalSpace4,
-
-                        Row(
-                          children: [   Icon(  MaterialCommunityIcons.speedometer,    size: 16.sp,
-                            color: kLightBlueColor,),
-                            Expanded(
-                              child: Text(
-                                " ${item.mileage} ${"KM".tr}",
-                                maxLines:
-                                1,
-                                style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                              ),
-                            ),
-                          ],
-                        ),    kVerticalSpace4,
-                        kVerticalSpace4,
-                        Text(
-                          "${format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode)}",textDirection: TextDirection.ltr, maxLines:
-                        1,
-                          style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
-                        ),
-
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Text(
-                            "${getPrice(item.price!)}", textDirection: TextDirection.ltr,
-                            style: TextStyle(
-                                color: kPrimaryColor,
-                                height: 1.3,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600),
+                        SvgPicture.asset(
+                          'assets/icon/marker.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2),
+                            BlendMode.srcIn,
                           ),
                         ),
-
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            "${item.cityName}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 11.sp,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
                     ),
-                  ))
-            ]):
-        Container(
-          height:   140.h,
-          child: Row(
-              crossAxisAlignment:
-              CrossAxisAlignment
-                  .stretch,
-              children: [
-                Expanded(flex: 2,
-                  child:
-                  Stack(
-                    children: [
-                      ImageWidget(
-                        item.images
-                            .first,
-                        fit: BoxFit
-                            .cover,
+                    SizedBox(height: 4.h),
+
+                    // Type
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon/bike.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Expanded(
+                          child: Text(
+                            "${item.type}",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 11.sp,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Mileage
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon/dashboard.svg',
+                          width: 12.w,
+                          height: 12.w,
+                          colorFilter: const ColorFilter.mode(
+                            Color(0xFF4A90E2),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          "${item.mileage} KM",
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+
+                    // Posted Time
+                    Text(
+                      format(
+                        item.createdAt!,
+                        locale: gSelectedLocale?.locale?.languageCode,
                       ),
-                      item.isSold!?Container():  PositionedDirectional(
-                          top: 4.h,
-                          start: 4.w,
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 11.sp,
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+
+                    // Price
+                    Text(
+                      getPrice(item.price!),
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
+            : // LIST VIEW
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // IMAGE
+                Container(
+                  width: 120.w,
+                  height: 100.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.r),
+                    border: Border.all(
+                      color: Colors.black54,
+                      width: 1,
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15.r),
+                        child: ImageWidget(
+                          item.images.first,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      if (item.isSold!)
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "SOLD",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (!item.isSold!)
+                        Positioned(
+                          top: 8.h,
+                          left: 8.w,
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 8),
+                                vertical: 2.h, horizontal: 8.w),
                             decoration: BoxDecoration(
-                              color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
-                              borderRadius: kBorderRadius30,
+                              color: item.status == "Approved"
+                                  ? kSuccessColor
+                                  : Colors.orangeAccent,
+                              borderRadius: BorderRadius.circular(30.r),
                             ),
-                            child:   Text(
+                            child: Text(
                               "${item.status}".tr,
                               style: TextStyle(
-                                  color: kWhiteColor, fontSize: 12.sp),
-
+                                color: kWhiteColor,
+                                fontSize: 12.sp,
+                              ),
                             ),
-                          )),
-                      PositionedDirectional(
-                          top: 30.h,
-                          start: 4.w,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.black38,
-                              borderRadius: kBorderRadius30,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
-                                Text(
-                                  " ${item.clicks}",
-                                  style: TextStyle(
-                                      color: kWhiteColor, fontSize: 12.sp),),
-                              ],
-                            ),
-                          ))
+                          ),
+                        ),
+                      Positioned(
+                        bottom: 8.h,
+                        right: 8.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                MaterialCommunityIcons.eye_outline,
+                                color: Colors.white,
+                                size: 12.sp,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                "${item.clicks}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                Expanded(flex: 3,
-                    child:
-                    Padding(
-                      padding: EdgeInsets.all(8.w),
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                SizedBox(width: 16.w),
+
+                // DETAILS
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      Text(
+                        "${item.brandName} ${item.modelName} ${item.modelYear}",
+                        style: TextStyle(
+                          color: const Color(0xFF1E3A5F),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 4.h),
+
+                      // Location
+                      Row(
                         children: [
-
-                          Text("${item.brandName} ${item.modelName} ${item.modelYear}",
-                            maxLines: 1,
-                            style: kTextStyle16.copyWith(color: kAccentColor),),
-                          kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${item.cityName}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),
-                          kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.bike,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${item.type}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),    kVerticalSpace4,
-
-                          Row(
-                            children: [   Icon(  MaterialCommunityIcons.speedometer,    size: 16.sp,
-                              color: kLightBlueColor,),
-                              Expanded(
-                                child: Text(
-                                  " ${item.mileage} ${"KM".tr}",
-                                  maxLines:
-                                  1,
-                                  style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
-                                ),
-                              ),
-                            ],
-                          ),    kVerticalSpace4,
-
-
-                          Text(
-                            "${format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode)}",textDirection: TextDirection.ltr, maxLines:
-                          1,
-                            style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
-                          ),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Text(
-                              "${getPrice(item.price!)}",textDirection: TextDirection.ltr,
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  height: 1.2,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600),
+                          SvgPicture.asset(
+                            'assets/icon/marker.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2),
+                              BlendMode.srcIn,
                             ),
                           ),
-
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              "${item.cityName}",
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 12.sp,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ],
                       ),
-                    ))
-              ]),
-        )
-        ,
+                      SizedBox(height: 4.h),
+
+                      // Type
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icon/bike.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Expanded(
+                            child: Text(
+                              "${item.type}",
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 12.sp,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+
+                      // Mileage
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icon/dashboard.svg',
+                            width: 12.w,
+                            height: 12.w,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFF4A90E2),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            "${item.mileage} KM",
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+
+                      // Time
+                      Text(
+                        format(
+                          item.createdAt!,
+                          locale: gSelectedLocale?.locale?.languageCode,
+                        ),
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontSize: 11.sp,
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+
+                      // Price
+                      Text(
+                        getPrice(item.price!),
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 }
+
 
 class MyNumberPlateItem extends StatelessWidget {
   const MyNumberPlateItem({

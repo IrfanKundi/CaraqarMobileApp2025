@@ -181,91 +181,95 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
               height: double.infinity,
               width: double.infinity, ),
 
-            SafeArea(
-              child: Container(
-                  margin: EdgeInsetsDirectional.only(end: 16.w),
-
-
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-
-                          gScaffoldStateKey!.currentState!.openDrawer();
-
-                        },
-                        child: Container(
-                          width: 40.r,
-                          height: 40.r,
-                          margin: EdgeInsets.all(7.w),
-
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.black26
-                          ),
-                          child: const Icon(
-                            MaterialCommunityIcons.menu,
-                            color: kWhiteColor,
-                          ),
+            Container(
+              margin: EdgeInsetsDirectional.only(top: 28.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: SizedBox(
+                height: 54.h,
+                child: Row(
+                  children: [
+                    // Menu button - fixed width with proper spacing
+                    GestureDetector(
+                      onTap: () {
+                        gScaffoldStateKey!.currentState!.openDrawer();
+                      },
+                      child: Container(
+                        width: 40.r,
+                        height: 40.r,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black26
+                        ),
+                        child: const Icon(
+                          MaterialCommunityIcons.menu,
+                          color: kWhiteColor,
                         ),
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: GestureDetector(
-                          onTap: () {
-
-                            Get.toNamed(Routes.allAdsScreen);
-                          },
-                          child: Container(  padding: EdgeInsets.all(8.w),
-                            height: 40.h,
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: kBorderRadius30,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  MaterialCommunityIcons.magnify,
-                                  size: 20.sp,
+                    ),
+                    SizedBox(width: 12.w), // Reduced space for equal distribution
+                    // Search bar - takes remaining space with proper flex
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed(Routes.allAdsScreen);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8.w),
+                          height: 40.h,
+                          decoration: BoxDecoration(
+                            color: Colors.black26,
+                            borderRadius: kBorderRadius30,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                MaterialCommunityIcons.magnify,
+                                size: 20.sp,
+                                color: kWhiteColor,
+                              ),
+                              kHorizontalSpace4,
+                              Text(
+                                "SearchForCar".tr,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14.sp,
                                   color: kWhiteColor,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                                kHorizontalSpace4,
-                                Text(
-                                  "SearchForCar".tr,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14.sp,
-                                    color: kWhiteColor,
-                                    fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      kHorizontalSpace12,
-
-                      GestureDetector(
-                        onTap: (){
-                          showCountriesSheet(context);
-                        },
-                        child: Container(
-                          width: 40.r,
-                          height: 40.r,
-                          margin: EdgeInsets.all(7.w),
-
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.black26
-                          ),
-                          child: ImageWidget(
-                            gSelectedCountry!.flag
-                            ,height: 20.w,width: 20.w,)
-                        )
-                      )
-
-                    ],
-                  )),
+                    ),
+                    SizedBox(width: 12.w), // Reduced space for equal distribution
+                    // Flag button - fixed width with proper spacing
+              GestureDetector(
+                onTap: () {
+                  showCountriesSheet(context);
+                },
+                child: Container(
+                  height: 40.h,
+                  width: 40.h,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black26,
+                  ),
+                  alignment: Alignment.center,
+                  child: ClipOval(
+                    child: ImageWidget(
+                      gSelectedCountry!.flag,
+                      height: 37.w,
+                      width: 37.w,
+                      fit: BoxFit.cover,
+                      isCircular: true,
+                    ),
+                  ),
+                ),
+              )
+              ],
+                ),
+              ),
             ),
             //change for IOS
             Positioned(bottom: Platform.isIOS? 0.15.sh:0.14.sh,
@@ -295,7 +299,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                   "Buy".tr,
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.poppins(
-                                    fontSize: 14.sp,
+                                    fontSize: 16.sp,
                                     color: kWhiteColor,
                                     fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
                                   ),
@@ -322,7 +326,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                     "Showroom".tr,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins(
-                                      fontSize: 14.sp,
+                                      fontSize: 16.sp,
                                       color: kWhiteColor,
                                       fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
                                     ),
@@ -331,7 +335,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                               ),
                             ),
                           ),
-                          kHorizontalSpace8,
+                          kHorizontalSpace12,
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
@@ -348,7 +352,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                   "Services".tr,
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.poppins(
-                                    fontSize: 14.sp,
+                                    fontSize: 16.sp,
                                     color: kWhiteColor,
                                     fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
                                   ),
@@ -396,7 +400,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                               "Car".tr,
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.poppins(
-                                                fontSize: 14.sp,
+                                                fontSize: 16.sp,
                                                 color: kWhiteColor,
                                                 fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
                                               ),
@@ -441,7 +445,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                               "Bike".tr,
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.poppins(
-                                                fontSize: 14.sp,
+                                                fontSize: 16.sp,
                                                 color: kWhiteColor,
                                                 fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
                                               ),
@@ -486,7 +490,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                                               "No.Plate".tr,
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.poppins(
-                                                fontSize: 14.sp,
+                                                fontSize: 16.sp,
                                                 color: kWhiteColor,
                                                 fontWeight: FontWeight.w400, // You can use w400, w600, or FontWeight.bold
                                               ),
@@ -513,10 +517,10 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
 
 class CarItem extends StatefulWidget {
   const CarItem({
-    Key? key,
+    super.key,
     required this.item,
     this.isGridView=true
-  }) : super(key: key);
+  });
 
   final Car item;
   final bool isGridView;
@@ -562,7 +566,7 @@ class _CarItemState extends State<CarItem> {
           children: [
             // ---------- IMAGE SECTION ----------
             Expanded(
-              flex: 6,
+              flex: 7,
               child: Padding(
                 padding: EdgeInsets.all(8.w), // Same padding as list view
                 child: Stack(
@@ -645,7 +649,7 @@ class _CarItemState extends State<CarItem> {
             Expanded(
               flex: 7,
               child: Padding(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.symmetric(horizontal :8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -718,7 +722,11 @@ class _CarItemState extends State<CarItem> {
                             fontSize: 11.sp,
                           ),
                         ),
-                        SizedBox(width: 10.w),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      children: [
                         SvgPicture.asset(
                           'assets/icon/pump.svg',
                           width: 12.w,
@@ -730,7 +738,7 @@ class _CarItemState extends State<CarItem> {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          "${widget.item.type}",
+                          "${widget.item.fuelType}",
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 11.sp,
@@ -739,7 +747,6 @@ class _CarItemState extends State<CarItem> {
                       ],
                     ),
                     SizedBox(height: 4.h),
-
                     // Row 2: Location + Mileage
                     Row(
                       children: [
@@ -791,10 +798,10 @@ class _CarItemState extends State<CarItem> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${format(widget.item.createdAt!, locale: gSelectedLocale?.locale?.languageCode)}",
+                          format(widget.item.createdAt!, locale: gSelectedLocale?.locale?.languageCode),
                           style: TextStyle(
                             color: Colors.grey.shade500,
-                            fontSize: 11.sp,
+                            fontSize: 10.sp,
                           ),
                         ),
                         Container(
@@ -835,7 +842,7 @@ class _CarItemState extends State<CarItem> {
                       style: GoogleFonts.poppins(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF91c11b),
+                        color: kPrimaryColor,
                       ),
                     ),
                   ],
@@ -1127,7 +1134,7 @@ class _CarItemState extends State<CarItem> {
                       Text(
                         getPrice(widget.item.price!),
                         style: TextStyle(
-                          color: const Color(0xFF91c11b),
+                          color: kPrimaryColor,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
                         ),
