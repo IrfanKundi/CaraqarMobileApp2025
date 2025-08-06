@@ -5,7 +5,7 @@ import '../enums.dart';
 
 class ViewMyRequestController extends GetxController {
   var status = Status.initial.obs;
-
+  var selectedTabIndex = 0.obs;
 
   Rx<Request?> request=Rx(null);
 

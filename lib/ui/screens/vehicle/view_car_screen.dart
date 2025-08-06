@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
@@ -28,7 +29,7 @@ import '../../../global_variables.dart';
 import '../../widgets/button_widget.dart';
 
 class ViewCarScreen extends GetView<ViewCarController> {
-  ViewCarScreen({Key? key}) : super(key: key) {
+  ViewCarScreen({super.key}) {
     //print(Get.arguments);
 
     controller.sliderIndex(0);
@@ -308,14 +309,10 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            SvgPicture.asset(
-                                              'assets/icon/post_ago.svg',
-                                              width: 12.w, //
-                                              height: 12.w,
-                                              colorFilter: ColorFilter.mode(
-                                                kBlackLightColor,
-                                                BlendMode.srcIn,
-                                              ),
+                                            FaIcon(
+                                              FontAwesomeIcons.clock,
+                                              size: 12.w,
+                                              color: kBlackLightColor,
                                             ),
                                             SizedBox(width: 4.w),
                                             Text(
@@ -335,14 +332,10 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                               ),
                                             ),
                                             SizedBox(width: 8.w),
-                                            SvgPicture.asset(
-                                              'assets/icon/marker.svg',
-                                              width: 12.w, // match your .sp style
-                                              height: 12.w,
-                                              colorFilter: ColorFilter.mode(
-                                                kBlackLightColor,
-                                                BlendMode.srcIn,
-                                              ),
+                                            FaIcon(
+                                              FontAwesomeIcons.locationDot,
+                                              size: 12.w,
+                                              color: kBlackLightColor,
                                             ),
                                             SizedBox(width: 4.w),
                                             Expanded(
@@ -392,14 +385,10 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                             Row(
                                               children: [
                                                 _buildCircleIconButton(
-                                                  icon: SvgPicture.asset(
-                                                    'assets/icon/post_telephone.svg',
-                                                    width: 20.w, // match your .sp style
-                                                    height: 20.w,
-                                                    colorFilter: ColorFilter.mode(
-                                                      kBlackLightColor,
-                                                      BlendMode.srcIn,
-                                                    ),
+                                                  icon: FaIcon(
+                                                    FontAwesomeIcons.phone,
+                                                    size: 20.w,
+                                                    color: kBlackLightColor,
                                                   ),
                                                   onTap: () async {
                                                     controller.updateClicks(
@@ -412,14 +401,10 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                 ),
                                                 SizedBox(width: 8.w),
                                                 _buildCircleIconButton(
-                                                  icon: SvgPicture.asset(
-                                                    'assets/icon/post_chat.svg',
-                                                    width: 12.w, // match your .sp style
-                                                    height: 12.w,
-                                                    colorFilter: ColorFilter.mode(
-                                                      kBlackLightColor,
-                                                      BlendMode.srcIn,
-                                                    ),
+                                                  icon: FaIcon(
+                                                    FontAwesomeIcons.comment,
+                                                    size: 20.w,
+                                                    color: kBlackLightColor,
                                                   ),
                                                   onTap: () {
                                                     // Add your SMS or chat logic
@@ -427,14 +412,10 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                 ),
                                                 SizedBox(width: 8.w),
                                                 _buildCircleIconButton(
-                                                  icon: SvgPicture.asset(
-                                                    'assets/icon/post_whatsapp.svg',
-                                                    width: 12.w, // match your .sp style
-                                                    height: 12.w,
-                                                    colorFilter: ColorFilter.mode(
-                                                      kBlackLightColor,
-                                                      BlendMode.srcIn,
-                                                    ),
+                                                  icon: FaIcon(
+                                                    FontAwesomeIcons.whatsapp,
+                                                    size: 20.w,
+                                                    color: kBlackLightColor,
                                                   ),
                                                   onTap: () async {
                                                     controller.updateClicks(
@@ -492,31 +473,31 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                 children: [
                                   Expanded(
                                     child: _buildCarInfoItem(
-                                      icon: "assets/images/calender.png",
+                                      icon: FontAwesomeIcons.calendar,
                                       label: car.modelYear!,
                                     ),
                                   ),
                                   _buildVerticalDivider(),
                                   Expanded(
                                     child: _buildCarInfoItem(
-                                      icon: "assets/images/speedcounter.png",
+                                      icon: FontAwesomeIcons.gaugeHigh,
                                       label: car.mileage!,
                                     ),
                                   ),
                                   _buildVerticalDivider(),
                                   Expanded(
                                     child: _buildCarInfoItem(
-                                      icon: "assets/images/automatic.png",
+                                      icon: FontAwesomeIcons.gear,
                                       label:
-                                          car.transmission!
-                                              .replaceAll("Automatic", "Auto")
-                                              .tr,
+                                      car.transmission!
+                                          .replaceAll("Automatic", "Auto")
+                                          .tr,
                                     ),
                                   ),
                                   _buildVerticalDivider(),
                                   Expanded(
                                     child: _buildCarInfoItem(
-                                      icon: "assets/images/benzin.png",
+                                      icon: FontAwesomeIcons.gasPump,
                                       label: car.fuelType!.tr,
                                     ),
                                   ),
@@ -1159,19 +1140,15 @@ class ViewCarScreen extends GetView<ViewCarController> {
     );
   }
 
-  Widget _buildCarInfoItem({required String icon, required String label}) {
+  Widget _buildCarInfoItem({required IconData icon, required String label}) {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(
+          FaIcon(
             icon,
-            width: 20.w,
-            height: 20.w,
-            colorFilter: ColorFilter.mode(
-              kTableColor, // optional tint — remove if you want original SVG colors
-              BlendMode.srcIn,
-            ),
+            size: 20.w,
+            color: kTableColor,
           ),
           SizedBox(height: 6.h),
           Text(

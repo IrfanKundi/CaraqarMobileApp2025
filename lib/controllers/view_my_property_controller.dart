@@ -10,6 +10,7 @@ class ViewMyPropertyController extends GetxController {
   var status = Status.initial.obs;
   var commentsStatus = Status.initial.obs;
   var sliderIndex=0.obs;
+  var selectedTabIndex = 0.obs;
   List<Comment> comments=[];
 
   Rx<Property?> property=Rx(null);

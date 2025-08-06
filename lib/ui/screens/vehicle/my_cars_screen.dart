@@ -1,32 +1,22 @@
+import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
-import 'package:careqar/controllers/add_request_controller.dart';
+import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/my_numberplate_controller.dart';
-import 'package:careqar/controllers/my_property_controller.dart';
-import 'package:careqar/controllers/my_request_controller.dart';
-import 'package:careqar/controllers/property_controller.dart';
-import 'package:careqar/locale/app_localizations.dart';
 import 'package:careqar/models/car_model.dart';
 import 'package:careqar/models/number_plate_model.dart';
-import 'package:careqar/models/property_model.dart';
-import 'package:careqar/models/request_model.dart';
-import 'package:careqar/ui/widgets/alerts.dart';
-import 'package:careqar/ui/widgets/app_bar.dart';
+import 'package:careqar/routes.dart';
+import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
+import 'package:careqar/user_session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:careqar/constants/colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:careqar/constants/style.dart';
-import 'package:careqar/routes.dart';
-import 'package:careqar/ui/widgets/button_widget.dart';
-import 'package:careqar/ui/widgets/shimmer_widget.dart';
-import 'package:careqar/ui/widgets/text_button_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:careqar/user_session.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart';
 
@@ -35,7 +25,6 @@ import '../../../controllers/my_car_controller.dart';
 import '../../../enums.dart';
 import '../../../global_variables.dart';
 import '../../../models/bike_model.dart';
-import '../home_screen.dart';
 
 class MyCarsScreen extends StatefulWidget {
 
@@ -54,31 +43,32 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
 
   @override
   void initState() {
-    if(UserSession.isLoggedIn!){
+    tabController = TabController(initialIndex: 0, length: 3, vsync: this);
+
+    // Load initial data only if logged in
+    if(UserSession.isLoggedIn!) {
       Get.find<MyCarController>().getCars();
+      Get.find<MyBikeController>().getBikes(); // ✅ Add this line!
     }
-    tabController=TabController(initialIndex: 0,length: 3,vsync: this);
 
     tabController!.addListener(() {
-      if(tabController!.index==0){
-        if(!UserSession.isLoggedIn!){
+      if(tabController!.index == 0) {
+        if(UserSession.isLoggedIn!) { // ✅ Fixed: should be logged IN
           Get.find<MyCarController>().getCars(reset: true);
         }
       }
-      else if(tabController!.index==1){
-        if(!UserSession.isLoggedIn!){
+      else if(tabController!.index == 1) {
+        if(UserSession.isLoggedIn!) { // ✅ Fixed: should be logged IN
           Get.find<MyBikeController>().getBikes(reset: true);
         }
       }
       else {
-      if(!UserSession.isLoggedIn!){
-      Get.find<MyNumberPlateController>().getNumberPlates(reset: true);
+        if(UserSession.isLoggedIn!) { // ✅ Fixed: should be logged IN
+          Get.find<MyNumberPlateController>().getNumberPlates(reset: true);
+        }
       }
-      }
-
-
     });
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -527,10 +517,10 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
 
 class MyCarItem extends StatelessWidget {
   const MyCarItem({
-    Key? key,
+    super.key,
     required this.item,
     this.isGridView = true,
-  }) : super(key: key);
+  });
 
   final Car item;
   final bool isGridView;
@@ -673,14 +663,10 @@ class MyCarItem extends StatelessWidget {
                     // Location
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/marker.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.locationDot,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -700,14 +686,10 @@ class MyCarItem extends StatelessWidget {
                     // Type
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/car.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.car,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -727,14 +709,10 @@ class MyCarItem extends StatelessWidget {
                     // Mileage
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/dashboard.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.gaugeHigh,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -906,19 +884,15 @@ class MyCarItem extends StatelessWidget {
                       // Location
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/marker.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.locationDot,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
                             child: Text(
-                              "${item.cityName ?? item.location ?? ''}",
+                              item.cityName ?? item.location ?? '',
                               style: TextStyle(
                                 color: Colors.grey.shade600,
                                 fontSize: 12.sp,
@@ -933,14 +907,10 @@ class MyCarItem extends StatelessWidget {
                       // Type
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/car.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.car,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -960,14 +930,10 @@ class MyCarItem extends StatelessWidget {
                       // Mileage + Year
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/dashboard.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.gaugeHigh,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Text(
@@ -1167,14 +1133,10 @@ class MyBikeItem extends StatelessWidget {
                     // Location
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/marker.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.locationDot,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -1194,14 +1156,10 @@ class MyBikeItem extends StatelessWidget {
                     // Type
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/bike.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.motorcycle,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -1221,14 +1179,10 @@ class MyBikeItem extends StatelessWidget {
                     // Mileage
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/dashboard.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.gaugeHigh,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -1400,14 +1354,10 @@ class MyBikeItem extends StatelessWidget {
                       // Location
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/marker.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.locationDot,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -1427,14 +1377,10 @@ class MyBikeItem extends StatelessWidget {
                       // Type
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/bike.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.motorcycle,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -1454,14 +1400,10 @@ class MyBikeItem extends StatelessWidget {
                       // Mileage
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/dashboard.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.gaugeHigh,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Text(

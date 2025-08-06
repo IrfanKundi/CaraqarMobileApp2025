@@ -169,7 +169,7 @@ class MyApp extends StatelessWidget {
               .copyWith(secondary: kAccentColor),
         ),
         builder: initEasyLoading(), // Initialize easyLoading
-        initialRoute: Routes.initialScreen,
+        initialRoute: Routes.chooseOptionScreenNew,
         getPages: _getPages(), // Routes Initialization
       ),
     );

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/controllers/home_controller.dart';
@@ -61,45 +62,33 @@ class _NavigationScreenState extends State<NavigationScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildNavItem(
-                  svgPath:  'assets/icon/home.svg',
+                  icon: FontAwesomeIcons.house,
                   label: "Home".tr,
                   index: 0,
                   isSelected: controller.index.value == 0,
                   onTap: () => controller.updatePageIndex(0),
                 ),
                 _buildNavItem(
-                  svgPath: 'assets/icon/my_ads.svg',
+                  icon: gIsVehicle ? FontAwesomeIcons.newspaper : FontAwesomeIcons.building,
                   label: gIsVehicle ? "MyAds".tr : "Companies".tr,
                   index: 1,
                   isSelected: controller.index.value == 1,
                   onTap: () => controller.updatePageIndex(1),
                 ),
 
-                // Center space for FAB or search item
-                controller.index.value == 0
-                    ? const SizedBox(width: 40) // Space for FAB
-                    : _buildNavItem(
-                  svgPath: 'assets/icon/add_plus.svg',
-                  label: "Post Ads".tr,
-                  index: 2,
-                  isSelected: controller.index.value == 2,
-                  onTap: () => controller.updatePageIndex(2),
-                ),
+                // Center space - only show empty space on Home (index 0), otherwise show Post Ads nav item
+                const SizedBox(width: 40),
 
                 _buildNavItem(
-                  svgPath: gIsVehicle
-                      ? 'assets/icon/cart.svg'
-                      : 'assets/icon/cart.svg',
+                  icon: gIsVehicle ? FontAwesomeIcons.cartShopping : FontAwesomeIcons.handshake,
                   label: gIsVehicle ? "Cart".tr : "Requests".tr,
                   index: 3,
                   isSelected: controller.index.value == 3,
                   onTap: () => controller.updatePageIndex(3),
                 ),
                 _buildNavItem(
-                  svgPath: (!gIsVehicle)
-                      ? 'assets/icon/shop.svg'
-                      : 'assets/icon/shop.svg',
-                  label: (!gIsVehicle) ? "News".tr : "EStore".tr,
+                  icon: gIsVehicle ? FontAwesomeIcons.shop : FontAwesomeIcons.newspaper,
+                  label: gIsVehicle ? "EStore".tr : "News".tr,
                   index: 4,
                   isSelected: controller.index.value == 4,
                   onTap: () => controller.updatePageIndex(4),
@@ -121,7 +110,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   }
                 } else {
                   if(UserSession.isLoggedIn!){
-                    Get.toNamed(Routes.newAdScreen);
+                    Get.toNamed(Routes.addPropertyScreen);
                   }else{
                     Get.toNamed(Routes.loginScreen);
                   }
@@ -129,14 +118,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
               },
               shape: const CircleBorder(),
               backgroundColor: const Color(0xFF8B1538),
-              child: SvgPicture.asset(
-                'assets/icon/add_plus.svg', // Replace with your SVG path
-                width: 44,
-                height: 44,
-                colorFilter: const ColorFilter.mode(
-                  Colors.white,
-                  BlendMode.srcIn,
-                ),
+              child: FaIcon(
+                FontAwesomeIcons.plus,
+                size: 44,
+                color: Colors.white,
               ),
             ),
           ),
@@ -184,7 +169,7 @@ class RPSCustomPainter extends CustomPainter {
   }
 }
 Widget _buildNavItem({
-  required String svgPath,
+  required IconData icon,
   required String label,
   required int index,
   required bool isSelected,
@@ -195,14 +180,10 @@ Widget _buildNavItem({
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SvgPicture.asset(
-          svgPath,
-          width: 24,
-          height: 24,
-          colorFilter: ColorFilter.mode(
-            isSelected ? kAccentColor : Colors.white,
-            BlendMode.srcIn,
-          ),
+        FaIcon(
+          icon,
+          size: 20,
+          color: isSelected ? kAccentColor : Colors.white,
         ),
         const SizedBox(height: 2),
         Text(

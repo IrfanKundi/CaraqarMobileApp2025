@@ -13,6 +13,7 @@ import 'my_car_controller.dart';
 class ViewMyCarController extends GetxController {
   var status = Status.initial.obs;
   var sliderIndex=0.obs;
+  var selectedTabIndex = 0.obs;
   var delStatus = Status.initial.obs;
   var refreshStatus = Status.initial.obs;
   Rx<Car?> car=Rx(null);

@@ -78,6 +78,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_svg: ^2.2.0
   marquee: ^2.3.0
+  font_awesome_flutter: ^10.9.0
 
 flutter_launcher_icons:
   android: true

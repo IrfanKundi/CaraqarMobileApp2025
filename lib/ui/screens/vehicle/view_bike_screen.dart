@@ -13,13 +13,15 @@ import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,991 +42,1264 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
   @override
   Widget build(BuildContext context) {
     controller.formKey = GlobalKey<FormState>();
-    return Scaffold(
-      backgroundColor: kWhiteColor,
-      body: Obx(() {
-        var bike = controller.bike.value;
-        return controller.status.value == Status.success
-            ? NestedScrollView(
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    SliverAppBar(
-                        backgroundColor: kWhiteColor,
-                        iconTheme: IconThemeData(color: kBlackColor),
-                        expandedHeight: 0.6.sh,
-                        pinned: true,
-                        title: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: Text(
-                                  "Details".tr.toUpperCase(),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: kAppBarStyle,
-                                )),
-                                kHorizontalSpace12,
-                                IconButtonWidget(
-                                  icon: MaterialCommunityIcons.share_variant,
-                                  color: kBlackColor,
-                                  onPressed: () async {
-                                    String adUrl =
-                                        await DynamicLink.createDynamicLink(
-                                            false,
-                                            uri: "/bike?bikeId=${bike?.bikeId}",
-                                            title:
-                                                "${bike?.brandName} ${bike?.modelName} ${bike?.modelYear}",
-                                            desc: bike?.description,
-                                            image: bike?.images.first);
-                                    String webUrl =
-                                        "https://www.caraqar.co/Bikes/Detail/${bike?.bikeId}";
-                                    var message =
-                                        "Hey! you might be interested in this.\n$adUrl\nor Check this ad on Car aqar\n$webUrl";
-                                    print("share = $message");
-                                    Share.share(message);
-                                  },
-                                ),
-                              ],
+    return Obx(() {
+      var bike = controller.bike.value;
+      return Scaffold(
+        backgroundColor: kWhiteColor,
+        appBar: AppBar(
+          backgroundColor: kWhiteColor,
+          iconTheme: const IconThemeData(color: kBlackColor),
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Details".tr.toUpperCase(),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: kAppBarStyle,
+                ),
+              ),
+              kHorizontalSpace12,
+              IconButtonWidget(
+                icon: MaterialCommunityIcons.share_variant,
+                color: kBlackColor,
+                onPressed: () async {
+                  String adUrl = await DynamicLink.createDynamicLink(
+                    false,
+                    uri: "/bike?bikeId=${bike!.bikeId}",
+                    title: "${bike.brandName} ${bike.modelName} ${bike.modelYear}",
+                    desc: bike.description,
+                    image: bike.images.first,
+                  );
+                  String message =
+                      "Hey! you might be interested in this.\n$adUrl";
+                  Share.share(message);
+                },
+              ),
+            ],
+          ),
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
+        body: controller.status.value == Status.success
+            ? SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Column(
+              children: [
+                // Image carousel section
+                SizedBox(
+                  height: 0.4.sh, // Adjust height as needed
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // 🔹 Rounded image slider
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(24.r),
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              height: double.infinity,
+                              autoPlayCurve: Curves.linearToEaseOut,
+                              autoPlay: true,
+                              scrollPhysics:
+                              const BouncingScrollPhysics(),
+                              enableInfiniteScroll: false,
+                              viewportFraction: 1,
+                              enlargeCenterPage: true,
+                              enlargeStrategy:
+                              CenterPageEnlargeStrategy.height,
+                              initialPage: controller.sliderIndex.value,
+                              onPageChanged: (index, reason) {
+                                controller.sliderIndex.value = index;
+                                controller.update();
+                              },
                             ),
-                          ],
-                        ),
-                        flexibleSpace: FlexibleSpaceBar(
-                          centerTitle: true,
-                          background: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CarouselSlider(
-                                options: CarouselOptions(
-                                  height: double.infinity,
-                                  autoPlayCurve: Curves.linearToEaseOut,
-                                  autoPlay: true,
-                                  scrollPhysics: const BouncingScrollPhysics(),
-                                  enableInfiniteScroll: false,
-                                  aspectRatio: 16 / 9,
-                                  viewportFraction: 1,
-                                  enlargeCenterPage: true,
-                                  enlargeStrategy: CenterPageEnlargeStrategy.height,
-                                  initialPage: controller.sliderIndex.value,
-                                  onPageChanged: (index, reason) {
-                                    controller.sliderIndex.value = index;
-                                    controller.update();
-                                  },
-                                ),
-                                items: bike.images.map((item) {
-                                  return Builder(
-                                    builder: (BuildContext context) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          // Images are already preloaded, navigation will be instant
-                                          Get.toNamed(
-                                            Routes.staggeredGalleryScreen,
-                                            arguments: bike.images,
-                                          );
-                                        },
-                                        child: CachedNetworkImage(
-                                          imageUrl: item,
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) => Container(
-                                            color: Colors.grey[200],
-                                            child: Center(
-                                              child: CircularProgressIndicator(),
-                                            ),
-                                          ),
-                                          errorWidget: (context, url, error) => Container(
-                                            color: Colors.grey[200],
-                                            child: Center(
-                                              child: Icon(Icons.error, size: 50),
-                                            ),
-                                          ),
-                                          memCacheWidth: 800,
-                                          memCacheHeight: 600,
-                                          maxWidthDiskCache: 1000,
-                                          maxHeightDiskCache: 1000,
-                                        ),
+                            items: bike!.images.map((item) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(
+                                        Routes.staggeredGalleryScreen,
+                                        arguments: bike.images,
                                       );
                                     },
-                                  );
-                                }).toList(),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                child: Container(
-                                  height: 20.h,
-                                  width: 1.sw,
-                                  decoration: BoxDecoration(boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      spreadRadius: 15,
-                                      blurRadius: 15,
-                                      offset: Offset(0, 15),
-                                    )
-                                  ]),
-                                ),
-                              ),
-                              Positioned(
-                                  bottom: 40.h,
-                                  child: Container(
-                                    width: 1.sw,
-                                    padding: kScreenPadding.copyWith(
-                                        top: 8.w, bottom: 8.w),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black12,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  "${bike?.brandName} ${bike?.modelName} ${bike?.modelYear}",
-                                                  maxLines: 2,
-                                                  textAlign: TextAlign.center,
-                                                  style: kLightTextStyle18),
-                                              kVerticalSpace4,
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    MaterialCommunityIcons
-                                                        .map_marker_outline,
-                                                    size: 16.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                  Expanded(
-                                                    child: Text(
-                                                        "${bike?.cityName}",
-                                                        style: kTextStyle14
-                                                            .copyWith(
-                                                                color:
-                                                                    kWhiteColor)),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                    child: CachedNetworkImage(
+                                      imageUrl: item,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                      placeholder: (
+                                          context,
+                                          url,
+                                          ) => Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                          child:
+                                          CircularProgressIndicator(),
+                                        ),
+                                      ),
+                                      errorWidget: (
+                                          context,
+                                          url,
+                                          error,
+                                          ) => Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.error,
+                                            size: 50,
                                           ),
                                         ),
-                                        Column(
-                                          children: [
-                                            GetBuilder<ViewBikeController>(
-                                              builder: (controller) =>
-                                                  IconButtonWidget(
-                                                icon: bike!.favoriteId! > 0
-                                                    ? MaterialCommunityIcons
-                                                        .heart
-                                                    : MaterialCommunityIcons
-                                                        .heart_outline,
-                                                color: bike.favoriteId! > 0
-                                                    ? kRedColor
-                                                    : kWhiteColor,
-                                                width: 30.w,
-                                                onPressed: () async {
-                                                  var favController = Get.put(
-                                                      FavoriteController());
-                                                  if (bike.favoriteId! > 0) {
-                                                    if (await favController
-                                                        .deleteFavorite(
-                                                            bike: bike)) {
-                                                      controller.update();
-                                                    }
-                                                  } else {
-                                                    if (await favController
-                                                        .addToFavorites(
-                                                            bike: bike)) {
-                                                      controller.update();
-                                                    }
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                            kVerticalSpace8,
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 2, horizontal: 8),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black38,
-                                                borderRadius: kBorderRadius30,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    MaterialCommunityIcons
-                                                        .eye_outline,
-                                                    size: 16.sp,
-                                                    color: kWhiteColor,
-                                                  ),
-                                                  Text(
-                                                    " ${bike?.clicks}",
-                                                    style: TextStyle(
-                                                        color: kWhiteColor,
-                                                        fontSize: 12.sp),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                      ),
+                                      memCacheWidth: 800,
+                                      memCacheHeight: 600,
+                                      maxWidthDiskCache: 1000,
+                                      maxHeightDiskCache: 1000,
                                     ),
-                                  )),
-                            ],
-                          ),
-                        ), systemOverlayStyle: SystemUiOverlayStyle.dark),
-                  ];
-                },
-                body: RemoveSplash(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 12.w, vertical: 8.w),
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  if (bike?.companyId != null) {
-                                    if (Get.previousRoute ==
-                                        Routes.companyScreen +
-                                            "?type=Bike&agentAds=${bike?.isAgentAd}") {
-                                      Get.back();
-                                    } else {
-                                      Get.offNamed(Routes.companyScreen,
-                                          arguments: bike?.companyId,
-                                          parameters: {
-                                            "type": "Bike",
-                                            "agentAds": "${bike?.isAgentAd}"
-                                          });
-                                    }
-                                  } else if (bike?.agentId != null) {
-                                    if (Get.previousRoute ==
-                                        Routes.agentScreen +
-                                            "?type=Bike&agentAds=${bike?.isAgentAd}") {
-                                      Get.back();
-                                    } else {
-                                      Get.offNamed(Routes.agentScreen,
-                                          arguments: bike?.agentId,
-                                          parameters: {
-                                            "type": "Bike",
-                                            "agentAds": "${bike?.isAgentAd}"
-                                          });
-                                    }
-                                  }
+                                  );
                                 },
-                                child: ImageWidget(
-                                  bike?.agentImage == "" ||
-                                          bike?.agentImage == null
-                                      ? "assets/images/profile2.jpg"
-                                      : bike?.agentImage,
-                                  width: 70.r,
-                                  height: 70.r,
-                                  isCircular: true,
-                                  isLocalImage: bike?.agentImage == "" ||
-                                      bike?.agentImage == null,
-                                  fit: BoxFit.cover,
+                              );
+                            }).toList(),
+                          ),
+                        ),
+
+                        // 🔹 Page indicator
+                        Positioned(
+                          top: 12.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              bike.images.length,
+                                  (index) => Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 3.w,
+                                ),
+                                width: 8.w,
+                                height: 8.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color:
+                                  controller.sliderIndex.value ==
+                                      index
+                                      ? Colors.white
+                                      : Colors.white54,
                                 ),
                               ),
-                              kHorizontalSpace12,
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${bike?.agentName}",
-                                      style: kTextStyle16.copyWith(
-                                          color: kAccentColor),
+                            ),
+                          ),
+                        ),
+
+                        Positioned(
+                          bottom: 16.h,
+                          right: 16.w,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              // Favorite button
+                              GetBuilder<ViewBikeController>(
+                                builder: (controller) => Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      bike.favoriteId! > 0
+                                          ? MaterialCommunityIcons.heart
+                                          : MaterialCommunityIcons
+                                          .heart_outline,
+                                      color: bike.favoriteId! > 0
+                                          ? kRedColor
+                                          : kBlackColor,
                                     ),
-                                    kVerticalSpace4,
+                                    onPressed: () async {
+                                      var favController = Get.put(
+                                        FavoriteController(),
+                                      );
+                                      if (bike.favoriteId! > 0) {
+                                        if (await favController
+                                            .deleteFavorite(
+                                          bike: bike,
+                                        )) {
+                                          controller.update();
+                                        }
+                                      } else {
+                                        if (await favController
+                                            .addToFavorites(
+                                          bike: bike,
+                                        )) {
+                                          controller.update();
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10.h),
+                              // View count badge
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                  horizontal: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.black38,
+                                  borderRadius: BorderRadius.circular(
+                                    30.r,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      MaterialCommunityIcons.eye_outline,
+                                      size: 16.sp,
+                                      color: kWhiteColor,
+                                    ),
                                     Text(
-                                      "Owner".tr,
-                                      style: kTextStyle14.copyWith(
-                                          color: kGreyColor),
+                                      " ${bike.clicks}",
+                                      style: TextStyle(
+                                        color: kWhiteColor,
+                                        fontSize: 12.sp,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                width: 40.w,
-                                child: OutlinedButton(
-                                  onPressed: () async {
-                                    controller.updateClicks(isCall: true);
-                                    await launch("tel://${bike?.contactNo}");
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      side: BorderSide(
-                                          color: Colors.transparent)),
-                                  child: Icon(MaterialCommunityIcons.phone,
-                                      color: kAccentColor, size: 25.w),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // Content section (expandable)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 14.w,
+                        vertical: 8.w,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Left: Location on top + Title below
+                          Expanded(
+                            flex: 6,
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                // Location row
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    FaIcon(
+                                      FontAwesomeIcons.clock,
+                                      size: 12.w,
+                                      color: kBlackLightColor,
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      format(
+                                        bike.createdAt!,
+                                        locale: gSelectedLocale
+                                            ?.locale
+                                            ?.languageCode,
+                                      ),
+                                      textDirection: TextDirection.ltr,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: kBlackLightColor,
+                                        height: 1.3,
+                                        fontSize: 12.sp,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8.w),
+                                    FaIcon(
+                                      FontAwesomeIcons.locationDot,
+                                      size: 12.w,
+                                      color: kBlackLightColor,
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Expanded(
+                                      child: Text(
+                                        "${bike.location}, ${bike.cityName}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: kBlackLightColor,
+                                          height: 1.3,
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              SizedBox(
-                                width: 40.w,
-                                child: OutlinedButton(
-                                  onPressed: () async {
-                                    controller.updateClicks(isWhatsapp: true);
-                                    String adUrl =
-                                        await DynamicLink.createDynamicLink(
-                                            false,
-                                            uri: "/Bikes/Detail/${bike?.bikeId}",
-                                            title:
-                                                "${bike?.brandName} ${bike?.modelName} ${bike?.modelYear}",
-                                            desc: bike?.description,
-                                            image: bike?.images.first);
-                                    String webUrl =
-                                        "https://www.caraqar.co/Bikes/Detail/${bike?.bikeId}";
-                                    String url;
-                                    var message = Uri.encodeFull(
-                                        "Hello,\n${bike?.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl \n or Check this ad on Car aqar \n $webUrl");
-                                    if (Platform.isIOS) {
-                                      url =
-                                          "https://wa.me/${bike?.contactNo}?text=$message";
-                                    } else {
-                                      url =
-                                          "whatsapp://send?phone=${bike?.contactNo}&text=$message";
-                                    }
-                                    try {
-                                      await launchUrl(
-                                        Uri.parse(url),
-                                      );
-                                    } catch (e) {
-                                      showSnackBar(
-                                          message: "CouldNotLaunchWhatsApp");
-                                    }
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      side: BorderSide(
-                                          color: Colors.transparent)),
-                                  child: Image.asset(
-                                    "assets/images/whatsapp.png",
-                                    width: 22.w,
+                                SizedBox(height: 4.h),
+                                // Title
+                                Text(
+                                  "${bike.brandName} ${bike.modelName} ${bike.modelYear}",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: kHeadingStyle,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  children: [
+                                    // Price on left
+                                    Expanded(
+                                      child: Text(
+                                        bike.price == null ||
+                                            bike.price == 0
+                                            ? "Call for Price".tr
+                                            : getPrice(bike.price!),
+                                        style: kTextStyle18.copyWith(
+                                          color: kPrimaryColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.sp,
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Icons on right
+                                    Row(
+                                      children: [
+                                        _buildCircleIconButton(
+                                          icon: FaIcon(
+                                            FontAwesomeIcons.phone,
+                                            size: 20.w,
+                                            color: kBlackLightColor,
+                                          ),
+                                          onTap: () async {
+                                            controller.updateClicks(
+                                              isCall: true,
+                                            );
+                                            await launch(
+                                              "tel://${bike.contactNo!}",
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        _buildCircleIconButton(
+                                          icon: FaIcon(
+                                            FontAwesomeIcons.comment,
+                                            size: 20.w,
+                                            color: kBlackLightColor,
+                                          ),
+                                          onTap: () async {
+                                            controller.updateClicks(
+                                                isEmail: true);
+
+                                            String adUrl = await DynamicLink
+                                                .createDynamicLink(
+                                              false,
+                                              uri:
+                                              "/Bikes/Detail/${bike.bikeId}",
+                                              title: bike.title,
+                                              desc: bike.description,
+                                              image: bike.images.first,
+                                            );
+
+                                            String webUrl =
+                                                "https://www.caraqar.co/Bikes/Detail/${bike.bikeId}";
+                                            String? subject = bike.title;
+
+                                            var message =
+                                                "Hello,\n${bike.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl\nOr check this ad on Car aqar\n$webUrl";
+                                            final Email email = Email(
+                                              body: message,
+                                              subject: subject!,
+                                              recipients: [bike.email!],
+                                              isHTML: false,
+                                            );
+
+                                            await FlutterEmailSender.send(
+                                                email);
+                                          },
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        _buildCircleIconButton(
+                                          icon: FaIcon(
+                                            FontAwesomeIcons.whatsapp,
+                                            size: 20.w,
+                                            color: kBlackLightColor,
+                                          ),
+                                          onTap: () async {
+                                            controller.updateClicks(
+                                              isWhatsapp: true,
+                                            );
+                                            String adUrl = await DynamicLink
+                                                .createDynamicLink(
+                                              false,
+                                              uri:
+                                              "/Bikes/Detail/${bike.bikeId!}",
+                                              title:
+                                              "${bike.brandName!} ${bike.modelName} ${bike.modelYear}",
+                                              desc: bike.description,
+                                              image: bike.images.first,
+                                            );
+                                            String message =
+                                            Uri.encodeFull(
+                                              "Hello,\n${bike.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
+                                            );
+                                            String url = Platform.isIOS
+                                                ? "https://wa.me/${bike.contactNo}?text=$message"
+                                                : "whatsapp://send?phone=${bike.contactNo}&text=$message";
+                                            await launchUrl(
+                                              Uri.parse(url),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // change 2
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 5.h,
+                      ),
+                      height: 50.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: _buildBikeInfoItem(
+                              icon: "assets/images/calender.png",
+                              label: bike.modelYear!,
+                            ),
+                          ),
+                          _buildVerticalDivider(),
+                          Expanded(
+                            child: _buildBikeInfoItem(
+                              icon: "assets/images/speedcounter.png",
+                              label: bike.mileage!,
+                            ),
+                          ),
+                          _buildVerticalDivider(),
+                          Expanded(
+                            child: _buildBikeInfoItem(
+                              icon: "assets/images/benzin.png",
+                              label: bike.fuelType!.tr,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // TAb here
+                    Padding(
+                      padding: kHorizontalScreenPadding,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.selectedTabIndex.value = 0;
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: controller
+                                          .selectedTabIndex.value ==
+                                          0
+                                          ? Colors.blue
+                                          : Colors.transparent,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'INFORMATION',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: controller
+                                        .selectedTabIndex.value ==
+                                        0
+                                        ? Colors.black87
+                                        : Colors.grey,
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 40.w,
-                                child: OutlinedButton(
-                                  onPressed: () async {
-                                    controller.updateClicks(isEmail: true);
-
-                                    String adUrl = await DynamicLink.createDynamicLink(
-                                          false,
-                                      uri: "/Bikes/Detail/${bike?.bikeId}",
-                                      title: bike?.title,
-                                      desc: bike?.description,
-                                      image: bike?.images.first,
-                                    );
-
-                                    String webUrl = "https://www.caraqar.co/Bikes/Detail/${bike?.bikeId}";
-                                    String? subject = bike?.title;
-
-                                    // Properly encode the message to handle spaces and special characters
-                                    var message =
-                                        "Hello,\n${bike?.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl\nOr check this ad on Car aqar\n$webUrl";
-                                    final Email email = Email(
-                                      body: message,
-                                      subject: subject!,
-                                      recipients: [bike!.email!],
-                                      isHTML: false,
-                                    );
-
-                                    await FlutterEmailSender.send(email);
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      side: const BorderSide(
-                                          color: Colors.transparent)),
-                                  child: Icon(
-                                    MaterialCommunityIcons.email,
-                                    color: kAccentColor,
-                                    size: 25.w,
+                            ),
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.selectedTabIndex.value = 1;
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: controller
+                                          .selectedTabIndex.value ==
+                                          1
+                                          ? Colors.blue
+                                          : Colors.transparent,
+                                      width: 2.0,
+                                    ),
                                   ),
+                                ),
+                                child: Text(
+                                  'FEATURES',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: controller
+                                        .selectedTabIndex.value ==
+                                        1
+                                        ? Colors.black87
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.selectedTabIndex.value = 2;
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: controller
+                                          .selectedTabIndex.value ==
+                                          2
+                                          ? Colors.blue
+                                          : Colors.transparent,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'LOCATION',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: controller
+                                        .selectedTabIndex.value ==
+                                        2
+                                        ? Colors.black87
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Obx(() {
+                      switch (controller.selectedTabIndex.value) {
+                        case 0:
+                          return _buildInformationTab(bike);
+                        case 1:
+                          return _buildFeaturesTab(bike);
+                        case 2:
+                          return _buildLocationTab(bike);
+                        default:
+                          return _buildInformationTab(bike);
+                      }
+                    }),
+                    //SELLER DESCRIPTION
+                    Padding(
+                      padding: kScreenPadding,
+                      child: Column(
+                        children: [
+                          // Section Title
+                          Text(
+                            "SELLER DESCRIPTION".tr.toUpperCase(),
+                            style: kTextStyle16.copyWith(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(12.w),
+                            constraints: BoxConstraints(
+                              minHeight: 100.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(16.r),
+                              border: Border.all(
+                                color: Colors.black54,
+                                width: 0.5,
+                              ),
+                            ),
+                            child: Text(
+                              bike.description ?? "",
+                              style: kTextStyle14.copyWith(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            "SELLER DETAIL".tr.toUpperCase(),
+                            style: kTextStyle16.copyWith(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 6.h),
+
+                        GestureDetector(
+                          onTap: () {
+                            if (bike.companyId != null) {
+                              if (Get.previousRoute ==
+                                  "${Routes.companyScreen}?type=Bike&agentAds=${bike.isAgentAd}") {
+                                Get.back();
+                              } else {
+                                Get.offNamed(
+                                  Routes.companyScreen,
+                                  arguments: bike.companyId,
+                                  parameters: {
+                                    "type": "Bike",
+                                    "agentAds": "${bike.isAgentAd}",
+                                  },
+                                );
+                              }
+                            } else if (bike.agentId != null) {
+                              if (Get.previousRoute ==
+                                  "${Routes.agentScreen}?type=Bike&agentAds=${bike.isAgentAd}") {
+                                Get.back();
+                              } else {
+                                Get.offNamed(
+                                  Routes.agentScreen,
+                                  arguments: bike.agentId,
+                                  parameters: {
+                                    "type": "Bike",
+                                    "agentAds": "${bike.isAgentAd}",
+                                  },
+                                );
+                              }
+                            }
+                          },
+                          child: Padding(
+                            padding: kHorizontalScreenPadding,
+                            child: Text(
+                              "View Seller Profile".tr,
+                              style: TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 12.h),
+
+                        // 🔹 Seller Row (Profile + Name)
+                        Padding(
+                          padding: kHorizontalScreenPadding,
+                          child: Row(
+                            children: [
+                              ImageWidget(
+                                bike.agentImage == "" ||
+                                    bike.agentImage == null
+                                    ? "assets/images/profile2.jpg"
+                                    : bike.agentImage,
+                                width: 50.r,
+                                height: 50.r,
+                                isCircular: true,
+                                isLocalImage: bike.agentImage == "" ||
+                                    bike.agentImage == null,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      bike.agentName!,
+                                      style: kTextStyle16.copyWith(
+                                        color: kAccentColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Column(
-                          children: [
-                            Divider(
-                              thickness: 1.h,
-                              color: Colors.grey.shade400,
+
+                        SizedBox(height: 12.h),
+                        Padding(
+                          padding: kHorizontalScreenPadding,
+                          child: Text(
+                            "Member Since April 19, 2025",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 13.sp,
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        // 🔹 Phone & Email Icons + Report
+                        Padding(
+                          padding: kHorizontalScreenPadding,
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Phone + Email
+                              Row(
                                 children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/calender.png",
-                                          width: 30.w,
-                                          height: 30.w,
-                                        ),
-                                        Text(
-                                          "${bike?.modelYear}",
-                                          style: TextStyle(
-                                              color: kAccentColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12.sp),
-                                        ),
-                                      ],
-                                    ),
+                                  Icon(
+                                    Icons.phone_iphone,
+                                    size: 20.sp,
+                                    color: Colors.black87,
                                   ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/speedcounter.png",
-                                          width: 30.w,
-                                          height: 30.w,
-                                        ),
-                                        Text(
-                                          "${bike?.mileage}",
-                                          style: TextStyle(
-                                              color: kAccentColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12.sp),
-                                        ),
-                                      ],
-                                    ),
+                                  SizedBox(width: 8.w),
+                                  Icon(
+                                    Icons.email_outlined,
+                                    size: 20.sp,
+                                    color: Colors.black87,
                                   ),
-                                  // Expanded(
-                                  //   child: Column(
-                                  //     children: [
-                                  //       Image.asset("assets/images/automatic.png"
-                                  //         , width: 30.w,
-                                  //         height: 30.w,
-                                  //       ), Text(
-                                  //         "${bike?.transmission}",
-                                  //         style: TextStyle(
-                                  //             color: kAccentColor,fontWeight: FontWeight.bold,
-                                  //             fontSize: 12.sp),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/benzin.png",
-                                          width: 30.w,
-                                          height: 30.w,
-                                        ),
-                                        Text(
-                                          "${bike?.fuelType}".tr,
-                                          style: TextStyle(
-                                              color: kAccentColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12.sp),
-                                        ),
-                                      ],
+                                ],
+                              ),
+
+                              // Report Ad
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.flag_outlined,
+                                    size: 18.sp,
+                                    color: Colors.black87,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    "Report this Ad".tr,
+                                    style: TextStyle(
+                                      fontSize: 13.sp,
+                                      color: Colors.black87,
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Divider(
-                              thickness: 1.h,
-                              color: Colors.grey.shade400,
-                            ),
-                            kVerticalSpace12,
-                          ],
+                            ],
+                          ),
                         ),
-                        Text(
-                          "CurrentPrice".tr,
-                          textAlign: TextAlign.center,
-                          style: kTextStyle14.copyWith(color: kAccentColor),
+
+                        SizedBox(height: 12.h),
+
+                        // 🔹 Divider after section
+                        Divider(
+                          color: Colors.grey.shade300,
+                          thickness: 1,
+                          height: 1,
                         ),
-                        kVerticalSpace8,
-                        Text(
-                          "${getPrice(bike!.price!)}",
-                          textAlign: TextAlign.center,
-                          textDirection: TextDirection.ltr,
-                          style: kTextStyle18.copyWith(color: kPrimaryColor),
-                        ),
-                        Padding(
-                            padding: kScreenPadding,
-                            child: Column(
+                      ],
+                    ),
+
+                    SizedBox(height: 8),
+                    Padding(
+                      padding: kHorizontalScreenPadding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          kVerticalSpace16,
+
+                          GetBuilder<ViewBikeController>(
+                            id: "comments",
+                            builder: (controller) => Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.stretch,
                               children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Brand".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.brandName}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: VerticalDivider(),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Model".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.modelName}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Year".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.modelYear}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: VerticalDivider(),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Type".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.type}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Condition".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.condition}".tr,
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: VerticalDivider(),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Mileage".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.mileage} ${"KM".tr}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Seats".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.seats}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: VerticalDivider(),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Engine".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.engine}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "City".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.cityName}",
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 40.h,
-                                      child: VerticalDivider(),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            "Color".tr,
-                                            style: kTextStyle16.copyWith(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          kVerticalSpace8,
-                                          Text(
-                                            "${bike.color}".tr,
-                                            style: kTextStyle16.copyWith(
-                                                color: kAccentColor),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            )),
-                        Padding(
-                          padding: kScreenPadding,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                kVerticalSpace12,
-                                Text(
-                                  "Description".tr,
-                                  style: kTextStyle16.copyWith(
-                                      color: kAccentColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
-                                Text(
-                                  "${bike.description}",
-                                  style: kTextStyle14.copyWith(
-                                      color: kAccentColor),
-                                ),
-                                kVerticalSpace16,
-                                if (bike.featureHeads.isNotEmpty)
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 28.w),
-                                    child: Text(
-                                      "Features/Amenities".tr,
-                                      style: kTextStyle16.copyWith(
-                                          color: kAccentColor,
-                                          fontWeight: FontWeight.bold),
+                                // 🔹 Comments Title
+                                Center(
+                                  child: Text(
+                                    "${"COMMENTS".tr.toUpperCase()} (${controller.comments.length})",
+                                    style: kTextStyle16.copyWith(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                Column(
-                                  children: bike.featureHeads
-                                      .map((e) => Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 32.h),
-                                            child: Stack(
-                                              clipBehavior: Clip.none,
-                                              alignment: Alignment.topCenter,
-                                              children: [
-                                                Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 32.w,
-                                                            horizontal: 16.w),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          kBorderRadius4,
-                                                      border: Border.all(
-                                                          color: kBorderColor,
-                                                          width: 1.w),
-                                                    ),
-                                                    child: GridView.builder(
-                                                        padding:
-                                                            EdgeInsets.zero,
-                                                        physics:
-                                                            PageScrollPhysics(),
-                                                        shrinkWrap: true,
-                                                        gridDelegate:
-                                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                          childAspectRatio: 1,
-                                                          crossAxisSpacing: 8.w,
-                                                          mainAxisSpacing: 8.w,
-                                                          crossAxisCount: 4,
-                                                        ),
-                                                        itemCount:
-                                                            e.features.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          return Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              ImageWidget(
-                                                                e
-                                                                    .features[
-                                                                        index]
-                                                                    .image,
-                                                                width: 30.w,
-                                                                height: 30.w,
-                                                              ),
-                                                              kVerticalSpace4,
-                                                              FittedBox(
-                                                                fit: BoxFit
-                                                                    .scaleDown,
-                                                                child: Text(
-                                                                  "${e.features[index].title}${e.features[index].quantity! > 0 ? ": ${e.features[index].quantity}" : e.features[index].featureOption != null ? ": ${e.features[index].featureOption}" : ""}",
-                                                                  style: kTextStyle12
-                                                                      .copyWith(
-                                                                          color:
-                                                                              kAccentColor),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          );
-                                                        })),
-                                                Positioned(
-                                                  top: -16.w,
-                                                  child: Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 6.w,
-                                                            horizontal: 12.w),
-                                                    decoration: BoxDecoration(
-                                                        color: kBgColor,
-                                                        borderRadius:
-                                                            kBorderRadius4,
-                                                        border: Border.all(
-                                                            color: kBorderColor,
-                                                            width: 1.w)),
-                                                    child: Text(
-                                                      "${e.title}",
-                                                      style:
-                                                          kTextStyle16.copyWith(
-                                                              color:
-                                                                  kAccentColor),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ))
-                                      .toList(),
                                 ),
-                                GetBuilder<ViewBikeController>(
-                                    id: "comments",
-                                    builder: (controller) =>
 
-                                        Column(crossAxisAlignment: CrossAxisAlignment
-                                            .stretch,
-                                          children: [
-                                            Text(
-                                              "${"Comments".tr} (${controller.comments
-                                                  .length})",
-                                              style: kTextStyle16.copyWith(
-                                                  color: kAccentColor),
-                                            ),
+                                SizedBox(height: 16.h),
 
-                                            kVerticalSpace16,
+                                if (controller.comments.isEmpty)
+                                  Text(
+                                    "NoComments".tr,
+                                    style: kTextStyle14,
+                                    textAlign: TextAlign.center,
+                                  )
+                                else
+                                  ListView.separated(
+                                    physics: const PageScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    itemBuilder: (context, index) {
+                                      var item =
+                                      controller.comments[index];
+                                      return Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              // 🔹 Avatar
+                                              ImageWidget(
+                                                item.image ??
+                                                    "assets/images/profile2.jpg",
+                                                isLocalImage:
+                                                item.image == null,
+                                                width: 40.r,
+                                                height: 40.r,
+                                                isCircular: true,
+                                              ),
+                                              SizedBox(width: 12.w),
 
-                                            if (controller.comments.isEmpty) Text(
-                                              "NoComments".tr, style: kTextStyle14,
-                                              textAlign: TextAlign.center,) else
-                                              ListView.separated(
-
-                                                physics: const PageScrollPhysics(),
-                                                padding: EdgeInsets.zero,
-                                                itemBuilder: (context, index) {
-                                                  var item = controller
-                                                      .comments[index];
-                                                  return Row(
-                                                    crossAxisAlignment: CrossAxisAlignment
-                                                        .start,
-                                                    children: [
-                                                      ImageWidget(item.image ??
-                                                          "assets/images/profile2.jpg",
-                                                        isLocalImage: item.image ==
-                                                            null,
-                                                        width: 50.r,
-                                                        height: 50.r,
-                                                        isCircular: true,
+                                              // 🔹 Name, time, and comment
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: Text(
+                                                            "${item.name}",
+                                                            style:
+                                                            TextStyle(
+                                                              fontSize:
+                                                              15.sp,
+                                                              color: Colors
+                                                                  .black87,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w400,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          format(
+                                                            item.createdAt!,
+                                                            locale: gSelectedLocale
+                                                                ?.locale
+                                                                ?.languageCode,
+                                                          ),
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .grey,
+                                                            fontSize:
+                                                            12.sp,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 6.h,
+                                                    ),
+                                                    // Comment text
+                                                    Text(
+                                                      "${item.comment}",
+                                                      style: TextStyle(
+                                                        fontSize: 14.sp,
+                                                        color: Colors
+                                                            .black87,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400,
                                                       ),
-                                                      kHorizontalSpace12,
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment
-                                                              .stretch,
-                                                          children: [
-                                                            Text("${item.name}",
-                                                              style: TextStyle(
-                                                                  fontSize: 15.sp,
-                                                                  color: kAccentColor,
-                                                                  fontWeight: FontWeight
-                                                                      .w600
-                                                              ),),
-                                                            Text("${format(
-                                                              item.createdAt!,
-                                                              locale: gSelectedLocale
-                                                                  ?.locale
-                                                                  ?.languageCode,
-                                                            )}", style: TextStyle(
-
-                                                                color: kGreyColor,
-                                                                fontSize: 12.sp
-                                                            ),),
-                                                            kVerticalSpace8,
-                                                            Text("${item.comment}",
-                                                              style: TextStyle(
-                                                                  fontSize: 14.sp,
-                                                                  color: kAccentColor
-                                                              ),),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
-                                                  );
-                                                },
-                                                separatorBuilder: (context, index) {
-                                                  return const Divider();
-                                                },
-                                                shrinkWrap: true,
-                                                itemCount: controller.comments
-                                                    .length,)
-
-
-                                          ],
-                                        )
-                                ),
-                                kVerticalSpace20,
-                                Form(
-                                  key: controller.formKey,
-                                  autovalidateMode: AutovalidateMode
-                                      .onUserInteraction,
-                                  child: TextFieldWidget(maxLines: 3,
-                                    borderRadius: kBorderRadius4,
-                                    hintText: "TypeComment",
-                                    text: controller.comment,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    separatorBuilder: (
+                                        context,
+                                        index,
+                                        ) {
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.h,
+                                        ),
+                                        child: Divider(
+                                          color: Colors.grey.shade300,
+                                          height: 1,
+                                        ),
+                                      );
+                                    },
+                                    shrinkWrap: true,
+                                    itemCount:
+                                    controller.comments.length,
+                                  ),
+                              ],
+                            ),
+                          ),
+                          kVerticalSpace20,
+                          Form(
+                            key: controller.formKey,
+                            autovalidateMode:
+                            AutovalidateMode.onUserInteraction,
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    borderRadius: BorderRadius.circular(
+                                      20.r,
+                                    ),
+                                    border: Border.all(
+                                      color: Colors.black54,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.all(16.w),
+                                  child: TextFormField(
+                                    maxLines: 3,
+                                    initialValue: controller.comment,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: kBlackColor,
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText:
+                                      "Have something to say? Leave a comment!",
+                                      hintStyle: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: Colors.grey[500],
+                                      ),
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      focusedErrorBorder:
+                                      InputBorder.none,
+                                      contentPadding: EdgeInsets.zero,
+                                    ),
                                     onChanged: (val) {
-                                      controller.comment = val.toString().trim();
+                                      controller.comment =
+                                          val.toString().trim();
                                     },
                                     onSaved: (val) {
-                                      controller.comment = val.toString().trim();
+                                      controller.comment =
+                                          val.toString().trim();
                                     },
                                     validator: (val) {
-                                      if (val
-                                          .toString()
-                                          .isEmpty) {
+                                      if (val.toString().isEmpty) {
                                         return kRequiredMsg.tr;
                                       } else {
                                         return null;
                                       }
                                     },
-
                                   ),
                                 ),
                                 kVerticalSpace16,
-                                ButtonWidget(text: "Comment",
-                                    onPressed: controller.saveComment)
-                              ]),
-                        )
-                      ],
+                                Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF1B3A5C),
+                                    borderRadius: BorderRadius.circular(
+                                      20.r,
+                                    ),
+                                  ),
+                                  child: ButtonWidget(
+                                    text: "COMMENT",
+                                    onPressed: controller.saveComment,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        )
+            : CircularLoader(),
+      );
+    });
+  }
+
+  TableRow _buildStyledRow(String title, String value, int index) {
+    bool isOddRow = index.isOdd;
+    return TableRow(
+      decoration: BoxDecoration(
+        color: isOddRow ? Colors.grey.shade100 : Colors.white,
+      ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              fontSize: kTextStyle16.fontSize,
+              color: kTableColor,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w300,
+              fontSize: kTextStyle16.fontSize,
+              color: kTableColor,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBikeInfoItem({required String icon, required String label}) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FaIcon(
+            FontAwesomeIcons.whatsapp,
+            size: 12.w,
+            color: kBlackLightColor,
+          ),
+          SizedBox(height: 6.h),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: kTableColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 12.sp,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// White vertical divider that extends full height
+  Widget _buildVerticalDivider() {
+    return Container(
+      width: 1,
+      height: double.infinity,
+      color: Colors.white,
+    );
+  }
+
+  /// Reusable white circular icon button
+  Widget _buildCircleIconButton({
+    required Widget icon,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(50),
+      child: Container(
+        width: 40.w,
+        height: 40.w,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Center(child: icon),
+      ),
+    );
+  }
+
+  //tabs
+  Widget _buildInformationTab(bike) {
+    return Padding(
+      padding: kScreenPadding,
+      child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: Colors.grey.shade400, width: 1),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Table(
+          border: TableBorder(
+            horizontalInside: BorderSide(color: Colors.grey.shade400, width: 1),
+            verticalInside: BorderSide(color: Colors.grey.shade400, width: 1),
+          ),
+          columnWidths: const {0: FlexColumnWidth(1), 1: FlexColumnWidth(1)},
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: [
+            _buildStyledRow("Brand", bike.brandName!, 0),
+            _buildStyledRow("Model".tr, bike.modelName!, 1),
+            _buildStyledRow("Year".tr, bike.modelYear!, 2),
+            _buildStyledRow("Type".tr, bike.type!, 3),
+            _buildStyledRow("Condition".tr, bike.condition!, 4),
+            _buildStyledRow("Mileage".tr, "${bike.mileage} ${"KM".tr}", 5),
+            _buildStyledRow("Seats".tr, "${bike.seats}", 6),
+            _buildStyledRow("Engine".tr, bike.engine!, 7),
+            _buildStyledRow("City".tr, bike.cityName!, 8),
+            _buildStyledRow("Color".tr, bike.color!, 9),
+            _buildStyledRow("Ad ID".tr, bike.bikeId.toString(), 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeaturesTab(bike) {
+    return Padding(
+      padding: kScreenPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Create a single table with all features
+          ...bike.featureHeads.map<Widget>((e) => Container(
+            margin: EdgeInsets.only(bottom: 32.h),
+            child: Card(
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.r),
+                side: BorderSide(
+                  color: Colors.grey.shade400,
+                  width: 1,
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Table(
+                border: TableBorder(
+                  horizontalInside: BorderSide(
+                    color: Colors.grey.shade400,
+                    width: 1,
+                  ),
+                  verticalInside: BorderSide(
+                    color: Colors.grey.shade400,
+                    width: 1,
                   ),
                 ),
-              )
-            : CircularLoader();
-      }),
+                columnWidths: const {
+                  0: FlexColumnWidth(2),
+                  1: FlexColumnWidth(3),
+                },
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: List.generate(e.features.length, (index) {
+                  bool isOddRow = index % 2 == 1;
+                  Color rowColor =
+                  isOddRow ? Colors.grey.shade100 : Colors.white;
+
+                  return TableRow(
+                    decoration: BoxDecoration(color: rowColor),
+                    children: [
+                      // Icon cell
+                      Container(
+                        child: Center(
+                          child: ImageWidget(
+                            e.features[index].image,
+                            width: 30.w,
+                            height: 30.w,
+                          ),
+                        ),
+                      ),
+
+                      // Text cell
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          "${e.features[index].title}"
+                              "${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
+                          style: kLightTextStyle14.copyWith(
+                            color: kTableColor,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
+          )).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationTab(bike) {
+    return Padding(
+      padding: kHorizontalScreenPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Add your location content here
+          Text('Location content goes here'),
+          // Add map or location details
+        ],
+      ),
     );
   }
 }

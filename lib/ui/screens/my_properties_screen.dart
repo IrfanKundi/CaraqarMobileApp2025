@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart';
@@ -481,14 +482,10 @@ class MyPropertyItem extends StatelessWidget {
                     // Location
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/marker.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.locationDot,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -685,14 +682,10 @@ class MyPropertyItem extends StatelessWidget {
                       // Location
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/marker.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.locationDot,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -851,14 +844,10 @@ class MyRequestItem extends StatelessWidget {
                     // Location
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/marker.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.locationDot,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -983,14 +972,10 @@ class MyRequestItem extends StatelessWidget {
                       // Location
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/marker.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.locationDot,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(

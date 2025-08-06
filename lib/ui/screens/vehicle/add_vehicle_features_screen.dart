@@ -98,27 +98,34 @@ class AddVehicleFeaturesScreen extends GetView<VehicleController> {
                             width: 0.5.sw,
                             height: 30.h,
                             child: DropdownWidget(
-                              value: controller.vehicleFeatures.firstWhere((element) => element.featureId==item.featureId,orElse: ()=>null!).featureOption,
+                              value: controller.vehicleFeatures
+                                  .where((element) => element.featureId == item.featureId)
+                                  .firstOrNull
+                                  ?.featureOption,  // Extract the string value, not the whole object
                               onChanged: (val){
-                                var x = controller.vehicleFeatures.firstWhere((element) => element.featureId==item.featureId,orElse: ()=>null!);
+                                var x = controller.vehicleFeatures
+                                    .where((element) => element.featureId == item.featureId)
+                                    .firstOrNull;
 
-                                if(x!=null){
-                                  x.featureOption=val;
-                                }else{
-                                  var f=VehicleFeature();
-
-                                  f.headId=item.headId;
+                                if(x != null){
+                                  x.featureOption = val;
+                                } else {
+                                  var f = VehicleFeature();
+                                  f.headId = item.headId;
                                   f.featureAr = item.titleAr;
                                   f.featureEn = item.titleEn;
-                                  f.featureOption=val;
-                                  f.featureId=item.featureId;
+                                  f.featureOption = val;
+                                  f.featureId = item.featureId;
                                   controller.vehicleFeatures.add(f);
                                 }
 
                                 controller.update();
                               },
                               hint: "SelectOption",
-                              items: item.options!.split(",").map((e) => DropdownMenuItem(child: Text(e,style: kTextStyle14,),value: e,)).toList(),
+                              items: item.options!.split(",").map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e, style: kTextStyle14),
+                              )).toList(),
                             ),
                           ),
                         );

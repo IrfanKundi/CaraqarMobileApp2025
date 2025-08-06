@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:gif_view/gif_view.dart';
 import 'package:careqar/constants/colors.dart';
@@ -1166,14 +1167,10 @@ class _PropertyItemState extends State<PropertyItem> {
                             // Location
                             Row(
                               children: [
-                                SvgPicture.asset(
-                                  'assets/icon/marker.svg',
-                                  width: 12.w,
-                                  height: 12.w,
-                                  colorFilter: const ColorFilter.mode(
-                                    Color(0xFF4A90E2),
-                                    BlendMode.srcIn,
-                                  ),
+                                FaIcon(
+                                  FontAwesomeIcons.locationDot,
+                                  size: 12.w,
+                                  color: const Color(0xFF4A90E2),
                                 ),
                                 SizedBox(width: 4.w),
                                 Expanded(
@@ -1356,14 +1353,10 @@ class _PropertyItemState extends State<PropertyItem> {
                               // Location
                               Row(
                                 children: [
-                                  SvgPicture.asset(
-                                    'assets/icon/marker.svg',
-                                    width: 12.w,
-                                    height: 12.w,
-                                    colorFilter: const ColorFilter.mode(
-                                      Color(0xFF4A90E2),
-                                      BlendMode.srcIn,
-                                    ),
+                                  FaIcon(
+                                    FontAwesomeIcons.locationDot,
+                                    size: 12.w,
+                                    color: const Color(0xFF4A90E2),
                                   ),
                                   SizedBox(width: 4.w),
                                   Expanded(

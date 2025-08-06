@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart';
@@ -334,14 +335,10 @@ class _BikeItemState extends State<BikeItem> {
                     // YEAR + TYPE
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/calendar.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.calendar,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -357,14 +354,10 @@ class _BikeItemState extends State<BikeItem> {
                     SizedBox(height: 4.h),
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/pump.svg', // change to your bike svg
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.gasPump,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -380,14 +373,10 @@ class _BikeItemState extends State<BikeItem> {
                     // LOCATION
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/marker.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.locationDot,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -404,14 +393,10 @@ class _BikeItemState extends State<BikeItem> {
                     // MILEAGE
                     Row(
                       children: [
-                        SvgPicture.asset(
-                          'assets/icon/dashboard.svg',
-                          width: 12.w,
-                          height: 12.w,
-                          colorFilter: const ColorFilter.mode(
-                            Color(0xFF4A90E2),
-                            BlendMode.srcIn,
-                          ),
+                        FaIcon(
+                          FontAwesomeIcons.gaugeHigh,
+                          size: 12.w,
+                          color: const Color(0xFF4A90E2),
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -635,14 +620,10 @@ class _BikeItemState extends State<BikeItem> {
                       // LOCATION + TYPE
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/marker.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.locationDot,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -655,14 +636,10 @@ class _BikeItemState extends State<BikeItem> {
                             ),
                           ),
                           SizedBox(width: 8.w),
-                          SvgPicture.asset(
-                            'assets/icon/bike.svg', // your bike icon
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.motorcycle,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -683,14 +660,10 @@ class _BikeItemState extends State<BikeItem> {
                       // MILEAGE + YEAR
                       Row(
                         children: [
-                          SvgPicture.asset(
-                            'assets/icon/dashboard.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.gaugeHigh,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Text(
@@ -701,14 +674,10 @@ class _BikeItemState extends State<BikeItem> {
                             ),
                           ),
                           SizedBox(width: 16.w),
-                          SvgPicture.asset(
-                            'assets/icon/calendar.svg',
-                            width: 12.w,
-                            height: 12.w,
-                            colorFilter: const ColorFilter.mode(
-                              Color(0xFF4A90E2),
-                              BlendMode.srcIn,
-                            ),
+                          FaIcon(
+                            FontAwesomeIcons.calendar,
+                            size: 12.w,
+                            color: const Color(0xFF4A90E2),
                           ),
                           SizedBox(width: 4.w),
                           Text(
