@@ -110,7 +110,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   }
                 } else {
                   if(UserSession.isLoggedIn!){
-                    Get.toNamed(Routes.addPropertyScreen);
+                    //Get.toNamed(Routes.addPropertyScreen);
+                    Get.toNamed(Routes.newPropertyAdScreen,
+                    );
                   }else{
                     Get.toNamed(Routes.loginScreen);
                   }

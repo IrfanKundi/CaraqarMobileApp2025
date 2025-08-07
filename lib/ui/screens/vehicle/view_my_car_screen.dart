@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/controllers/add_car_controller.dart';
 import 'package:careqar/controllers/favorite_controller.dart';
 import 'package:careqar/controllers/car_controller.dart';
@@ -104,32 +105,59 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                               scrollPhysics: const BouncingScrollPhysics(),
                               enableInfiniteScroll: false,
                               viewportFraction: 1,
-                              enlargeCenterPage: true,
-                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                              enlargeCenterPage: false,
                               initialPage: controller.sliderIndex.value,
                               onPageChanged: (index, reason) {
                                 controller.sliderIndex.value = index;
                                 controller.update();
                               },
                             ),
-                            items: car?.images.map((item) {
+                            items: car!.images.map((item) {
                               return Builder(
                                 builder: (BuildContext context) {
                                   return GestureDetector(
                                     onTap: () {
                                       Get.toNamed(
-                                        Routes.viewImageScreen,
+                                        Routes.staggeredGalleryScreen,
                                         arguments: car.images,
-                                        parameters: {
-                                          "index": car.images.indexOf(item).toString()
-                                        },
                                       );
                                     },
-                                    child: ImageWidget(
-                                      item,
+                                    child: SizedBox(
                                       width: double.infinity,
                                       height: double.infinity,
-                                      fit: BoxFit.cover,
+                                      child: CachedNetworkImage(
+                                        imageUrl: item,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        fit: BoxFit.cover,
+                                        imageBuilder: (context, imageProvider) {
+                                          return Image(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                          );
+                                        },
+                                        placeholder: (context, url) => Container(
+                                          color: Colors.grey[200],
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) => Container(
+                                          color: Colors.grey[200],
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.error,
+                                              size: 50,
+                                            ),
+                                          ),
+                                        ),
+                                        memCacheWidth: 800,
+                                        memCacheHeight: 600,
+                                        maxWidthDiskCache: 1000,
+                                        maxHeightDiskCache: 1000,
+                                      ),
                                     ),
                                   );
                                 },

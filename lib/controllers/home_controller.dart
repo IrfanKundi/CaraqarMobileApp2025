@@ -55,14 +55,9 @@ class HomeController extends GetxController {
           this.index(index);
         }else{
             if (UserSession.isLoggedIn!) {
-              Get.toNamed(
-                Routes
-                    .newPropertyAdScreen,
-              );
+              Get.toNamed(Routes.myPropertiesScreen);
             } else {
-              Get.toNamed(
-                Routes.loginScreen,
-              );
+              Get.toNamed(Routes.loginScreen);
             }
         }
 

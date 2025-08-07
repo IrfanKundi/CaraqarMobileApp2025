@@ -77,46 +77,60 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                             autoPlay: true,
                             scrollPhysics: const BouncingScrollPhysics(),
                             enableInfiniteScroll: false,
-                            aspectRatio: 16 / 9,
                             viewportFraction: 1,
-                            enlargeCenterPage: true,
-                            enlargeStrategy: CenterPageEnlargeStrategy.height,
+                            enlargeCenterPage: false,
                             initialPage: controller.sliderIndex.value,
                             onPageChanged: (index, reason) {
                               controller.sliderIndex.value = index;
                               controller.update();
                             },
                           ),
-                          items: bike.images.map((item) {
+                          items: bike!.images.map((item) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GestureDetector(
                                   onTap: () {
-                                    // Images are already preloaded, navigation will be instant
                                     Get.toNamed(
                                       Routes.staggeredGalleryScreen,
                                       arguments: bike.images,
                                     );
                                   },
-                                  child: CachedNetworkImage(
-                                    imageUrl: item,
+                                  child: Container(
                                     width: double.infinity,
                                     height: double.infinity,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) => Container(
-                                      color: Colors.grey[200],
-                                      child: Center(
-                                        child: CircularProgressIndicator(),
+                                    child: CachedNetworkImage(
+                                      imageUrl: item,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
+                                      imageBuilder: (context, imageProvider) {
+                                        return Image(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        );
+                                      },
+                                      placeholder: (context, url) => Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
                                       ),
-                                    ),
-                                    errorWidget: (context, url, error) => Container(
-                                      color: Colors.grey[200],
-                                      child: Center(
-                                        child: Icon(Icons.error, size: 50),
+                                      errorWidget: (context, url, error) => Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.error,
+                                            size: 50,
+                                          ),
+                                        ),
                                       ),
+                                      memCacheWidth: 800,
+                                      memCacheHeight: 600,
+                                      maxWidthDiskCache: 1000,
+                                      maxHeightDiskCache: 1000,
                                     ),
-                                    maxWidthDiskCache: 1000,
-                                    maxHeightDiskCache: 1000,
                                   ),
                                 );
                               },
