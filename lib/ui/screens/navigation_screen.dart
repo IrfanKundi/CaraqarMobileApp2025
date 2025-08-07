@@ -69,8 +69,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   onTap: () => controller.updatePageIndex(0),
                 ),
                 _buildNavItem(
-                  icon: gIsVehicle ? FontAwesomeIcons.newspaper : FontAwesomeIcons.building,
-                  label: gIsVehicle ? "MyAds".tr : "Companies".tr,
+                  icon: FontAwesomeIcons.newspaper,
+                  label: "MyAds".tr,
                   index: 1,
                   isSelected: controller.index.value == 1,
                   onTap: () => controller.updatePageIndex(1),
@@ -80,7 +80,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 const SizedBox(width: 40),
 
                 _buildNavItem(
-                  icon: gIsVehicle ? FontAwesomeIcons.cartShopping : FontAwesomeIcons.handshake,
+                  icon: gIsVehicle ? FontAwesomeIcons.cartArrowDown : FontAwesomeIcons.handshake,
                   label: gIsVehicle ? "Cart".tr : "Requests".tr,
                   index: 3,
                   isSelected: controller.index.value == 3,
@@ -120,7 +120,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
               backgroundColor: const Color(0xFF8B1538),
               child: FaIcon(
                 FontAwesomeIcons.plus,
-                size: 44,
+                size: 40,
                 color: Colors.white,
               ),
             ),
@@ -139,35 +139,35 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 }
 //
-class RPSCustomPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint_0 = Paint()
-      ..color = kWhiteColor
-      ..style = PaintingStyle.fill
-      ..strokeWidth = 1;
-
-    Path path_0 = Path();
-    path_0.moveTo(0, size.height * 0.9950000);
-    path_0.lineTo(0, 0);
-    path_0.lineTo(size.width * 0.4000000, 0);
-    path_0.quadraticBezierTo(size.width * 0.4376250, size.height * 0.3525000,
-        size.width * 0.5005000, size.height * 0.3560000);
-    path_0.quadraticBezierTo(size.width * 0.5631875, size.height * 0.3512500,
-        size.width * 0.6002500, 0);
-    path_0.lineTo(size.width, 0);
-    path_0.lineTo(size.width, size.height);
-    path_0.lineTo(0, size.height * 0.9950000);
-    path_0.close();
-
-    canvas.drawPath(path_0, paint_0);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
+// class RPSCustomPainter extends CustomPainter {
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     Paint paint_0 = Paint()
+//       ..color = kWhiteColor
+//       ..style = PaintingStyle.fill
+//       ..strokeWidth = 1;
+//
+//     Path path_0 = Path();
+//     path_0.moveTo(0, size.height * 0.9950000);
+//     path_0.lineTo(0, 0);
+//     path_0.lineTo(size.width * 0.4000000, 0);
+//     path_0.quadraticBezierTo(size.width * 0.4376250, size.height * 0.3525000,
+//         size.width * 0.5005000, size.height * 0.3560000);
+//     path_0.quadraticBezierTo(size.width * 0.5631875, size.height * 0.3512500,
+//         size.width * 0.6002500, 0);
+//     path_0.lineTo(size.width, 0);
+//     path_0.lineTo(size.width, size.height);
+//     path_0.lineTo(0, size.height * 0.9950000);
+//     path_0.close();
+//
+//     canvas.drawPath(path_0, paint_0);
+//   }
+//
+//   @override
+//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+//     return true;
+//   }
+// }
 Widget _buildNavItem({
   required IconData icon,
   required String label,

@@ -17,132 +17,167 @@ class AddFeaturesScreen extends GetView<AddPropertyController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context,title: "AddFeatures",actions: [
-        TextButtonWidget(text: "Done",onPressed: (){
-          controller.featuresFormKey.value.currentState?.save();
-          Get.back();
-        },)
+      appBar: buildAppBar(context, title: "AddFeatures", actions: [
+        TextButtonWidget(
+          text: "Done",
+          onPressed: () {
+            controller.featuresFormKey.value.currentState?.save();
+            Get.back();
+          },
+        )
       ]),
-      body:
+      body: GetBuilder<AddPropertyController>(
+        builder: (controller) => controller.featureModel.value.featureHeads.isNotEmpty
+            ? Form(
+            key: controller.featuresFormKey.value,
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                var item = controller.featureModel.value.features[index];
 
-      GetBuilder<AddPropertyController>(
-        builder: (controller)=>controller.featureModel.value.featureHeads.isNotEmpty?
-         Form(
-           key: controller.featuresFormKey.value,
-           child: ListView.separated(itemBuilder: (context,index){
-                      var item=controller.featureModel.value.features[index];
-                      if(item.requireQty!){
-                        return ListTile(
-                          dense: true,
-                          title:Text(item.title!,style: kTextStyle14,),
-                          trailing: Container(
-                            width: 0.5.sw,
-                            height: 30.h,
-                            child: TextFieldWidget(
-                                text: controller.property.features
-                                    .firstWhereOrNull((element) => element.featureId == item.featureId)
-                                    ?.quantity?.toString(),
-                                keyboardType: TextInputType.number,
-                                onChanged: (String val) {
-                                  var x = controller.property.features
-                                      .firstWhereOrNull((element) => element.featureId == item.featureId);
-                                  if (x != null) {
-                                    if (val.trim() != "") {
-                                      x.quantity = int.parse(val);
-                                    } else {
-                                      controller.property.features.remove(x);
-                                    }
-                                  } else {
-                                    if (val.trim() != "") {
-                                      var f = PropertyFeature();
-                                      f.quantity = int.parse(val);
-                                      f.headId = item.headId;
-                                      f.featureAr = item.titleAr;
-                                      f.featureEn = item.titleEn;
-                                      f.featureId = item.featureId;
-                                      controller.property.features.add(f);
-                                    }
-                                  }
-                                }
-                            ),
-                          ),
-                        );
+                if (item.requireQty!) {
+                  return ListTile(
+                    dense: true,
+                    title: Text(item.title!, style: kTextStyle14),
+                    trailing: Container(
+                      width: 0.5.sw,
+                      height: 30.h,
+                      child: TextFieldWidget(
+                          text: controller.property.features
+                              .firstWhereOrNull((element) => element.featureId == item.featureId)
+                              ?.quantity?.toString(),
+                          keyboardType: TextInputType.number,
+                          onChanged: (String val) {
+                            var x = controller.property.features
+                                .firstWhereOrNull((element) => element.featureId == item.featureId);
+                            if (x != null) {
+                              if (val.trim() != "") {
+                                x.quantity = int.parse(val);
+                              } else {
+                                controller.property.features.remove(x);
+                              }
+                            } else {
+                              if (val.trim() != "") {
+                                var f = PropertyFeature();
+                                f.quantity = int.parse(val);
+                                f.headId = item.headId;
+                                f.featureAr = item.titleAr;
+                                f.featureEn = item.titleEn;
+                                f.featureId = item.featureId;
+                                controller.property.features.add(f);
+                              }
+                            }
+                          }
+                      ),
+                    ),
+                  );
+                } else if (item.options!.isNotEmpty) {
+                  // Convert dropdown to checkboxes
+                  List<String> options = item.options!.split(",");
 
-                      }else if(item.options!.isNotEmpty){
+                  // Get currently selected options for this feature
+                  List<String> selectedOptions = controller.property.features
+                      .where((element) => element.featureId == item.featureId)
+                      .map((e) => e.featureOption ?? "")
+                      .where((option) => option.isNotEmpty)
+                      .toList();
 
-                        return ListTile(
-                          dense: true,
-                          title: Text(item.title!,style: kTextStyle14,),
-                          trailing: Container(
-                            width: 0.5.sw,
-                            height: 30.h,
-                            child: DropdownWidget(
-                              value: controller.property.features
-                                  .firstWhereOrNull((element) => element.featureId == item.featureId)
-                                  ?.featureOption,
-                              onChanged: (val) {
-                                var x = controller.property.features
-                                    .firstWhereOrNull((element) => element.featureId == item.featureId);
-                                if (x != null) {
-                                  x.featureOption = val;
+                  return ListTile(
+                    dense: true,
+                    title: Text(item.title!, style: kTextStyle14),
+                    trailing: Container(
+                      width: 0.5.sw,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: options.map((option) {
+                          bool isSelected = selectedOptions.contains(option);
+
+                          return Padding(
+                            padding: EdgeInsets.only(left: 8.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (isSelected) {
+                                  // Remove this option
+                                  controller.property.features.removeWhere(
+                                          (element) =>
+                                      element.featureId == item.featureId &&
+                                          element.featureOption == option
+                                  );
                                 } else {
+                                  // Add this option
                                   var f = PropertyFeature();
                                   f.headId = item.headId;
                                   f.featureAr = item.titleAr;
                                   f.featureEn = item.titleEn;
-                                  f.featureOption = val;
+                                  f.featureOption = option;
                                   f.featureId = item.featureId;
                                   controller.property.features.add(f);
                                 }
                                 controller.update();
                               },
-                              hint: "SelectOption",
-                              items: item.options!.split(",").map((e) => DropdownMenuItem(
-                                child: Text(e, style: kTextStyle14),
-                                value: e,
-                              )).toList(),
+                              child: Container(
+                                padding: EdgeInsets.all(4.w),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: isSelected ? kAccentColor : Colors.transparent,
+                                  border: Border.all(
+                                    color: isSelected ? kAccentColor : kGreyColor,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.check,
+                                  size: 16.sp,
+                                  color: isSelected ? Colors.white : Colors.transparent,
+                                ),
+                              ),
                             ),
-                          ),
-                        );
-                      }else {
-                        return ListTile(
-                          dense: true,
-                          title: Text(item.title!,style: kTextStyle14,),
-                          onTap: (){
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                } else {
+                  return ListTile(
+                    dense: true,
+                    title: Text(item.title!, style: kTextStyle14),
+                    onTap: () {
+                      var x = controller.property.features.firstWhere(
+                              (element) => element.featureId == item.featureId,
+                          orElse: () => null!
+                      );
 
-                            var x = controller.property.features.firstWhere((element) => element.featureId==item.featureId,orElse: ()=>null!);
-
-                            if(x!=null){
-                              controller.property.features.remove(x);
-                            }else{
-                              var f=PropertyFeature();
-
-                              f.headId=item.headId;
-                              f.featureAr = item.titleAr;
-                              f.featureEn = item.titleEn;
-                              f.featureId=item.featureId;
-                              controller.property.features.add(f);
-                            }
-
-                            controller.update();
-
-                          },
-                          trailing: Icon(MaterialCommunityIcons.check_circle,size: 20.sp,color: controller.property.features.any((element) => element.featureId==item.featureId)? kAccentColor: kGreyColor,),
-                        );
+                      if (x != null) {
+                        controller.property.features.remove(x);
+                      } else {
+                        var f = PropertyFeature();
+                        f.headId = item.headId;
+                        f.featureAr = item.titleAr;
+                        f.featureEn = item.titleEn;
+                        f.featureId = item.featureId;
+                        controller.property.features.add(f);
                       }
-                    }, separatorBuilder: (context,index){
-                      return kVerticalSpace12;
-                    }, itemCount: controller.featureModel.value.features.length,
 
-                      shrinkWrap:
-                      true,)
-
-
-
-         ):
-        Center(child: Text("NoDataFound".tr,style: kTextStyle16,))
-        ,
-      )
+                      controller.update();
+                    },
+                    trailing: Icon(
+                      MaterialCommunityIcons.check_circle,
+                      size: 20.sp,
+                      color: controller.property.features.any((element) => element.featureId == item.featureId)
+                          ? kAccentColor
+                          : kGreyColor,
+                    ),
+                  );
+                }
+              },
+              separatorBuilder: (context, index) {
+                return kVerticalSpace12;
+              },
+              itemCount: controller.featureModel.value.features.length,
+              shrinkWrap: true,
+            )
+        )
+            : Center(child: Text("NoDataFound".tr, style: kTextStyle16)),
+      ),
     );
   }
 }

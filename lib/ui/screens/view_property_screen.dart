@@ -487,27 +487,27 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                           children: [
                             if (property.floors! > 0 && property.floors != null)
                               _buildPropertyInfoItem(
-                                icon: "assets/images/floor.png",
+                                icon: FontAwesomeIcons.building,
                                 label: "${property.floors} ${"Floors".tr}",
                               ),
                             if (property.bedrooms! > 0 && property.bedrooms != null)
                               _buildPropertyInfoItem(
-                                icon: "assets/images/bedroom.png",
+                                icon: FontAwesomeIcons.bed,
                                 label: "${property.bedrooms} ${"Beds".tr}",
                               ),
                             if (property.baths! > 0 && property.baths != null)
                               _buildPropertyInfoItem(
-                                icon: "assets/images/shower.png",
+                                icon: FontAwesomeIcons.shower,
                                 label: "${property.baths} ${"Baths".tr}",
                               ),
                             if (property.kitchens! > 0 && property.kitchens != null)
                               _buildPropertyInfoItem(
-                                icon: "assets/images/kitchen.png",
+                                icon: FontAwesomeIcons.kitchenSet,
                                 label: "${property.kitchens} ${"Kitchens".tr}",
                               ),
                             if (property.furnished != "" && property.furnished != null)
                               _buildPropertyInfoItem(
-                                icon: "assets/images/furnished.png",
+                                icon: FontAwesomeIcons.couch,
                                 label: "${property.furnished!.tr} ${"Furnished".tr}",
                               ),
                           ],
@@ -1057,14 +1057,13 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
     );
   }
 
-  Widget _buildPropertyInfoItem({required String icon, required String label}) {
+  Widget _buildPropertyInfoItem({required IconData icon, required String label}) {
     return SizedBox(
       child: Column(
         children: [
-          Image.asset(
+          FaIcon(
             icon,
-            width: 25.w,
-            height: 25.w,
+            size: 25.w,
             color: kLightBlueColor,
           ),
           Text(
@@ -1298,7 +1297,14 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
     );
   }
 }
-
+Widget _buildDivider() {
+  return Container(
+    width: 1,
+    height: 40.h,
+    color: Colors.white,
+    margin: EdgeInsets.symmetric(horizontal: 8.w),
+  );
+}
 String encodeQueryParameters(Map<String, String> params) {
   return params.entries
       .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(

@@ -338,7 +338,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                           _buildVerticalDivider(),
                           Expanded(
                             child: _buildCarInfoItem(
-                              icon: FontAwesomeIcons.gaugeHigh,
+                              icon: FontAwesomeIcons.gauge,
                               label: car.mileage!,
                             ),
                           ),

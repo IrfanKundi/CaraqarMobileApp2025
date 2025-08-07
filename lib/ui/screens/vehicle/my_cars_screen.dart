@@ -710,7 +710,7 @@ class MyCarItem extends StatelessWidget {
                     Row(
                       children: [
                         FaIcon(
-                          FontAwesomeIcons.gaugeHigh,
+                          FontAwesomeIcons.gauge,
                           size: 12.w,
                           color: const Color(0xFF4A90E2),
                         ),
@@ -931,7 +931,7 @@ class MyCarItem extends StatelessWidget {
                       Row(
                         children: [
                           FaIcon(
-                            FontAwesomeIcons.gaugeHigh,
+                            FontAwesomeIcons.gauge,
                             size: 12.w,
                             color: const Color(0xFF4A90E2),
                           ),
@@ -1180,7 +1180,7 @@ class MyBikeItem extends StatelessWidget {
                     Row(
                       children: [
                         FaIcon(
-                          FontAwesomeIcons.gaugeHigh,
+                          FontAwesomeIcons.gauge,
                           size: 12.w,
                           color: const Color(0xFF4A90E2),
                         ),
@@ -1401,7 +1401,7 @@ class MyBikeItem extends StatelessWidget {
                       Row(
                         children: [
                           FaIcon(
-                            FontAwesomeIcons.gaugeHigh,
+                            FontAwesomeIcons.gauge,
                             size: 12.w,
                             color: const Color(0xFF4A90E2),
                           ),

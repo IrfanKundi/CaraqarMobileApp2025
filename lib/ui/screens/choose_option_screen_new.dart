@@ -1,20 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:careqar/constants/colors.dart';
-import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/auth_controller.dart';
-import 'package:careqar/locale/app_localizations.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/screens/countries_splash_screen.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -24,12 +17,6 @@ import '../../controllers/country_controller.dart';
 import '../../controllers/type_controller.dart';
 import '../../global_variables.dart';
 import '../../models/content_model.dart';
-
-import 'dart:async';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import '../../user_session.dart';
 
 class ChooseOptionScreenNew extends StatefulWidget {

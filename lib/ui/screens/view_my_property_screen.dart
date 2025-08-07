@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/add_property_controller.dart';
@@ -10,7 +11,6 @@ import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -100,8 +100,7 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                               scrollPhysics: const BouncingScrollPhysics(),
                               enableInfiniteScroll: false,
                               viewportFraction: 1,
-                              enlargeCenterPage: true,
-                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                              enlargeCenterPage: false,
                               initialPage: controller.sliderIndex.value,
                               onPageChanged: (index, reason) {
                                 controller.sliderIndex.value = index;
@@ -114,18 +113,46 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                   return GestureDetector(
                                     onTap: () {
                                       Get.toNamed(
-                                        Routes.viewImageScreen,
+                                        Routes.staggeredGalleryScreen,
                                         arguments: property.images,
-                                        parameters: {
-                                          "index": property.images.indexOf(item).toString()
-                                        },
                                       );
                                     },
-                                    child: ImageWidget(
-                                      item,
+                                    child: SizedBox(
                                       width: double.infinity,
                                       height: double.infinity,
-                                      fit: BoxFit.cover,
+                                      child: CachedNetworkImage(
+                                        imageUrl: item,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        fit: BoxFit.cover,
+                                        imageBuilder: (context, imageProvider) {
+                                          return Image(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                          );
+                                        },
+                                        placeholder: (context, url) => Container(
+                                          color: Colors.grey[200],
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) => Container(
+                                          color: Colors.grey[200],
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.error,
+                                              size: 50,
+                                            ),
+                                          ),
+                                        ),
+                                        memCacheWidth: 800,
+                                        memCacheHeight: 600,
+                                        maxWidthDiskCache: 1000,
+                                        maxHeightDiskCache: 1000,
+                                      ),
                                     ),
                                   );
                                 },

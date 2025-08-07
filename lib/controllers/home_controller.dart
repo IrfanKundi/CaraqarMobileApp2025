@@ -54,7 +54,16 @@ class HomeController extends GetxController {
         if(gIsVehicle){
           this.index(index);
         }else{
-          Get.toNamed(Routes.companiesScreen,arguments: "Real State");
+            if (UserSession.isLoggedIn!) {
+              Get.toNamed(
+                Routes
+                    .newPropertyAdScreen,
+              );
+            } else {
+              Get.toNamed(
+                Routes.loginScreen,
+              );
+            }
         }
 
       }

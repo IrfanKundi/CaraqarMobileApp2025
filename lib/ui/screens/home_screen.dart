@@ -405,9 +405,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     )
                                     : SizedBox(),
                                 kVerticalSpace8,
-                                Positioned(
-                                  bottom: Platform.isIOS ? 0.15.sh : 0.14.sh,
-                                  child: Container(
+                                 Container(
                                     margin: EdgeInsets.symmetric(
                                       horizontal: 8.w,
                                     ),
@@ -451,20 +449,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         ),
                                         kHorizontalSpace8,
                                         Expanded(
-                                          child: Stack(
-                                            children: [
-                                              GestureDetector(
+                                          child: GestureDetector(
                                                 onTap: () {
-                                                  if (UserSession.isLoggedIn!) {
-                                                    Get.toNamed(
-                                                      Routes
-                                                          .newPropertyAdScreen,
-                                                    );
-                                                  } else {
-                                                    Get.toNamed(
-                                                      Routes.loginScreen,
-                                                    );
-                                                  }
+                                                  Get.toNamed(Routes.companiesScreen,arguments: "Real State");
                                                 },
                                                 child: Container(
                                                   height: 40.h,
@@ -478,7 +465,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         kBorderRadius8,
                                                   ),
                                                   child: Text(
-                                                    "NewAd".tr,
+                                                    "Societies".tr,
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       color: kWhiteColor,
@@ -487,24 +474,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   ),
                                                 ),
                                               ),
-                                              PositionedDirectional(
-                                                top: -8.h,
-                                                start: -10.w,
-                                                child: ClipRect(
-                                                  child: Banner(
-                                                    message: "Free".tr,
-                                                    location:
-                                                        BannerLocation.topStart,
-                                                    color: Colors.red,
-                                                    child: SizedBox(
-                                                      height: 50.h,
-                                                      width: 50.w,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
                                         ),
                                         kHorizontalSpace8,
                                         Expanded(
@@ -546,9 +515,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
-                                ),
                                 kVerticalSpace8,
-
                                 // error
                                 Container(
                                   margin: EdgeInsets.symmetric(horizontal: 4.w),
@@ -679,6 +646,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             ),
                                   ),
                                 ),
+                                SizedBox(height: 5.h),
                               ],
                             ),
                           ),
