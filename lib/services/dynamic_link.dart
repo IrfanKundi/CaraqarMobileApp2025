@@ -34,9 +34,10 @@ class DynamicLink {
       final ShortDynamicLink shortLink = await dynamicLinks.buildShortLink(
           parameters);
       url = shortLink.shortUrl;
-    } else {
-      url = await dynamicLinks.buildLink(parameters);
     }
+    // else {
+    //   url = await dynamicLinks.buildLink(parameters);
+    // }
 
     EasyLoading.dismiss();
     return  url.toString();
