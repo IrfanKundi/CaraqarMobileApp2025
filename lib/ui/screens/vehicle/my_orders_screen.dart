@@ -1,32 +1,18 @@
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/order_controller.dart';
-import 'package:careqar/controllers/vehicle_controller.dart';
 import 'package:careqar/enums.dart';
-import 'package:careqar/models/car_model.dart';
 import 'package:careqar/models/order_model.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/screens/vehicle/bikes_screen.dart';
-import 'package:careqar/ui/screens/vehicle/number_plates_screen.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
-import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:careqar/ui/widgets/text_button_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart';
 
-import '../../../controllers/bike_controller.dart';
-import '../../../controllers/car_controller.dart';
-import '../../../controllers/number_plate_controller.dart';
 import '../../../global_variables.dart';
-import '../../../models/bike_model.dart';
-import 'cars_screen.dart';
 
 class MyOrdersScreen extends StatefulWidget {
 

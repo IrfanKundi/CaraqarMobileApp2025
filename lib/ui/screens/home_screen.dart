@@ -1,17 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:careqar/ui/screens/vehicle/coming_soon_screen.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:gif_view/gif_view.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
@@ -22,13 +11,21 @@ import 'package:careqar/enums.dart';
 import 'package:careqar/global_variables.dart';
 import 'package:careqar/models/property_model.dart';
 import 'package:careqar/routes.dart';
+import 'package:careqar/ui/screens/vehicle/coming_soon_screen.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/countries_bottom_sheet.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:careqar/ui/widgets/shimmer_widget.dart';
-import 'package:careqar/user_session.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:gif_view/gif_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart';
 import 'package:video_player/video_player.dart';
@@ -1138,7 +1135,7 @@ class _PropertyItemState extends State<PropertyItem> {
                                 FaIcon(
                                   FontAwesomeIcons.locationDot,
                                   size: 12.w,
-                                  color: const Color(0xFF4A90E2),
+                                  color: kIconColor,
                                 ),
                                 SizedBox(width: 4.w),
                                 Expanded(
@@ -1161,7 +1158,7 @@ class _PropertyItemState extends State<PropertyItem> {
                                 Icon(
                                   CupertinoIcons.map_pin_ellipse,
                                   size: 14.sp,
-                                  color: const Color(0xFF4A90E2),
+                                  color: kIconColor,
                                 ),
                                 SizedBox(width: 4.w),
                                 Expanded(
@@ -1324,7 +1321,7 @@ class _PropertyItemState extends State<PropertyItem> {
                                   FaIcon(
                                     FontAwesomeIcons.locationDot,
                                     size: 12.w,
-                                    color: const Color(0xFF4A90E2),
+                                    color: kIconColor,
                                   ),
                                   SizedBox(width: 4.w),
                                   Expanded(
@@ -1347,7 +1344,7 @@ class _PropertyItemState extends State<PropertyItem> {
                                   Icon(
                                     CupertinoIcons.map_pin_ellipse,
                                     size: 14.sp,
-                                    color: const Color(0xFF4A90E2),
+                                    color: kIconColor,
                                   ),
                                   SizedBox(width: 4.w),
                                   Expanded(

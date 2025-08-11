@@ -58,7 +58,7 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                               String url = await DynamicLink
                                   .createDynamicLink(false,
                                   uri: "/bike?bikeId=${bike
-                                      ?.bikeId}",title:"${bike?.brandName} ${bike?.modelName} ${bike?.modelYear}",desc: bike?.description,image: bike?.images.first);
+                                      .bikeId}",title:"${bike.brandName} ${bike.modelName} ${bike.modelYear}",desc: bike.description,image: bike.images.first);
                               Share.share(url);
                             },),
                         ],
@@ -85,7 +85,7 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                               controller.update();
                             },
                           ),
-                          items: bike!.images.map((item) {
+                          items: bike.images.map((item) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GestureDetector(
@@ -95,7 +95,7 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                                       arguments: bike.images,
                                     );
                                   },
-                                  child: Container(
+                                  child: SizedBox(
                                     width: double.infinity,
                                     height: double.infinity,
                                     child: CachedNetworkImage(

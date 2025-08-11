@@ -6,18 +6,14 @@ import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/services/dynamic_link.dart';
-import 'package:careqar/ui/screens/view_property_screen.dart';
-import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -31,10 +27,9 @@ import '../../../controllers/favorite_controller.dart';
 import '../../../controllers/view_bike_controller.dart';
 import '../../../global_variables.dart';
 import '../../widgets/button_widget.dart';
-import '../../widgets/text_field_widget.dart';
 
 class ViewBikeScreen extends GetView<ViewBikeController> {
-  ViewBikeScreen({Key? key}) : super(key: key) {
+  ViewBikeScreen({super.key}) {
     //print(Get.arguments);
     controller.sliderIndex(0);
   }
@@ -308,7 +303,7 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                     FaIcon(
                                       FontAwesomeIcons.clock,
                                       size: 12.w,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Text(
@@ -330,7 +325,7 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                     FaIcon(
                                       FontAwesomeIcons.locationDot,
                                       size: 12.w,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Expanded(
@@ -382,7 +377,7 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                           icon: FaIcon(
                                             FontAwesomeIcons.phone,
                                             size: 20.w,
-                                            color: kBlackLightColor,
+                                            color: kIconColor,
                                           ),
                                           onTap: () async {
                                             controller.updateClicks(
@@ -395,10 +390,39 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                         ),
                                         SizedBox(width: 8.w),
                                         _buildCircleIconButton(
+                                          image: 'assets/images/whatsapp.png',
+                                          onTap: () async {
+                                            controller.updateClicks(
+                                              isWhatsapp: true,
+                                            );
+                                            String adUrl = await DynamicLink
+                                                .createDynamicLink(
+                                              false,
+                                              uri:
+                                              "/Bikes/Detail/${bike.bikeId!}",
+                                              title:
+                                              "${bike.brandName!} ${bike.modelName} ${bike.modelYear}",
+                                              desc: bike.description,
+                                              image: bike.images.first,
+                                            );
+                                            String message =
+                                            Uri.encodeFull(
+                                              "Hello,\n${bike.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
+                                            );
+                                            String url = Platform.isIOS
+                                                ? "https://wa.me/${bike.contactNo}?text=$message"
+                                                : "whatsapp://send?phone=${bike.contactNo}&text=$message";
+                                            await launchUrl(
+                                              Uri.parse(url),
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        _buildCircleIconButton(
                                           icon: FaIcon(
                                             FontAwesomeIcons.comment,
                                             size: 20.w,
-                                            color: kBlackLightColor,
+                                            color: kIconColor,
                                           ),
                                           onTap: () async {
                                             controller.updateClicks(
@@ -431,39 +455,6 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                                 email);
                                           },
                                         ),
-                                        SizedBox(width: 8.w),
-                                        _buildCircleIconButton(
-                                          icon: FaIcon(
-                                            FontAwesomeIcons.whatsapp,
-                                            size: 20.w,
-                                            color: kBlackLightColor,
-                                          ),
-                                          onTap: () async {
-                                            controller.updateClicks(
-                                              isWhatsapp: true,
-                                            );
-                                            String adUrl = await DynamicLink
-                                                .createDynamicLink(
-                                              false,
-                                              uri:
-                                              "/Bikes/Detail/${bike.bikeId!}",
-                                              title:
-                                              "${bike.brandName!} ${bike.modelName} ${bike.modelYear}",
-                                              desc: bike.description,
-                                              image: bike.images.first,
-                                            );
-                                            String message =
-                                            Uri.encodeFull(
-                                              "Hello,\n${bike.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
-                                            );
-                                            String url = Platform.isIOS
-                                                ? "https://wa.me/${bike.contactNo}?text=$message"
-                                                : "whatsapp://send?phone=${bike.contactNo}&text=$message";
-                                            await launchUrl(
-                                              Uri.parse(url),
-                                            );
-                                          },
-                                        ),
                                       ],
                                     ),
                                   ],
@@ -489,21 +480,21 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                         children: [
                           Expanded(
                             child: _buildBikeInfoItem(
-                              icon: "assets/images/calender.png",
+                              icon: FontAwesomeIcons.calendar,
                               label: bike.modelYear!,
                             ),
                           ),
                           _buildVerticalDivider(),
                           Expanded(
                             child: _buildBikeInfoItem(
-                              icon: "assets/images/speedcounter.png",
+                              icon: FontAwesomeIcons.tachometerAlt,
                               label: bike.mileage!,
                             ),
                           ),
                           _buildVerticalDivider(),
                           Expanded(
                             child: _buildBikeInfoItem(
-                              icon: "assets/images/benzin.png",
+                              icon: FontAwesomeIcons.gasPump,
                               label: bike.fuelType!.tr,
                             ),
                           ),
@@ -1115,15 +1106,15 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
     );
   }
 
-  Widget _buildBikeInfoItem({required String icon, required String label}) {
+  Widget _buildBikeInfoItem({required IconData icon, required String label}) {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FaIcon(
-            FontAwesomeIcons.whatsapp,
-            size: 12.w,
-            color: kBlackLightColor,
+            icon,
+            size: 20.w,
+            color: kIconColor,
           ),
           SizedBox(height: 6.h),
           Text(
@@ -1151,7 +1142,8 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
 
   /// Reusable white circular icon button
   Widget _buildCircleIconButton({
-    required Widget icon,
+    Widget? icon,
+    String? image,
     required VoidCallback onTap,
   }) {
     return InkWell(
@@ -1171,7 +1163,15 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
             ),
           ],
         ),
-        child: Center(child: icon),
+        child: Center(
+          child: image != null
+              ? Image.asset(
+            image,
+            width: 24.w,
+            height: 24.w,
+          )
+              : icon,
+        ),
       ),
     );
   }
@@ -1271,8 +1271,8 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          "${e.features[index].title}"
-                              "${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
+                          "${e.features[index].title}",
+                              //"${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
                           style: kLightTextStyle14.copyWith(
                             color: kTableColor,
                             fontWeight: FontWeight.w300,

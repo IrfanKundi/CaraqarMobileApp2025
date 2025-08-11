@@ -1,16 +1,7 @@
-import 'package:careqar/constants/colors.dart';
-import 'package:careqar/constants/strings.dart';
 import 'package:careqar/global_variables.dart';
-import 'package:careqar/locale/app_localizations.dart';
-import 'package:careqar/routes.dart';
-import 'package:careqar/services/location_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import '../../user_session.dart';
 

@@ -3,7 +3,6 @@ import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/add_property_controller.dart';
 import 'package:careqar/models/property_model.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
-import 'package:careqar/ui/widgets/dropdown_widget.dart';
 import 'package:careqar/ui/widgets/text_button_widget.dart';
 import 'package:careqar/ui/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';

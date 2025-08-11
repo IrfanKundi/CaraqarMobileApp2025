@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
-import 'package:careqar/controllers/company_controller.dart';
-import 'package:careqar/controllers/content_controller.dart';
 import 'package:careqar/controllers/service_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
@@ -12,14 +10,11 @@ import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-import 'package:gif_view/gif_view.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 
 class ServiceProvidersScreen extends GetView<ServiceController> {
 

@@ -227,7 +227,7 @@ class RequestPropertyScreen extends GetView<AddRequestController> {
               ,kVerticalSpace4,
 
               Obx(()=>
-                  DefaultTabController(length: controller.typeController.typeModel.value.types.length, child: Container(
+                  DefaultTabController(length: controller.typeController.typeModel.value.types.length, child: SizedBox(
                     height: 100.h,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -249,7 +249,7 @@ class RequestPropertyScreen extends GetView<AddRequestController> {
 
                         kVerticalSpace16,
                         GetBuilder<AddRequestController>(
-                          builder:(controller)=> Container(
+                          builder:(controller)=> SizedBox(
                             height: 30.h,
                             child: TabBarView(children: controller.typeController.typeModel.value.types.map((e) =>
                                 ListView.separated(

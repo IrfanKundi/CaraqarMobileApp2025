@@ -1,23 +1,11 @@
 import 'dart:io';
 
 import 'package:careqar/constants/colors.dart';
-import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
-import 'package:careqar/controllers/company_controller.dart';
-import 'package:careqar/enums.dart';
-import 'package:careqar/global_variables.dart';
-import 'package:careqar/models/company_model.dart';
 import 'package:careqar/models/service_model.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/screens/home_screen.dart';
-import 'package:careqar/ui/screens/vehicle/bikes_screen.dart';
-import 'package:careqar/ui/screens/vehicle/number_plates_screen.dart';
-import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
-import 'package:careqar/ui/widgets/button_widget.dart';
-import 'package:careqar/ui/widgets/circular_loader.dart';
-import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:flutter/material.dart';

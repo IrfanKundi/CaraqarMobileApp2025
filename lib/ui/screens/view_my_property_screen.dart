@@ -33,8 +33,8 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
 
   @override
   Widget build(BuildContext context) {
-    String? mapImage = gSelectedCountry?.mapImage;
-    String cleanedMapImage = mapImage!.replaceAll('\r\n', '');
+    //String? mapImage = gSelectedCountry?.mapImage;
+    //String cleanedMapImage = mapImage!.replaceAll('\r\n', '');
     return Obx(() {
       var property = controller.property.value;
       List<String> coords = property!.coordinates.split(',');
@@ -249,7 +249,7 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                     Icon(
                                       MaterialCommunityIcons.map_marker_outline,
                                       size: 12.sp,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Expanded(
@@ -333,7 +333,7 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                         Icon(
                                           CupertinoIcons.map_pin_ellipse,
                                           size: 16.sp,
-                                          color: kBlackLightColor,
+                                          color: kIconColor,
                                         ),
                                         SizedBox(width: 4.w),
                                         Text(
@@ -893,20 +893,18 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                   return TableRow(
                     decoration: BoxDecoration(color: rowColor),
                     children: [
-                      Container(
-                        child: Center(
-                          child: ImageWidget(
-                            e.features[index].image,
-                            width: 30.w,
-                            height: 30.w,
-                          ),
+                      Center(
+                        child: ImageWidget(
+                          e.features[index].image,
+                          width: 30.w,
+                          height: 30.w,
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          "${e.features[index].title}"
-                              "${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
+                          "${e.features[index].title}",
+                             // "${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
                           style: kLightTextStyle14.copyWith(
                             color: kTableColor,
                             fontWeight: FontWeight.w300,

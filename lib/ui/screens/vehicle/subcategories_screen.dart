@@ -7,13 +7,11 @@ import 'package:careqar/routes.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/category_controller.dart';
-import '../../../controllers/vehicle_controller.dart';
 
 class SubCategoriesScreen extends StatelessWidget {
    SubCategoriesScreen({Key? key}) : super(key: key);

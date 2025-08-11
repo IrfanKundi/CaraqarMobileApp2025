@@ -6,7 +6,6 @@ import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/auth_controller.dart';
 import 'package:careqar/locale/app_localizations.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/screens/countries_splash_screen.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';

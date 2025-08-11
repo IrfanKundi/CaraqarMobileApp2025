@@ -9,10 +9,8 @@ import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -338,7 +336,7 @@ class _BikeItemState extends State<BikeItem> {
                         FaIcon(
                           FontAwesomeIcons.calendar,
                           size: 12.w,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -357,7 +355,7 @@ class _BikeItemState extends State<BikeItem> {
                         FaIcon(
                           FontAwesomeIcons.gasPump,
                           size: 12.w,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -376,7 +374,7 @@ class _BikeItemState extends State<BikeItem> {
                         FaIcon(
                           FontAwesomeIcons.locationDot,
                           size: 12.w,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -396,7 +394,7 @@ class _BikeItemState extends State<BikeItem> {
                         FaIcon(
                           FontAwesomeIcons.gauge,
                           size: 12.w,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Text(
@@ -623,7 +621,7 @@ class _BikeItemState extends State<BikeItem> {
                           FaIcon(
                             FontAwesomeIcons.locationDot,
                             size: 12.w,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -639,7 +637,7 @@ class _BikeItemState extends State<BikeItem> {
                           FaIcon(
                             FontAwesomeIcons.motorcycle,
                             size: 12.w,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -663,7 +661,7 @@ class _BikeItemState extends State<BikeItem> {
                           FaIcon(
                             FontAwesomeIcons.gauge,
                             size: 12.w,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Text(
@@ -677,7 +675,7 @@ class _BikeItemState extends State<BikeItem> {
                           FaIcon(
                             FontAwesomeIcons.calendar,
                             size: 12.w,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Text(

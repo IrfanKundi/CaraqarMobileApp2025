@@ -32,7 +32,7 @@ class AddPropertyScreen extends GetView<AddPropertyController> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> plotSizes = ["Marla", "Kanal", "Acre"];
+   // final List<String> plotSizes = ["Marla", "Kanal", "Acre"];
     return Scaffold(
       //appBar: buildAppBar(context,title: "AddProperty")
       //,

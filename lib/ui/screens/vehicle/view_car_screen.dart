@@ -14,7 +14,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -309,7 +308,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                             FaIcon(
                                               FontAwesomeIcons.clock,
                                               size: 12.w,
-                                              color: kBlackLightColor,
+                                              color: kIconColor,
                                             ),
                                             SizedBox(width: 4.w),
                                             Text(
@@ -332,7 +331,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                             FaIcon(
                                               FontAwesomeIcons.locationDot,
                                               size: 12.w,
-                                              color: kBlackLightColor,
+                                              color: kIconColor,
                                             ),
                                             SizedBox(width: 4.w),
                                             Expanded(
@@ -385,7 +384,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                   icon: FaIcon(
                                                     FontAwesomeIcons.phone,
                                                     size: 20.w,
-                                                    color: kBlackLightColor,
+                                                    color: kIconColor,
                                                   ),
                                                   onTap: () async {
                                                     controller.updateClicks(
@@ -396,49 +395,41 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                     );
                                                   },
                                                 ),
+
                                                 SizedBox(width: 8.w),
                                                 _buildCircleIconButton(
-                                                  icon: FaIcon(
-                                                    FontAwesomeIcons.comment,
-                                                    size: 20.w,
-                                                    color: kBlackLightColor,
-                                                  ),
-                                                  onTap: () {
-                                                    // Add your SMS or chat logic
+                                                  image: 'assets/images/whatsapp.png',
+                                                  onTap: () async {
+                                                    controller.updateClicks(
+                                                      isWhatsapp: true,
+                                                    );
+                                                    String adUrl = await DynamicLink.createDynamicLink(
+                                                      false,
+                                                      uri: "/Cars/Detail/${car.carId!}",
+                                                      title: "${car.brandName!} ${car.modelName} ${car.modelYear}",
+                                                      desc: car.description,
+                                                      image: car.images.first,
+                                                    );
+                                                    String message = Uri.encodeFull(
+                                                      "Hello,\n${car.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
+                                                    );
+                                                    String url = Platform.isIOS
+                                                        ? "https://wa.me/${car.contactNo}?text=$message"
+                                                        : "whatsapp://send?phone=${car.contactNo}&text=$message";
+                                                    await launchUrl(
+                                                      Uri.parse(url),
+                                                    );
                                                   },
                                                 ),
                                                 SizedBox(width: 8.w),
                                                 _buildCircleIconButton(
                                                   icon: FaIcon(
-                                                    FontAwesomeIcons.whatsapp,
+                                                    FontAwesomeIcons.comment,
                                                     size: 20.w,
-                                                    color: kBlackLightColor,
+                                                    color: kIconColor,
                                                   ),
-                                                  onTap: () async {
-                                                    controller.updateClicks(
-                                                      isWhatsapp: true,
-                                                    );
-                                                    String
-                                                    adUrl = await DynamicLink.createDynamicLink(
-                                                      false,
-                                                      uri:
-                                                          "/Cars/Detail/${car.carId!}",
-                                                      title:
-                                                          "${car.brandName!} ${car.modelName} ${car.modelYear}",
-                                                      desc: car.description,
-                                                      image: car.images.first,
-                                                    );
-                                                    String
-                                                    message = Uri.encodeFull(
-                                                      "Hello,\n${car.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
-                                                    );
-                                                    String url =
-                                                        Platform.isIOS
-                                                            ? "https://wa.me/${car.contactNo}?text=$message"
-                                                            : "whatsapp://send?phone=${car.contactNo}&text=$message";
-                                                    await launchUrl(
-                                                      Uri.parse(url),
-                                                    );
+                                                  onTap: () {
+                                                    // Add your SMS or chat logic
                                                   },
                                                 ),
                                               ],
@@ -1145,7 +1136,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
           FaIcon(
             icon,
             size: 20.w,
-            color: kTableColor,
+            color: kIconColor,
           ),
           SizedBox(height: 6.h),
           Text(
@@ -1173,7 +1164,8 @@ class ViewCarScreen extends GetView<ViewCarController> {
 
   /// Reusable white circular icon button
   Widget _buildCircleIconButton({
-    required Widget icon,
+    Widget? icon,
+    String? image,
     required VoidCallback onTap,
   }) {
     return InkWell(
@@ -1193,7 +1185,15 @@ class ViewCarScreen extends GetView<ViewCarController> {
             ),
           ],
         ),
-        child: Center(child: icon),
+        child: Center(
+          child: image != null
+              ? Image.asset(
+            image,
+            width: 24.w,
+            height: 24.w,
+          )
+              : icon,
+        ),
       ),
     );
   }

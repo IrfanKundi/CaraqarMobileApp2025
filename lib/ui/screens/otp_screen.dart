@@ -15,7 +15,7 @@ class OtpScreen extends GetView<OtpController> {
   Widget build(BuildContext context) {
     controller.isCompanyReg= Get.parameters["isCompanyReg"] =="true" ;
     controller.token.value= Get.parameters["token"]??"";
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
 
       controller.startTimeout();
     });

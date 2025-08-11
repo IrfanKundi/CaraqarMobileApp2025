@@ -1,7 +1,6 @@
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
-import 'package:careqar/global_variables.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:enum_to_string/enum_to_string.dart';

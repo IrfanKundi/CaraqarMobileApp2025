@@ -3,7 +3,6 @@ import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/agent_controller.dart';
 import 'package:careqar/enums.dart';
-import 'package:careqar/models/property_model.dart';
 import 'package:careqar/ui/screens/home_screen.dart';
 import 'package:careqar/ui/screens/vehicle/bikes_screen.dart';
 import 'package:careqar/ui/screens/vehicle/number_plates_screen.dart';
@@ -27,7 +26,7 @@ class AgentScreen extends GetView<AgentController> {
   void initData() {
     controller =Get.put<AgentController>(AgentController());
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp)async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp)async {
       int agentId;
       agentId=Get.arguments;
       if(Get.parameters["type"]=="Real State"){

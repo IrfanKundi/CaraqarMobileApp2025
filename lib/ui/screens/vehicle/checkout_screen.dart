@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
@@ -7,15 +5,14 @@ import 'package:careqar/controllers/checkout_controller.dart';
 import 'package:careqar/controllers/profile_controller.dart';
 import 'package:careqar/global_variables.dart';
 import 'package:careqar/models/city_model.dart';
-import 'package:careqar/routes.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/text_field_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+
 import '../../widgets/cities_bottom_sheet.dart';
 import '../../widgets/phone_number_text_field.dart';
 

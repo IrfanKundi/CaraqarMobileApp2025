@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../controllers/vehicle_controller.dart';
-
 class ChooseSubSubServiceScreen extends GetView<ServiceController> {
   ChooseSubSubServiceScreen({Key? key}) : super(key: key){
   }

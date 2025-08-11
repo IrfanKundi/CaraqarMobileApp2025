@@ -9,7 +9,6 @@ import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
-import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,7 +125,7 @@ class ViewMyRequestScreen extends GetView<ViewMyRequestController> {
                                     Icon(
                                       MaterialCommunityIcons.map_marker_outline,
                                       size: 12.sp,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Expanded(
@@ -144,7 +143,7 @@ class ViewMyRequestScreen extends GetView<ViewMyRequestController> {
                                     Icon(
                                       MaterialCommunityIcons.phone,
                                       size: 12.sp,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Text(
@@ -209,7 +208,7 @@ class ViewMyRequestScreen extends GetView<ViewMyRequestController> {
                                         Icon(
                                           CupertinoIcons.map_pin_ellipse,
                                           size: 16.sp,
-                                          color: kBlackLightColor,
+                                          color: kIconColor,
                                         ),
                                         SizedBox(width: 4.w),
                                         Text(

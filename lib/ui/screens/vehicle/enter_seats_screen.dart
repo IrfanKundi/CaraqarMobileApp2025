@@ -1,25 +1,19 @@
 import 'package:careqar/constants/colors.dart';
-import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
-import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/vehicle_controller.dart';
-import '../../widgets/dropdown_widget.dart';
 
 class EnterSeatsScreen extends GetView<VehicleController> {
-   EnterSeatsScreen({Key? key}) : super(key: key);
+   EnterSeatsScreen({super.key});
 
   final formKey=GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: buildAppBar(context, title: "Seats"),
       body: Padding(
@@ -43,6 +37,13 @@ class EnterSeatsScreen extends GetView<VehicleController> {
                         onTap: () {
                           controller.seats = seatCount;
                           controller.update(["seats"]);
+
+                          // Auto-navigate after selection
+                          if (Get.arguments == true) {
+                            Navigator.pop(context);
+                          } else {
+                            Get.toNamed(Routes.reviewAdScreen);
+                          }
                         },
                         child: Container(
                           width: double.infinity,
@@ -69,28 +70,11 @@ class EnterSeatsScreen extends GetView<VehicleController> {
                     },
                   ),
                 ),
-                kVerticalSpace16,
-                ButtonWidget(
-                  text: "Next",
-                  onPressed: () {
-                    if (controller.seats == null) {
-                      showSnackBar(message: kRequiredMsg.tr);
-                      return;
-                    }
-
-                    if (Get.arguments == true) {
-                      Navigator.pop(context);
-                    } else {
-                      Get.toNamed(Routes.reviewAdScreen);
-                    }
-                  },
-                ),
               ],
             );
           },
         ),
       ),
     );
-    ;
   }
 }

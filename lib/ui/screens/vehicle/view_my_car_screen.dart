@@ -1,39 +1,26 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:careqar/controllers/add_car_controller.dart';
-import 'package:careqar/controllers/favorite_controller.dart';
-import 'package:careqar/controllers/car_controller.dart';
+import 'package:careqar/constants/colors.dart';
+import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/vehicle_controller.dart';
-import 'package:careqar/controllers/view_car_controller.dart';
+import 'package:careqar/controllers/view_my_car_controller.dart';
 import 'package:careqar/enums.dart';
-import 'package:careqar/locale/app_localizations.dart';
-import 'package:careqar/models/car_model.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/services/dynamic_link.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
+import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
+import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:careqar/constants/colors.dart';
-import 'package:careqar/constants/strings.dart';
-import 'package:careqar/constants/style.dart';
-import 'package:careqar/ui/widgets/button_widget.dart';
-import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:careqar/controllers/view_my_car_controller.dart';
-import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../global_variables.dart';
 
@@ -172,7 +159,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(
-                              car?.images.length ?? 0,
+                              car.images.length ?? 0,
                                   (index) => Container(
                                 margin: EdgeInsets.symmetric(horizontal: 3.w),
                                 width: 8.w,
@@ -195,7 +182,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               // Status badge (only show if not sold)
-                              if (!car!.isSold!)
+                              if (!car.isSold!)
                                 Container(
                                   margin: EdgeInsets.only(bottom: 10.h),
                                   padding: const EdgeInsets.symmetric(
@@ -275,7 +262,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                                     FaIcon(
                                       FontAwesomeIcons.clock,
                                       size: 12.w,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Text(
@@ -286,7 +273,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                                       textDirection: TextDirection.ltr,
                                       maxLines: 1,
                                       style: TextStyle(
-                                        color: kBlackLightColor,
+                                        color: kIconColor,
                                         height: 1.3,
                                         fontSize: 12.sp,
                                       ),
@@ -295,7 +282,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                                     FaIcon(
                                       FontAwesomeIcons.locationDot,
                                       size: 12.w,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Expanded(
@@ -678,7 +665,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
           FaIcon(
             icon,
             size: 20.w,
-            color: kTableColor,
+            color: kIconColor,
           ),
           SizedBox(height: 6.h),
           Text(
@@ -813,8 +800,8 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          "${e.features[index].title}"
-                              "${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
+                          "${e.features[index].title}",
+                             // "${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
                           style: kLightTextStyle14.copyWith(
                             color: kTableColor,
                             fontWeight: FontWeight.w300,

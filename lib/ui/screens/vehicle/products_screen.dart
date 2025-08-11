@@ -1,7 +1,6 @@
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
-import 'package:careqar/controllers/add_to_cart_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/global_variables.dart';
 import 'package:careqar/routes.dart';
@@ -10,7 +9,6 @@ import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -18,7 +16,6 @@ import 'package:get/get.dart';
 import 'package:timeago/timeago.dart';
 
 import '../../../controllers/product_controller.dart';
-import '../../../controllers/favorite_controller.dart';
 import '../../../models/product_model.dart';
 
 class ProductsScreen extends GetView<ProductController> {
@@ -230,7 +227,7 @@ class _ProductItemState extends State<ProductItem> {
                                     color:widget.item.favoriteId!>0? kRedColor:kWhiteColor,
                                     width: 30.w,
                                     onPressed: ()async {
-                                      var controller=Get.put(FavoriteController());
+                                      //var controller=Get.put(FavoriteController());
                                       if(widget.item.favoriteId!>0){
                                         //
                                         // if(await controller.deleteFavorite(product: widget.item,removeFav: true)){
@@ -360,7 +357,7 @@ class _ProductItemState extends State<ProductItem> {
                             color:widget.item.favoriteId!>0? kRedColor:kWhiteColor,
                             width: 30.w,
                             onPressed: ()async {
-                              var controller=Get.put(FavoriteController());
+                              //var controller=Get.put(FavoriteController());
                               if(widget.item.favoriteId!>0){
 
                                 // if(await controller.deleteFavorite(product: widget.item,removeFav: true)){

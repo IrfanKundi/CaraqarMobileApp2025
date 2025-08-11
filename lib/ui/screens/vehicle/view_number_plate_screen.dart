@@ -13,7 +13,6 @@ import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -58,11 +57,11 @@ class ViewNumberPlateScreen extends GetView<ViewNumberPlateController> {
                             color: kBlackColor,
                             onPressed: () async {
                               String adUrl = await DynamicLink.createDynamicLink(false,
-                                  uri: "/NumberPlates/Detail/${numberPlate!.numberPlateId}",
+                                  uri: "/NumberPlates/Detail/${numberPlate.numberPlateId}",
                                   title: numberPlate.title,
                                   desc: numberPlate.description,
                                   image: numberPlate.images.first);
-                              String webUrl = "https://www.caraqar.co/Properties/Detail/${numberPlate.numberPlateId}";
+                              //String webUrl = "https://www.caraqar.co/Properties/Detail/${numberPlate.numberPlateId}";
                               // var message = "Hey! you might be interested in this.\n$adUrl\nor Check this ad on Car aqar\n$webUrl";
                               var message = "Hey! you might be interested in this.\n$adUrl";
 
@@ -96,7 +95,7 @@ class ViewNumberPlateScreen extends GetView<ViewNumberPlateController> {
                               controller.update();
                             },
                           ),
-                          items:  numberPlate!.images.map((item) {
+                          items:  numberPlate.images.map((item) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GestureDetector(
@@ -270,7 +269,7 @@ class ViewNumberPlateScreen extends GetView<ViewNumberPlateController> {
 
 
 
-                        Container(
+                        SizedBox(
                           width: 40.w,
                           child: OutlinedButton(onPressed: ()async{
                             await  launch("tel://${numberPlate.contactNo}");

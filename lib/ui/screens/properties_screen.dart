@@ -36,7 +36,7 @@ class PropertiesScreen extends GetView<PropertyController> {
 
   @override
   Widget build(BuildContext context) {
-    String? title=Get.parameters["title"];
+    //String? title=Get.parameters["title"];
 
 
     return Scaffold(

@@ -1,20 +1,12 @@
 
-import 'dart:io';
 
-import 'package:careqar/constants/style.dart';
-import 'package:careqar/ui/widgets/text_button_widget.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 
 
 checkForUpdate(context) async {
   //Get Current installed version of app
-  final PackageInfo info = await PackageInfo.fromPlatform();
-  int currentVersion = int.parse(info.buildNumber.trim().replaceAll(".", ""));
+  //final PackageInfo info = await PackageInfo.fromPlatform();
+  //int currentVersion = int.parse(info.buildNumber.trim().replaceAll(".", ""));
 
   //Get Latest version info from firebase config
  // final RemoteConfig remoteConfig = RemoteConfig.instance;
@@ -49,94 +41,94 @@ checkForUpdate(context) async {
 }
 //Show Dialog to force user to update
 
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw '${"CouldNotLaunch".tr} $url';
-    }
-  }
-  _showUpdateAlert(BuildContext context,{storeUrl,forceUpdate=false}) {
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) =>
-            WillPopScope(
-              onWillPop: () {
-                return Future.value(false);
-              },
-              child: Platform.isIOS?CupertinoAlertDialog(
-                title: Column(
-                  children: <Widget>[
-                    Text(
-                "NewUpdateAvailable".tr,
-                      style: kTextStyle16,
-                    ),
-                    kVerticalSpace12,
-                    Text(
-                      "ThereIsANewerVersion".tr,
-                      textAlign: TextAlign.center,
-                      style: kTextStyle14,
-                    ),
-                    kVerticalSpace12,
-                    const Divider(
-                    ),
-                    forceUpdate?
-                    TextButtonWidget(text: "Update", onPressed: () {
-                      _launchURL(storeUrl);
-                    },)
-                        : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        TextButtonWidget(text: "Later", onPressed: () {
-                          Navigator.pop(context);
-                        },),
-
-                        const VerticalDivider(),
-                        TextButtonWidget(text: "Update", onPressed: () {
-                          _launchURL(storeUrl);
-                        },),
-                      ],
-                    )
-                  ],
-                ),
-              ) :  AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: kBorderRadius8),
-                title: Column(
-                  children: <Widget>[
-                    Text(
-                "NewUpdateAvailable".tr,
-                      style: kTextStyle16,
-                    ),
-                    kVerticalSpace12,
-                    Text(
-                      "ThereIsANewerVersion".tr,
-                      textAlign: TextAlign.center,
-                      style: kTextStyle14,
-                    ),
-                    kVerticalSpace12,
-                    const Divider(
-                    ),
-                   forceUpdate?
-                   TextButtonWidget(text: "Update", onPressed: () {
-                     _launchURL(storeUrl);
-                   },)
-                   : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        TextButtonWidget(text: "Later", onPressed: () {
-                          Navigator.pop(context);
-                        },),
-                        const VerticalDivider(),
-                        TextButtonWidget(text: "Update", onPressed: () {
-                          _launchURL(storeUrl);
-                        },),
-
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ));
-  }
+  // _launchURL(String url) async {
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else {
+  //     throw '${"CouldNotLaunch".tr} $url';
+  //   }
+  // }
+  // _showUpdateAlert(BuildContext context,{storeUrl,forceUpdate=false}) {
+  //   return showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (_) =>
+  //           WillPopScope(
+  //             onWillPop: () {
+  //               return Future.value(false);
+  //             },
+  //             child: Platform.isIOS?CupertinoAlertDialog(
+  //               title: Column(
+  //                 children: <Widget>[
+  //                   Text(
+  //               "NewUpdateAvailable".tr,
+  //                     style: kTextStyle16,
+  //                   ),
+  //                   kVerticalSpace12,
+  //                   Text(
+  //                     "ThereIsANewerVersion".tr,
+  //                     textAlign: TextAlign.center,
+  //                     style: kTextStyle14,
+  //                   ),
+  //                   kVerticalSpace12,
+  //                   const Divider(
+  //                   ),
+  //                   forceUpdate?
+  //                   TextButtonWidget(text: "Update", onPressed: () {
+  //                     _launchURL(storeUrl);
+  //                   },)
+  //                       : Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                     children: <Widget>[
+  //                       TextButtonWidget(text: "Later", onPressed: () {
+  //                         Navigator.pop(context);
+  //                       },),
+  //
+  //                       const VerticalDivider(),
+  //                       TextButtonWidget(text: "Update", onPressed: () {
+  //                         _launchURL(storeUrl);
+  //                       },),
+  //                     ],
+  //                   )
+  //                 ],
+  //               ),
+  //             ) :  AlertDialog(
+  //               shape: RoundedRectangleBorder(
+  //                   borderRadius: kBorderRadius8),
+  //               title: Column(
+  //                 children: <Widget>[
+  //                   Text(
+  //               "NewUpdateAvailable".tr,
+  //                     style: kTextStyle16,
+  //                   ),
+  //                   kVerticalSpace12,
+  //                   Text(
+  //                     "ThereIsANewerVersion".tr,
+  //                     textAlign: TextAlign.center,
+  //                     style: kTextStyle14,
+  //                   ),
+  //                   kVerticalSpace12,
+  //                   const Divider(
+  //                   ),
+  //                  forceUpdate?
+  //                  TextButtonWidget(text: "Update", onPressed: () {
+  //                    _launchURL(storeUrl);
+  //                  },)
+  //                  : Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                     children: <Widget>[
+  //                       TextButtonWidget(text: "Later", onPressed: () {
+  //                         Navigator.pop(context);
+  //                       },),
+  //                       const VerticalDivider(),
+  //                       TextButtonWidget(text: "Update", onPressed: () {
+  //                         _launchURL(storeUrl);
+  //                       },),
+  //
+  //                     ],
+  //                   )
+  //                 ],
+  //               ),
+  //             ),
+  //           ));
+  // }

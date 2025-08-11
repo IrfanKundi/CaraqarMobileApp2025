@@ -14,16 +14,12 @@ import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:careqar/ui/widgets/remove_splash.dart';
-import 'package:careqar/ui/widgets/text_field_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -32,7 +28,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 import '../../global_variables.dart';
 
@@ -82,7 +77,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                     desc: property.description,
                     image: property.images.first,
                   );
-                  String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
+                  //String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
                   var message = "Hey! you might be interested in this.\n$adUrl";
                   Share.share(message);
                 },
@@ -325,7 +320,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                     FaIcon(
                                       FontAwesomeIcons.clock,
                                       size: 12.w,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Text(
@@ -345,7 +340,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                     FaIcon(
                                       FontAwesomeIcons.locationDot,
                                       size: 12.w,
-                                      color: kBlackLightColor,
+                                      color: kIconColor,
                                     ),
                                     SizedBox(width: 4.w),
                                     Expanded(
@@ -394,7 +389,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                           icon: FaIcon(
                                             FontAwesomeIcons.phone,
                                             size: 20.w,
-                                            color: kBlackLightColor,
+                                            color: kIconColor,
                                           ),
                                           onTap: () async {
                                             controller.updateClicks(isCall: true);
@@ -403,11 +398,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                         ),
                                         SizedBox(width: 8.w),
                                         _buildCircleIconButton(
-                                          icon: FaIcon(
-                                            FontAwesomeIcons.whatsapp,
-                                            size: 20.w,
-                                            color: kBlackLightColor,
-                                          ),
+                                            image: 'assets/images/whatsapp.png',
                                           onTap: () async {
                                             controller.updateClicks(isWhatsapp: true);
 
@@ -419,7 +410,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                               image: property.images.first,
                                             );
 
-                                            String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
+                                            //String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
                                             String url;
                                             var message = Uri.encodeFull(
                                                 "Hello,\n${property.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl");
@@ -442,7 +433,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                             icon: FaIcon(
                                               FontAwesomeIcons.comment,
                                               size: 12.w,
-                                              color: kBlackLightColor,
+                                              color: kIconColor,
                                             ),
                                             onTap: () async {
                                               controller.updateClicks(isEmail: true);
@@ -455,7 +446,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                                 image: property.images.first,
                                               );
 
-                                              String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
+                                              //String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
                                               String subject = property.title!;
 
                                               var message = "Hello,\n${property.agentName}\n"
@@ -1095,7 +1086,8 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
 
   /// Reusable white circular icon button
   Widget _buildCircleIconButton({
-    required Widget icon,
+    Widget? icon,
+    String? image,
     required VoidCallback onTap,
   }) {
     return InkWell(
@@ -1115,7 +1107,15 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
             ),
           ],
         ),
-        child: Center(child: icon),
+        child: Center(
+          child: image != null
+              ? Image.asset(
+            image,
+            width: 24.w,
+            height: 24.w,
+          )
+              : icon,
+        ),
       ),
     );
   }
@@ -1311,14 +1311,14 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
     );
   }
 }
-Widget _buildDivider() {
-  return Container(
-    width: 1,
-    height: 40.h,
-    color: Colors.white,
-    margin: EdgeInsets.symmetric(horizontal: 8.w),
-  );
-}
+// Widget _buildDivider() {
+//   return Container(
+//     width: 1,
+//     height: 40.h,
+//     color: Colors.white,
+//     margin: EdgeInsets.symmetric(horizontal: 8.w),
+//   );
+// }
 String encodeQueryParameters(Map<String, String> params) {
   return params.entries
       .map((e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(

@@ -12,7 +12,6 @@ import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,9 +20,7 @@ import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../controllers/favorite_controller.dart';
 import '../../../controllers/view_my_numberplate_controller.dart';
-import '../../../controllers/view_number_plate_controller.dart';
 import '../../../global_variables.dart';
 import '../../widgets/button_widget.dart';
 
@@ -62,10 +59,10 @@ class ViewMyNumberPlateScreen extends GetView<ViewMyNumberPlateController> {
                             onPressed: () async {
                               String url = await DynamicLink.createDynamicLink(
                                   false,
-                                  uri: "/numberPlate?numberPlateId=${numberPlate?.numberPlateId}",
-                                  title: numberPlate?.number,
-                                  desc: numberPlate?.description,
-                                  image: numberPlate?.images.first
+                                  uri: "/numberPlate?numberPlateId=${numberPlate.numberPlateId}",
+                                  title: numberPlate.number,
+                                  desc: numberPlate.description,
+                                  image: numberPlate.images.first
                               );
                               Share.share(url);
                             },),
@@ -96,7 +93,7 @@ class ViewMyNumberPlateScreen extends GetView<ViewMyNumberPlateController> {
                               controller.update();
                             },
                           ),
-                          items:  numberPlate!.images.map((item) {
+                          items:  numberPlate.images.map((item) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return GestureDetector(

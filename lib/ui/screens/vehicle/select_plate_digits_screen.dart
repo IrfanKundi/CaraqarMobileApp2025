@@ -1,9 +1,7 @@
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
-import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

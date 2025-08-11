@@ -17,7 +17,7 @@ class ResetPasswordScreen extends GetView<PasswordController> {
   @override
   Widget build(BuildContext context) {
       var otpController=Get.find<OtpController>();
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
 
         otpController.startTimeout();
       });

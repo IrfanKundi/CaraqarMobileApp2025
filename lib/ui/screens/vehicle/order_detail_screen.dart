@@ -6,7 +6,6 @@ import 'package:careqar/global_variables.dart';
 import 'package:careqar/models/order_model.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
-import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:careqar/ui/widgets/remove_splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

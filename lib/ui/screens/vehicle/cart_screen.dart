@@ -2,14 +2,10 @@ import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/cart_controller.dart';
-import 'package:careqar/controllers/favorite_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/global_variables.dart';
 import 'package:careqar/models/cart_model.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/screens/vehicle/bikes_screen.dart';
-import 'package:careqar/ui/screens/vehicle/number_plates_screen.dart';
-import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -19,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-import 'package:timeago/timeago.dart';
 
 import '../../widgets/image_widget.dart';
 
@@ -249,11 +244,12 @@ class _MyCartItemState extends State<MyCartItem> {
                 controller.increment(widget.item);
 
               },
-              child: Container(width: 30.w,height: 30.h,child: Icon(Icons.add,color: kAccentColor,),
+              child: Container(width: 30.w,height: 30.h,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: kAccentColor,width: 2)
-                ),
+                ),child: Icon(Icons.add,color: kAccentColor,),
+
               ),
             ),
           ],
@@ -263,7 +259,7 @@ class _MyCartItemState extends State<MyCartItem> {
                   ),
                 ))
           ]):
-      Container(
+      SizedBox(
         height: 150.h,
         child: Row(
             crossAxisAlignment:

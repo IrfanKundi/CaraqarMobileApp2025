@@ -113,6 +113,15 @@ class EnterEngineScreen extends GetView<VehicleController> {
                               controller.engine = size;
                             });
                             FocusScope.of(context).unfocus();
+
+                            // Auto-navigate after selection
+                            if (Get.arguments == true) {
+                              Navigator.pop(context);
+                            } else if (controller.vehicleType == VehicleType.Car) {
+                              Get.toNamed(Routes.enterSeatsScreen);
+                            } else {
+                              Get.toNamed(Routes.reviewAdScreen);
+                            }
                           },
                           child: Container(
                             width: double.infinity,

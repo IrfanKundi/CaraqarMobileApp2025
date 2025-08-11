@@ -52,7 +52,7 @@ class ViewRequestScreen extends GetView<ViewRequestController> {
                           onPressed: () async {
                             String url = await DynamicLink.createDynamicLink(
                               false,
-                                uri: "/request?requestId=${request?.requestId}",
+                                uri: "/request?requestId=${request.requestId}",
                                 metaTag: false,
                             );
                             Share.share(url);
@@ -96,11 +96,11 @@ class ViewRequestScreen extends GetView<ViewRequestController> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 8),
                                       decoration: BoxDecoration(
-                                        color: request?.purpose=="Sell"?  kAccentColor:kLightBlueColor,
+                                        color: request.purpose=="Sell"?  kAccentColor:kLightBlueColor,
                                         borderRadius: kBorderRadius30,
                                       ),
                                       child: Text(
-                                        "For${request?.purpose}".tr.toUpperCase(),
+                                        "For${request.purpose}".tr.toUpperCase(),
                                         style: TextStyle(
                                             color: kWhiteColor, fontSize: 10.sp),),
                                     ),
@@ -110,13 +110,13 @@ class ViewRequestScreen extends GetView<ViewRequestController> {
                                         color: kAccentColor,),
                                         Expanded(
                                           child: Text(
-                                              "${request?.location}, ${request?.cityName}", style: kTextStyle14.copyWith(color: kAccentColor)),
+                                              "${request.location}, ${request.cityName}", style: kTextStyle14.copyWith(color: kAccentColor)),
                                         ),
 kHorizontalSpace12,
                                         Icon(  CupertinoIcons.map_pin_ellipse,    size: 16.sp,
                                           color: kAccentColor,),
                                         Expanded(
-                                          child: Text("${request?.area} ${"Marla".tr}",
+                                          child: Text("${request.area} ${"Marla".tr}",
                                               style: kTextStyle14.copyWith(color: kAccentColor)),
                                         ),
                                       ],

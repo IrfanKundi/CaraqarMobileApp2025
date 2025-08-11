@@ -165,7 +165,7 @@ class _ForeignerScreenState extends State<ForeignerScreen> {
                               setState(() {});
                             },
                           ),
-                          items: contentController!.foreignerContent!.files
+                          items: contentController.foreignerContent!.files
                               .map((item) {
                             return Builder(
                               builder: (BuildContext context) {

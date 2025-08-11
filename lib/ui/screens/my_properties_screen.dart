@@ -14,7 +14,6 @@ import 'package:careqar/user_session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -485,7 +484,7 @@ class MyPropertyItem extends StatelessWidget {
                         FaIcon(
                           FontAwesomeIcons.locationDot,
                           size: 12.w,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -508,7 +507,7 @@ class MyPropertyItem extends StatelessWidget {
                         Icon(
                           CupertinoIcons.map_pin_ellipse,
                           size: 14.sp,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -685,7 +684,7 @@ class MyPropertyItem extends StatelessWidget {
                           FaIcon(
                             FontAwesomeIcons.locationDot,
                             size: 12.w,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -708,7 +707,7 @@ class MyPropertyItem extends StatelessWidget {
                           Icon(
                             CupertinoIcons.map_pin_ellipse,
                             size: 14.sp,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -847,7 +846,7 @@ class MyRequestItem extends StatelessWidget {
                         FaIcon(
                           FontAwesomeIcons.locationDot,
                           size: 12.w,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -870,7 +869,7 @@ class MyRequestItem extends StatelessWidget {
                         Icon(
                           CupertinoIcons.map_pin_ellipse,
                           size: 14.sp,
-                          color: const Color(0xFF4A90E2),
+                          color: kIconColor,
                         ),
                         SizedBox(width: 4.w),
                         Expanded(
@@ -975,7 +974,7 @@ class MyRequestItem extends StatelessWidget {
                           FaIcon(
                             FontAwesomeIcons.locationDot,
                             size: 12.w,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Expanded(
@@ -998,7 +997,7 @@ class MyRequestItem extends StatelessWidget {
                           Icon(
                             CupertinoIcons.map_pin_ellipse,
                             size: 14.sp,
-                            color: const Color(0xFF4A90E2),
+                            color: kIconColor,
                           ),
                           SizedBox(width: 4.w),
                           Expanded(

@@ -184,11 +184,15 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         await launchUrl(uri);
                         return true;
                       } catch (e) {
-                        print('Failed to launch link: $e');
+                        if (kDebugMode) {
+                          print('Failed to launch link: $e');
+                        }
                         return false;
                       }
                     } else {
-                      print('Could not launch ${uri.toString()}');
+                      if (kDebugMode) {
+                        print('Could not launch ${uri.toString()}');
+                      }
                       return false;
                     }
                   },

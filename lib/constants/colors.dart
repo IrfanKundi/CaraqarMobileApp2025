@@ -19,6 +19,7 @@ const kPrimaryColor = Color(kPrimaryColorCode);
 const kAccentColor = Color(0xFF011A42);
 const kLogoColor = Color(0xff9A3553);
 const kTableColor = Color(0xff4b4b4b);
+const kIconColor = Color(0xff498ABE);
 
 const kMehrunColor = Color(0xFF8B1538);
 const kHeaderTitle = Color(0xFF334868);
