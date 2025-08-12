@@ -38,6 +38,7 @@ class _InitialScreenState extends State<InitialScreen> {
 
 
       if (await UserSession.getCountry() == null) { // Check if country is not null in Session
+        UserSession.changeCountry(11);
         Position? currentLocation = await LocationService.determinePosition(); // Get Current Location
         if (currentLocation != null) {
           String? country = await getCountryFromCoordinates(currentLocation.longitude, currentLocation.latitude); // Get Country Name if not null

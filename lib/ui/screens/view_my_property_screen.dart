@@ -788,7 +788,7 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
           icon,
           width: 20.w,
           height: 20.w,
-          color: kTableColor,
+          color: kLightBlueColor,
         ),
         SizedBox(height: 6.h),
         Text(

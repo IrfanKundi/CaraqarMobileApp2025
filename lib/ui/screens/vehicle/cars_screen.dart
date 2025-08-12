@@ -29,7 +29,7 @@ class CarsScreen extends GetView<CarController> {
 }
 
 class AllCars extends StatelessWidget {
-  const AllCars({Key? key}) : super(key: key);
+  const AllCars({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +111,7 @@ class AllCars extends StatelessWidget {
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,
-                                          mainAxisExtent: 300.h,
+                                          mainAxisExtent: 310.h,
                                           // Use fixed height instead of aspectRatio
                                           crossAxisSpacing: 0.w,
                                           mainAxisSpacing: 0.w,

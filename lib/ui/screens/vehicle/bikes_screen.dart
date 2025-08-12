@@ -120,7 +120,7 @@ class AllBikes extends StatelessWidget {
                       itemCount: controller.bikes.value.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        mainAxisExtent: 300.h, // fixed height for consistent card size
+                        mainAxisExtent: 310.h, // fixed height for consistent card size
                         crossAxisSpacing: 0.w,
                         mainAxisSpacing: 0.w,
                       ),

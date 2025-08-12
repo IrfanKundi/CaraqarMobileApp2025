@@ -48,7 +48,7 @@ class CarFilterScreen extends GetView<VehicleController> {
                               children: [
 
                             Text(
-                              "City".tr,
+                              'Select Province'.tr,
                               style: TextStyle(
                                   color: kBlackColor,
                                   fontSize: 16.sp,
@@ -77,7 +77,7 @@ class CarFilterScreen extends GetView<VehicleController> {
 
                                     Expanded(
                                       child: Text(
-                                        "${controller.selectedCity?.name ?? 'SelectCity'.tr}",
+                                        controller.selectedCity?.name ?? 'Select Province'.tr,
                                         style: TextStyle(
                                             color: kAccentColor,
                                             fontSize: 16.sp,
@@ -95,7 +95,7 @@ class CarFilterScreen extends GetView<VehicleController> {
                                 kVerticalSpace12,
 
                                 Text(
-                                  "Location".tr,
+                                  "City".tr,
                                   style: TextStyle(
                                       color: kBlackColor,
                                       fontSize: 16.sp,
@@ -133,7 +133,7 @@ class CarFilterScreen extends GetView<VehicleController> {
 
                                         Expanded(
                                           child: Text(
-                                            "${controller.selectedLocation?.title ?? 'SelectLocation'.tr}",
+                                            "${controller.selectedLocation?.title ?? 'SelectCity'.tr}",
                                             style: TextStyle(
                                                 color: kAccentColor,
                                                 fontSize: 16.sp,

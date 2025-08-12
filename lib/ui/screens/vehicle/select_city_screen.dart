@@ -21,7 +21,7 @@ class SelectCityScreen extends GetView<VehicleController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, title: "Select Region"),
+      appBar: buildAppBar(context, title: "Select Province"),
       body: GetBuilder<CityController>(
         builder:
             (cityController) =>

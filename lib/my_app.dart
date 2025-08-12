@@ -139,6 +139,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: kPrimaryColor,
+          useMaterial3: true,
+          appBarTheme: const AppBarTheme(
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
           dividerTheme: const DividerThemeData(color: Colors.grey),
           floatingActionButtonTheme:
           const FloatingActionButtonThemeData(backgroundColor: kAccentColor),

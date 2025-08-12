@@ -15,7 +15,7 @@ class SelectAdLocationScreen extends StatelessWidget {
     final int cityId = int.tryParse(Get.parameters["cityId"] ?? "") ?? -1;
 
     return Scaffold(
-      appBar: buildAppBar(context, title: "SearchLocation".tr),
+      appBar: buildAppBar(context, title: "SelectCity".tr),
       body: Obx(() {
         final status = locationController.status.value;
 

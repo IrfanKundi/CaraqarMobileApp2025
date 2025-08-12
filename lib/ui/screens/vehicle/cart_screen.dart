@@ -20,7 +20,7 @@ import '../../widgets/image_widget.dart';
 
 
 class CartScreen extends StatefulWidget {
-  const  CartScreen({Key? key}) : super(key: key);
+  const CartScreen({super.key});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -34,7 +34,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context,title: "MyCart",  actions: [
+      appBar: buildAppBar(context,title: "My Cart",  actions: [
       Padding(
       padding:  EdgeInsetsDirectional.only(end: 16.w),
       child: GetBuilder<CartController>(
@@ -65,7 +65,7 @@ class _CartScreenState extends State<CartScreen> {
             : controller.cartModel!.cart
             .isEmpty
             ?
-        Center(child: Text("YourCartIsEmpty".tr,style: kTextStyle16,))
+        Center(child: Text("Your Cart Is Empty".tr,style: kTextStyle16,))
             :    Column(crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(

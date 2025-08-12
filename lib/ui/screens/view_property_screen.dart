@@ -1200,13 +1200,11 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                     decoration: BoxDecoration(color: rowColor),
                     children: [
                       // Icon cell
-                      Container(
-                        child: Center(
-                          child: ImageWidget(
-                            e.features[index].image,
-                            width: 30.w,
-                            height: 30.w,
-                          ),
+                      Center(
+                        child: ImageWidget(
+                          e.features[index].image,
+                          width: 30.w,
+                          height: 30.w,
                         ),
                       ),
 

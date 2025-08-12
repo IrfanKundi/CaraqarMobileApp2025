@@ -753,7 +753,7 @@ kVerticalSpace8,
               itemCount: controller.properties.value.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisExtent: 230.h, // consistent fixed height
+                mainAxisExtent: 260.h, // consistent fixed height
                 crossAxisSpacing: 0.w,
                 mainAxisSpacing: 0.w,
               ),

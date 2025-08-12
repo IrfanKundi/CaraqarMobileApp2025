@@ -26,7 +26,12 @@ class CountryController extends GetxController {
         countries.addAll(CountryModel.fromMap(r.data).countries);
           await UserSession.getCountry();
           if(UserSession.country==null){
-            gSelectedCountry= countries.first;
+            Country? pakistan = countries.firstWhereOrNull((element) => element.countryId == 11);
+            if (pakistan != null) {
+              gSelectedCountry = pakistan;
+            } else {
+              gSelectedCountry = countries.first; // Fallback to first if Pakistan not found
+            }
           }else{
             gSelectedCountry= countries.firstWhere((element) => element.countryId ==UserSession.country);
           }

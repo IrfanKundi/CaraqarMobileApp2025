@@ -951,7 +951,7 @@ class _PropertyItemState extends State<PropertyItem> {
         margin:
             widget.isGridView
                 ? EdgeInsets.all(5.w)
-                : EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
+                : EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
           side: BorderSide(color: Colors.grey.shade300, width: 1),
@@ -1036,7 +1036,7 @@ class _PropertyItemState extends State<PropertyItem> {
 
                             // Views counter + Favorite
                             Positioned(
-                              top: 8.h,
+                              bottom: 8.h,
                               right: 8.w,
                               child: Column(
                                 children: [
@@ -1069,37 +1069,6 @@ class _PropertyItemState extends State<PropertyItem> {
                                       ],
                                     ),
                                   ),
-                                  SizedBox(height: 6.h),
-                                  IconButtonWidget(
-                                    icon:
-                                        widget.item.favoriteId! > 0
-                                            ? MaterialCommunityIcons.heart
-                                            : MaterialCommunityIcons
-                                                .heart_outline,
-                                    color:
-                                        widget.item.favoriteId! > 0
-                                            ? kRedColor
-                                            : Colors.white,
-                                    width: 28.w,
-                                    onPressed: () async {
-                                      var favCtrl = Get.put(
-                                        FavoriteController(),
-                                      );
-                                      if (widget.item.favoriteId! > 0) {
-                                        if (await favCtrl.deleteFavorite(
-                                          property: widget.item,
-                                        )) {
-                                          if (mounted) setState(() {});
-                                        }
-                                      } else {
-                                        if (await favCtrl.addToFavorites(
-                                          property: widget.item,
-                                        )) {
-                                          if (mounted) setState(() {});
-                                        }
-                                      }
-                                    },
-                                  ),
                                 ],
                               ),
                             ),
@@ -1117,17 +1086,51 @@ class _PropertyItemState extends State<PropertyItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Title
-                            Text(
-                              widget.item.title ?? "",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF1E3A5F),
-                              ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    widget.item.title ?? "",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xFF1E3A5F),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 4.w), // Small space between text and icon
+                                GestureDetector(
+                                  onTap: () async {
+                                    var favCtrl = Get.put(FavoriteController());
+                                    if ((widget.item.favoriteId ?? 0) > 0) {
+                                      if (await favCtrl.deleteFavorite(property: widget.item)) {
+                                        if (mounted) setState(() {});
+                                      }
+                                    } else {
+                                      if (await favCtrl.addToFavorites(property: widget.item)) {
+                                        if (mounted) setState(() {});
+                                      }
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.zero,
+                                    margin: EdgeInsets.zero,
+                                    child: Icon(
+                                      (widget.item.favoriteId ?? 0) > 0
+                                          ? MaterialCommunityIcons.heart
+                                          : MaterialCommunityIcons.heart_outline,
+                                      color: (widget.item.favoriteId ?? 0) > 0
+                                          ? kRedColor
+                                          : Colors.grey.shade400,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 4.h),
 
                             // Location
                             Row(
@@ -1209,7 +1212,7 @@ class _PropertyItemState extends State<PropertyItem> {
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(12.w),
+                    padding: EdgeInsets.all(8.w),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
