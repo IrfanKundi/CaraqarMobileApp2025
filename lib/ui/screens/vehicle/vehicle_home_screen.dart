@@ -570,37 +570,54 @@ class _CarItemState extends State<CarItem> {
                 padding: EdgeInsets.all(8.w), // Same padding as list view
                 child: Stack(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15.r), // Inner radius like list view
-                      child: ImageWidget(
-                        widget.item.images.first,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
+                    // Container with conditional border
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.r), // Full rounded border
+                        // Add lime green border if item is new (within 2 days)
+                        border: DateTime.now()
+                            .difference(widget.item.createdAt!)
+                            .inDays < 2
+                            ? Border.all(
+                          color: kLableColor, // Lime green color matching the badge
+                          width: 2.5, // Border width
+                        )
+                            : null,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r), // Full rounded clipping
+                        child: ImageWidget(
+                          widget.item.images.first,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
                       ),
                     ),
 
                     // New Badge
                     if (DateTime.now()
                         .difference(widget.item.createdAt!)
-                        .inDays <
-                        2)
+                        .inDays < 2)
                       Positioned(
-                        top: 8.h,
-                        left: 8.w,
+                        top: 10.h, // Position right at the border edge
+                        left: 2.w, // Position right at the border edge
                         child: Container(
-                          padding:
-                          EdgeInsets.all(8.0),
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF4CAF50),
-                            border: Border.all(color: Colors.white, width: 1.5),
-                            borderRadius: BorderRadius.circular(12.r),
+                            color: kLableColor, // Lime green color from screenshot
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(0), // Sharp top corner
+                              topRight: Radius.circular(12.r), // Rounded right corner
+                              bottomLeft: Radius.circular(0), // Sharp bottom corner
+                              bottomRight: Radius.circular(12.r), // Rounded right corner
+                            ),
                           ),
                           child: Text(
                             "New".tr,
                             style: GoogleFonts.poppins(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 9.sp, // Smaller font size
+                              fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
                           ),
@@ -612,8 +629,7 @@ class _CarItemState extends State<CarItem> {
                       bottom: 8.h,
                       right: 8.w,
                       child: Container(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                         decoration: BoxDecoration(
                           color: Colors.black.withOpacity(0.7),
                           borderRadius: BorderRadius.circular(12.r),
@@ -846,20 +862,28 @@ class _CarItemState extends State<CarItem> {
               children: [
                 // Image Section
                 Container(
-                width: 120.w,
-                height: 100.h,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(
-                    color: Colors.black54, // Light grey like screenshot
-                    width: 1, // 1px border
+                  width: 120.w,
+                  height: 100.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.r),
+                    // Add lime green border if item is new (within 2 days)
+                    border: DateTime.now()
+                        .difference(widget.item.createdAt!)
+                        .inDays < 2
+                        ? Border.all(
+                      color: kLableColor, // Lime green color matching the badge
+                      width: 2.5, // Border width
+                    )
+                        : Border.all(
+                      color: Colors.black54, // Light grey like screenshot
+                      width: 1, // 1px border
+                    ),
                   ),
-                ),
                   child: Stack(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(15.r),
+                        borderRadius: BorderRadius.circular(12.r), // Full rounded clipping
                         child: ImageWidget(
                           widget.item.images.first,
                           fit: BoxFit.cover,
@@ -871,25 +895,26 @@ class _CarItemState extends State<CarItem> {
                       // New Badge
                       if (DateTime.now()
                           .difference(widget.item.createdAt!)
-                          .inDays <
-                          2)
+                          .inDays < 2)
                         Positioned(
-                          top: 8.h,
-                          left: 8.w,
+                          top: 10.h, // Position right at the border edge
+                          left: 0.w, // Position right at the border edge
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8.w, vertical: 4.h),
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF4CAF50),
-                              border: Border.all(
-                                  color: Colors.white, width: 1.5),
-                              borderRadius: BorderRadius.circular(12.r),
+                              color: kLableColor, // Lime green color from screenshot
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(0), // Sharp top corner
+                                topRight: Radius.circular(12.r), // Rounded right corner
+                                bottomLeft: Radius.circular(0), // Sharp bottom corner
+                                bottomRight: Radius.circular(12.r), // Rounded right corner
+                              ),
                             ),
                             child: Text(
                               "New".tr,
                               style: GoogleFonts.poppins(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 9.sp, // Smaller font size
+                                fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
                             ),
@@ -901,8 +926,7 @@ class _CarItemState extends State<CarItem> {
                         bottom: 8.h,
                         right: 8.w,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 4.h),
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.7),
                             borderRadius: BorderRadius.circular(12.r),

@@ -60,7 +60,7 @@ showCountriesSheet(BuildContext context) async{
                           gSelectedCountry=item;
                           if (!deepLinkHandled) {
                             await   UserSession.changeCountry(item.countryId!);
-                            Get.offNamedUntil(Routes.chooseOptionScreen, (route) => false);
+                            Get.offNamedUntil(Routes.chooseOptionScreenNew, (route) => false);
                           }
                         },
                         child: SizedBox(

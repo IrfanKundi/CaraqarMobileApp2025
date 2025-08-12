@@ -22,6 +22,7 @@ const kTableColor = Color(0xff4b4b4b);
 const kIconColor = Color(0xff498ABE);
 
 const kMehrunColor = Color(0xFF8B1538);
+const kLableColor = Color(0xFF8BC34A);
 const kHeaderTitle = Color(0xFF334868);
 const kBlackColor=Colors.black;
 const kBlackLightColor=Colors.black87;
