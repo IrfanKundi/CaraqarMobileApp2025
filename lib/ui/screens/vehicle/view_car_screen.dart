@@ -25,6 +25,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../constants/strings.dart';
 import '../../../controllers/favorite_controller.dart';
 import '../../../global_variables.dart';
+import '../../../locale/slider_indicator.dart';
 import '../../widgets/button_widget.dart';
 
 class ViewCarScreen extends GetView<ViewCarController> {
@@ -93,24 +94,115 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                 // 🔹 Rounded image slider
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(24.r),
-                                  child: CarouselSlider(
-                                    options: CarouselOptions(
-                                      height: double.infinity,
-                                      autoPlayCurve: Curves.linearToEaseOut,
-                                      autoPlay: true,
-                                      scrollPhysics: const BouncingScrollPhysics(),
-                                      enableInfiniteScroll: false,
-                                      viewportFraction: 1,
-                                      enlargeCenterPage: false,
-                                      initialPage: controller.sliderIndex.value,
-                                      onPageChanged: (index, reason) {
-                                        controller.sliderIndex.value = index;
-                                        controller.update();
-                                      },
-                                    ),
-                                    items: car!.images.map((item) {
-                                      return Builder(
-                                        builder: (BuildContext context) {
+                                  child: Stack(
+                                    children: [
+                                      // Your existing CarouselSlider code (unchanged)
+                                      CarouselSlider(
+                                        options: CarouselOptions(
+                                          height: double.infinity,
+                                          autoPlayCurve: Curves.linearToEaseOut,
+                                          autoPlay: true,
+                                          scrollPhysics: const BouncingScrollPhysics(),
+                                          enableInfiniteScroll: false,
+                                          viewportFraction: 1,
+                                          enlargeCenterPage: false,
+                                          initialPage: controller.sliderIndex.value,
+                                          onPageChanged: (index, reason) {
+                                            controller.sliderIndex.value = index;
+                                            controller.update();
+                                          },
+                                        ),
+                                        items: car!.images.map((item) {
+                                          return Builder(
+                                            builder: (BuildContext context) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                    Routes.staggeredGalleryScreen,
+                                                    arguments: car.images,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  height: double.infinity,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: item,
+                                                    width: double.infinity,
+                                                    height: double.infinity,
+                                                    fit: BoxFit.cover,
+                                                    imageBuilder: (context, imageProvider) {
+                                                      return Image(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.cover,
+                                                        width: double.infinity,
+                                                        height: double.infinity,
+                                                      );
+                                                    },
+                                                    placeholder: (context, url) => Container(
+                                                      color: Colors.grey[200],
+                                                      child: const Center(
+                                                        child: CircularProgressIndicator(),
+                                                      ),
+                                                    ),
+                                                    errorWidget: (context, url, error) => Container(
+                                                      color: Colors.grey[200],
+                                                      child: const Center(
+                                                        child: Icon(
+                                                          Icons.error,
+                                                          size: 50,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    memCacheWidth: 800,
+                                                    memCacheHeight: 600,
+                                                    maxWidthDiskCache: 1000,
+                                                    maxHeightDiskCache: 1000,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }).toList(),
+                                      ),
+
+                                      // Add the indicator at the top
+                                      Positioned(
+                                        top: 16,
+                                        left: 0,
+                                        right: 0,
+                                        child: Center(
+                                          child: Obx(() => WorkingSlidingIndicator(
+                                            itemCount: car!.images.length,
+                                            currentIndex: controller.sliderIndex.value,
+                                          )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // 🔹 Page indicator
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(24.r),
+                                  child: Stack(
+                                    children: [
+                                      // Carousel
+                                      CarouselSlider(
+                                        options: CarouselOptions(
+                                          height: double.infinity,
+                                          autoPlayCurve: Curves.linearToEaseOut,
+                                          autoPlay: true,
+                                          scrollPhysics: const BouncingScrollPhysics(),
+                                          enableInfiniteScroll: false,
+                                          viewportFraction: 1,
+                                          enlargeCenterPage: false,
+                                          initialPage: controller.sliderIndex.value,
+                                          onPageChanged: (index, reason) {
+                                            controller.sliderIndex.value = index;
+                                            controller.update();
+                                          },
+                                        ),
+                                        items: car!.images.map((item) {
                                           return GestureDetector(
                                             onTap: () {
                                               Get.toNamed(
@@ -118,73 +210,153 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                 arguments: car.images,
                                               );
                                             },
-                                            child: Container(
+                                            child: CachedNetworkImage(
+                                              imageUrl: item,
                                               width: double.infinity,
                                               height: double.infinity,
-                                              child: CachedNetworkImage(
-                                                imageUrl: item,
-                                                width: double.infinity,
-                                                height: double.infinity,
-                                                fit: BoxFit.cover,
-                                                imageBuilder: (context, imageProvider) {
-                                                  return Image(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
-                                                    width: double.infinity,
-                                                    height: double.infinity,
-                                                  );
-                                                },
-                                                placeholder: (context, url) => Container(
-                                                  color: Colors.grey[200],
-                                                  child: const Center(
-                                                    child: CircularProgressIndicator(),
-                                                  ),
-                                                ),
-                                                errorWidget: (context, url, error) => Container(
-                                                  color: Colors.grey[200],
-                                                  child: const Center(
-                                                    child: Icon(
-                                                      Icons.error,
-                                                      size: 50,
-                                                    ),
-                                                  ),
-                                                ),
-                                                memCacheWidth: 800,
-                                                memCacheHeight: 600,
-                                                maxWidthDiskCache: 1000,
-                                                maxHeightDiskCache: 1000,
+                                              fit: BoxFit.cover,
+                                              imageBuilder: (context, imageProvider) {
+                                                return Image(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                  height: double.infinity,
+                                                );
+                                              },
+                                              placeholder: (context, url) => Container(
+                                                color: Colors.grey[200],
+                                                child: const Center(child: CircularProgressIndicator()),
                                               ),
+                                              errorWidget: (context, url, error) => Container(
+                                                color: Colors.grey[200],
+                                                child: const Center(
+                                                  child: Icon(Icons.error, size: 50),
+                                                ),
+                                              ),
+                                              memCacheWidth: 800,
+                                              memCacheHeight: 600,
+                                              maxWidthDiskCache: 1000,
+                                              maxHeightDiskCache: 1000,
                                             ),
                                           );
-                                        },
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
+                                        }).toList(),
+                                      ),
 
-                                // 🔹 Page indicator
-                                Positioned(
-                                  top: 12.h,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(
-                                      car.images.length,
-                                      (index) => Container(
-                                        margin: EdgeInsets.symmetric(
-                                          horizontal: 3.w,
-                                        ),
-                                        width: 8.w,
-                                        height: 8.w,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                              controller.sliderIndex.value ==
-                                                      index
-                                                  ? Colors.white
-                                                  : Colors.white54,
+                                      // FIXED Moving dots indicator
+                                      Positioned(
+                                        top: 12.h,
+                                        left: 0,
+                                        right: 0,
+                                        child: Center(
+                                          child: Obx(() {
+                                            const int maxVisibleDots = 4;
+                                            final int totalImages = car!.images.length;
+                                            final int currentIndex = controller.sliderIndex.value;
+
+                                            // If we have 4 or fewer images, just show them all
+                                            if (totalImages <= maxVisibleDots) {
+                                              return Container(
+                                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black.withOpacity(0.3),
+                                                  borderRadius: BorderRadius.circular(20.r),
+                                                ),
+                                                child: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: List.generate(totalImages, (i) {
+                                                    final bool isActive = i == currentIndex;
+                                                    return AnimatedContainer(
+                                                      duration: const Duration(milliseconds: 250),
+                                                      curve: Curves.easeOut,
+                                                      margin: EdgeInsets.symmetric(horizontal: 3.w),
+                                                      width: isActive ? 10.w : 8.w,
+                                                      height: isActive ? 10.w : 8.w,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: isActive ? Colors.white : Colors.white54,
+                                                      ),
+                                                    );
+                                                  }),
+                                                ),
+                                              );
+                                            }
+
+                                            // CORRECT sliding window logic
+                                            int startIndex;
+                                            if (currentIndex < 2) {
+                                              // First 2 positions: [0,1,2,3]
+                                              startIndex = 0;
+                                            } else if (currentIndex >= totalImages - 2) {
+                                              // Last 2 positions: show last 4
+                                              startIndex = totalImages - maxVisibleDots;
+                                            } else {
+                                              // Middle positions: slide the window
+                                              // Put current index at position 2 (3rd dot)
+                                              startIndex = currentIndex - 2;
+                                            }
+
+                                            // Debug print to see what's happening
+                                            print("Index: $currentIndex, StartIndex: $startIndex, Window: [${startIndex}, ${startIndex+1}, ${startIndex+2}, ${startIndex+3}]");
+
+                                            // Build the visible dots with sliding animation
+                                            return Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black.withOpacity(0.3),
+                                                borderRadius: BorderRadius.circular(20.r),
+                                              ),
+                                              child: AnimatedSwitcher(
+                                                duration: const Duration(milliseconds: 300),
+                                                transitionBuilder: (child, animation) {
+                                                  return SlideTransition(
+                                                    position: Tween<Offset>(
+                                                      begin: const Offset(0.3, 0), // Slide from right
+                                                      end: Offset.zero,
+                                                    ).animate(CurvedAnimation(
+                                                      parent: animation,
+                                                      curve: Curves.easeOutCubic,
+                                                    )),
+                                                    child: FadeTransition(
+                                                      opacity: animation,
+                                                      child: child,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Row(
+                                                  key: ValueKey(startIndex), // Important: key changes trigger animation
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: List.generate(maxVisibleDots, (i) {
+                                                    final int dotIndex = startIndex + i;
+                                                    final bool isActive = dotIndex == currentIndex;
+
+                                                    return TweenAnimationBuilder<double>(
+                                                      duration: Duration(milliseconds: 200 + (i * 50)), // Staggered animation
+                                                      tween: Tween(begin: 0.0, end: 1.0),
+                                                      builder: (context, value, child) {
+                                                        return Transform.scale(
+                                                          scale: value,
+                                                          child: AnimatedContainer(
+                                                            duration: const Duration(milliseconds: 250),
+                                                            curve: Curves.easeOut,
+                                                            margin: EdgeInsets.symmetric(horizontal: 3.w),
+                                                            width: isActive ? 10.w : 8.w,
+                                                            height: isActive ? 10.w : 8.w,
+                                                            decoration: BoxDecoration(
+                                                              shape: BoxShape.circle,
+                                                              color: isActive ? Colors.white : Colors.white54,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  }),
+                                                ),
+                                              ),
+                                            );
+                                          }),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
 
@@ -372,7 +544,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                   color: kPrimaryColor,
                                                   // Green like screenshot
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 20.sp,
+                                                  fontSize: 18.sp,
                                                 ),
                                               ),
                                             ),
@@ -1220,7 +1392,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
           children: [
             _buildStyledRow("Brand", car.brandName!, 0),
             _buildStyledRow("Model".tr, car.modelName!, 1),
-            _buildStyledRow("Import Year".tr, car.modelYear!, 2),
+            _buildStyledRow("Model Year".tr, car.modelYear!, 2),
             _buildStyledRow(
               "Registered Year".tr,
               car.registrationYear?.isNotEmpty == true
@@ -1313,12 +1485,12 @@ class ViewCarScreen extends GetView<ViewCarController> {
                       Container(
                         padding: const EdgeInsets.all(10), // added padding of 10
                         child: Text(
-                          "${e.features[index].title}"
-                              "${(e.features[index].quantity != null && e.features[index].quantity! > 0)
-                              ? ": ${e.features[index].quantity}"
-                              : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty)
-                              ? ": ${e.features[index].featureOption}"
-                              : ""}",
+                          "${e.features[index].title}",
+                              // "${(e.features[index].quantity != null && e.features[index].quantity! > 0)
+                              // ? ": ${e.features[index].quantity}"
+                              // : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty)
+                              // ? ": ${e.features[index].featureOption}"
+                              // : ""}",
                           style: kLightTextStyle14.copyWith(
                             color: kTableColor,
                             fontWeight: FontWeight.w300,

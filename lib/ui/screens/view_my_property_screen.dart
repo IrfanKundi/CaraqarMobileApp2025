@@ -321,7 +321,7 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                             style: kTextStyle18.copyWith(
                                               color: kPrimaryColor,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20.sp,
+                                              fontSize: 18.sp,
                                             ),
                                           ),
                                         ],

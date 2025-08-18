@@ -174,7 +174,7 @@ class AddToCartScreen extends GetView<AddToCartController> {
                         kVerticalSpace4,
                         FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: Text("${getPrice(controller.product!.price!)}",
+                          child: Text(getPrice(controller.product!.price!),
                             style: TextStyle(color: kWhiteColor,fontSize: 11.sp),),
                         )
                       ],

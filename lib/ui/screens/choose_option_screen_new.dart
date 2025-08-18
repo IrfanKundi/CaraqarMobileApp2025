@@ -29,7 +29,7 @@ class ChooseOptionScreenNew extends StatefulWidget {
 class _ChooseOptionScreenState extends State<ChooseOptionScreenNew> {
   int currentIndex = 0;
   late Timer _timer;
-  bool? _isLoggedIn;
+  bool? _isLoggedIn = false;
 
   final List<SlideData> slides = [
     SlideData(
@@ -165,7 +165,7 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreenNew> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
+                          width: MediaQuery.of(context).size.width * 0.9,
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
@@ -177,7 +177,7 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreenNew> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: SizedBox(
-                            height: 48,
+                            height: 52,
                             child: ElevatedButton(
                               onPressed: () {
                                 loadRealEstate();
@@ -208,7 +208,7 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreenNew> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
+                          width: MediaQuery.of(context).size.width * 0.9,
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
@@ -220,7 +220,7 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreenNew> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: SizedBox(
-                            height: 48,
+                            height: 52,
                             child: ElevatedButton(
                               onPressed: () {
                                 loadVehicle();
@@ -261,7 +261,7 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreenNew> {
                     text: TextSpan(
                       text: 'Already have an account? ',
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
                       ),
@@ -269,8 +269,8 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreenNew> {
                         TextSpan(
                           text: 'Log In',
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
                             color: Colors.blue,
                           ),
                           recognizer: TapGestureRecognizer()

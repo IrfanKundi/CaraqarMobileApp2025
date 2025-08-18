@@ -196,7 +196,7 @@ class ViewMyRequestScreen extends GetView<ViewMyRequestController> {
                                             style: kTextStyle18.copyWith(
                                               color: kPrimaryColor,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20.sp,
+                                              fontSize: 16.sp,
                                             ),
                                           ),
                                         ],

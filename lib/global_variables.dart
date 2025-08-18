@@ -6,11 +6,11 @@ import 'package:careqar/resources/api_provider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'controllers/content_controller.dart';
+import 'locale/format_price.dart';
 
 const int gRoleId = 2;
 
@@ -38,7 +38,7 @@ String getPrice(double price){
   if (price == 0) {
     return "Call for Price".tr;
   }
-  return "${gSelectedCountry?.currency} ${priceFormat.format(price)} ";
+  return "${gSelectedCountry?.currency} ${formatPrice(price.toInt())}";
 }
 
 

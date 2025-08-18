@@ -22,17 +22,22 @@ class _NavigationScreenState extends State<NavigationScreen> {
   late HomeController controller;
 
   @override
+  @override
   void initState() {
-    controller = Get.put(HomeController());
+    super.initState();
 
-    // Check for initial tab argument
-    if (Get.arguments != null && Get.arguments['initialTab'] != null) {
+    controller = Get.isRegistered<HomeController>()
+        ? Get.find<HomeController>()
+        : Get.put(HomeController());
+
+    final args = Get.arguments;
+    if (args != null && args['initialTab'] != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        controller.updatePageIndex(Get.arguments['initialTab']);
+        controller.updatePageIndex(args['initialTab']);
       });
     }
-    super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {

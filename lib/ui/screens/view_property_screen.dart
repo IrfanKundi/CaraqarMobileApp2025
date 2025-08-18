@@ -377,7 +377,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                         style: kTextStyle18.copyWith(
                                           color: kPrimaryColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20.sp,
+                                          fontSize: 18.sp,
                                         ),
                                       ),
                                     ),
@@ -1212,8 +1212,8 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          "${e.features[index].title}"
-                              "${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
+                          "${e.features[index].title}",
+                              //"${(e.features[index].quantity != null && e.features[index].quantity! > 0) ? ": ${e.features[index].quantity}" : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty) ? ": ${e.features[index].featureOption}" : ""}",
                           style: kLightTextStyle14.copyWith(
                             color: kTableColor,
                             fontWeight: FontWeight.w300,

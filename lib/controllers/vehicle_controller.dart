@@ -341,7 +341,7 @@ if(formKey.currentState!.validate()){
             await showAlertDialog(title: "Success", message: r.message);
             reset();
             // update my car screen ali
-            Get.offAllNamed(Routes.navigationScreen, arguments: {'initialTab': 2});
+            Get.offAllNamed(Routes.navigationScreen, arguments: {'initialTab': 1});
           });
         });
       }

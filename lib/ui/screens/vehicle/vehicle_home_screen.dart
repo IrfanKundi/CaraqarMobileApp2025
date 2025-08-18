@@ -5,6 +5,7 @@ import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/favorite_controller.dart';
 import 'package:careqar/controllers/home_controller.dart';
+import 'package:careqar/controllers/type_controller.dart';
 import 'package:careqar/controllers/vehicle_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/global_variables.dart';
@@ -117,6 +118,33 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
     _videoPlayerController.dispose();
   }
 
+  loadRealEstate() async {
+    gIsVehicle = false;
+    TypeController typeController = Get.put(TypeController());
+    //typeController.searchedTypes.clear();
+    typeController.allTypes.clear();
+    typeController.subTypes.clear();
+
+    await typeController.getTypes();
+    await typeController.getTypesWithSubTypes();
+    //await getAppContent();
+    Future.delayed(Duration(seconds:2),() {
+    //  EasyLoading.dismiss();
+      Get.offAllNamed(Routes.navigationScreen);
+    },);
+  }
+
+  loadVehicle() async {
+
+    // EasyLoading.show();
+    gIsVehicle = true;
+    //getAppContent();
+    Future.delayed(Duration(seconds: 2),() {
+      // EasyLoading.dismiss();
+      Get.offAllNamed(Routes.navigationScreen);
+    },);
+  }
+
   @override
   Widget build(BuildContext context) {
     // kHorizontalSpace12,
@@ -181,93 +209,156 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
               width: double.infinity, ),
 
             Container(
-              margin: EdgeInsetsDirectional.only(top: 28.h),
+              margin: EdgeInsetsDirectional.only(top: 38.h),
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: SizedBox(
-                height: 54.h,
-                child: Row(
+                height: 38.h,
+                child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // Menu button - fixed width with proper spacing
-                    GestureDetector(
-                      onTap: () {
-                        gScaffoldStateKey!.currentState!.openDrawer();
-                      },
-                      child: Container(
-                        width: 40.r,
-                        height: 40.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.black26
-                        ),
-                        child: const Icon(
-                          MaterialCommunityIcons.menu,
-                          color: kWhiteColor,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 12.w), // Reduced space for equal distribution
-                    // Search bar - takes remaining space with proper flex
                     Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.allAdsScreen);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(8.w),
-                          height: 40.h,
-                          decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: kBorderRadius30,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                MaterialCommunityIcons.magnify,
-                                size: 20.sp,
-                                color: kWhiteColor,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(30),
+                          onTap: () {
+                            // TODO: Handle Real Estate click
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5), // transparent black
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            child: const Text(
+                              "REAL ESTATE",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
                               ),
-                              kHorizontalSpace4,
-                              Text(
-                                "SearchForCar".tr,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 14.sp,
-                                  color: kWhiteColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 12.w), // Reduced space for equal distribution
-                    // Flag button - fixed width with proper spacing
-              GestureDetector(
-                onTap: () {
-                  showCountriesSheet(context);
-                },
-                child: Container(
-                  height: 40.h,
-                  width: 40.h,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black26,
-                  ),
-                  alignment: Alignment.center,
-                  child: ClipOval(
-                    child: ImageWidget(
-                      gSelectedCountry!.flag,
-                      height: 37.w,
-                      width: 37.w,
-                      fit: BoxFit.cover,
-                      isCircular: true,
+                    Expanded(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(30),
+                          onTap: () {
+
+                            loadVehicle();
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5), // transparent black
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            child: const Text(
+                              "MOTORS",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              )
-              ],
-                ),
+                  ],
+                )
+
+
+                //   Row(
+              //     children: [
+              //       // Menu button - fixed width with proper spacing
+              //       GestureDetector(
+              //         onTap: () {
+              //           gScaffoldStateKey!.currentState!.openDrawer();
+              //         },
+              //         child: Container(
+              //           width: 40.r,
+              //           height: 40.r,
+              //           decoration: const BoxDecoration(
+              //               shape: BoxShape.circle,
+              //               color: Colors.black26
+              //           ),
+              //           child: const Icon(
+              //             MaterialCommunityIcons.menu,
+              //             color: kWhiteColor,
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(width: 12.w), // Reduced space for equal distribution
+              //       // Search bar - takes remaining space with proper flex
+              //       Expanded(
+              //         flex: 1,
+              //         child: GestureDetector(
+              //           onTap: () {
+              //             Get.toNamed(Routes.allAdsScreen);
+              //           },
+              //           child: Container(
+              //             padding: EdgeInsets.all(8.w),
+              //             height: 40.h,
+              //             decoration: BoxDecoration(
+              //               color: Colors.black26,
+              //               borderRadius: kBorderRadius30,
+              //             ),
+              //             child: Row(
+              //               children: [
+              //                 Icon(
+              //                   MaterialCommunityIcons.magnify,
+              //                   size: 20.sp,
+              //                   color: kWhiteColor,
+              //                 ),
+              //                 kHorizontalSpace4,
+              //                 Text(
+              //                   "SearchForCar".tr,
+              //                   style: GoogleFonts.poppins(
+              //                     fontSize: 14.sp,
+              //                     color: kWhiteColor,
+              //                     fontWeight: FontWeight.w400,
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(width: 12.w), // Reduced space for equal distribution
+              //       // Flag button - fixed width with proper spacing
+              // GestureDetector(
+              //   onTap: () {
+              //     showCountriesSheet(context);
+              //   },
+              //   child: Container(
+              //     height: 40.h,
+              //     width: 40.h,
+              //     decoration: const BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       color: Colors.black26,
+              //     ),
+              //     alignment: Alignment.center,
+              //     child: ClipOval(
+              //       child: ImageWidget(
+              //         gSelectedCountry!.flag,
+              //         height: 37.w,
+              //         width: 37.w,
+              //         fit: BoxFit.cover,
+              //         isCircular: true,
+              //       ),
+              //     ),
+              //   ),
+              // )
+              // ],
+              //   ),
               ),
             ),
             //change for IOS
@@ -860,7 +951,7 @@ class _CarItemState extends State<CarItem> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Image Section
+                //this is the design i want Image Section
                 Container(
                   width: 120.w,
                   height: 100.h,

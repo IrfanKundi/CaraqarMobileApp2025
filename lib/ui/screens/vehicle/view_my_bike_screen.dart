@@ -547,7 +547,8 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                                                     kVerticalSpace4,
                                                     FittedBox(
                                                        fit: BoxFit.scaleDown,
-                                                      child: Text("${e.features[index].title}${e.features[index].quantity!>0?": ${e.features[index].quantity}":e.features[index].featureOption!=null?": ${e.features[index].featureOption}":""}",
+                                                     // child: Text("${e.features[index].title}${e.features[index].quantity!>0?": ${e.features[index].quantity}":e.features[index].featureOption!=null?": ${e.features[index].featureOption}":""}",
+                                                      child: Text("${e.features[index].title}",
                                                         style: kTextStyle12.copyWith(color: kAccentColor),
                                                         textAlign: TextAlign.center,),
                                                     )

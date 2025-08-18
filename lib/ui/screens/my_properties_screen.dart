@@ -25,7 +25,7 @@ import '../../global_variables.dart';
 
 class MyPropertiesScreen extends StatefulWidget {
 
-  MyPropertiesScreen({Key? key}) : super(key: key){
+  MyPropertiesScreen({super.key}){
 
     if(UserSession.isLoggedIn!){
       Get.put(MyPropertyController());

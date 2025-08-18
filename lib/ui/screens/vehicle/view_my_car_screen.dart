@@ -319,7 +319,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                                         style: kTextStyle18.copyWith(
                                           color: kPrimaryColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20.sp,
+                                          fontSize: 18.sp,
                                         ),
                                       ),
                                     ),
@@ -712,7 +712,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
           children: [
             _buildStyledRow("Brand", car.brandName!, 0),
             _buildStyledRow("Model".tr, car.modelName!, 1),
-            _buildStyledRow("Import Year".tr, car.modelYear!, 2),
+            _buildStyledRow("Model Year".tr, car.modelYear!, 2),
             _buildStyledRow(
               "Registered Year".tr,
               car.registrationYear?.isNotEmpty == true ? car.registrationYear! : "Not Available",

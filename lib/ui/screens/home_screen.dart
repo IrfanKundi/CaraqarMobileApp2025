@@ -963,110 +963,129 @@ class _PropertyItemState extends State<PropertyItem> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // IMAGE SECTION
-                    Expanded(
-                      flex: 7,
-                      child: Padding(
-                        padding: EdgeInsets.all(8.w),
-                        child: Stack(
+              // IMAGE SECTION - Expanded with Container's New Badge Design
+              Expanded(
+              flex: 7,
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.r),
+                    // Add lime green border if item is new (within 2 days)
+                    border: DateTime.now()
+                        .difference(widget.item.createdAt!)
+                        .inDays < 2
+                        ? Border.all(
+                      color: kLableColor, // Lime green color matching the badge
+                      width: 2.5, // Border width
+                    )
+                        : Border.all(
+                      color: Colors.black54, // Light grey like screenshot
+                      width: 1, // 1px border
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r), // Slightly smaller radius for inner content
+                        child: ImageWidget(
+                          widget.item.images.first,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+
+                      // PURPOSE badge (Sell / Rent)
+                      Positioned(
+                        top: 8.h,
+                        right: 8.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(15.r),
-                              child: ImageWidget(
-                                widget.item.images.first,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 2.h,
+                                horizontal: 8.w,
+                              ),
+                              decoration: BoxDecoration(
+                                color: widget.item.purpose == "Sell"
+                                    ? kAccentColor
+                                    : kLightBlueColor,
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              child: Text(
+                                "For${widget.item.purpose}".tr,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                ),
                               ),
                             ),
+                          ],
+                        ),
+                      ),
 
-                            // PURPOSE badge (Sell / Rent)
-                            Positioned(
-                              top: 8.h,
-                              left: 8.w,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                      // New Badge - Positioned at border edge like Container design
+                      if (DateTime.now()
+                          .difference(widget.item.createdAt!)
+                          .inDays <
+                          2)
+                        Positioned(
+                          top: 10.h, // Position right at the border edge
+                          left: 0.w, // Position right at the border edge
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+                            decoration: BoxDecoration(
+                              color: kLableColor, // Lime green color from Container design
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(0), // Sharp top corner
+                                topRight: Radius.circular(12.r), // Rounded right corner
+                                bottomLeft: Radius.circular(0), // Sharp bottom corner
+                                bottomRight: Radius.circular(12.r), // Rounded right corner
+                              ),
+                            ),
+                            child: Text(
+                              "New".tr,
+                              style: GoogleFonts.poppins(
+                                fontSize: 9.sp, // Smaller font size
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      // Views counter + Favorite
+                      Positioned(
+                        bottom: 8.h,
+                        right: 8.w,
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.w,
+                                vertical: 4.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.7),
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 2.h,
-                                      horizontal: 8.w,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          widget.item.purpose == "Sell"
-                                              ? kAccentColor
-                                              : kLightBlueColor,
-                                      borderRadius: BorderRadius.circular(30.r),
-                                    ),
-                                    child: Text(
-                                      "For${widget.item.purpose}".tr,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.sp,
-                                      ),
-                                    ),
+                                  Icon(
+                                    MaterialCommunityIcons.eye_outline,
+                                    color: Colors.white,
+                                    size: 12.sp,
                                   ),
-                                  if (DateTime.now()
-                                          .difference(widget.item.createdAt!)
-                                          .inDays <
-                                      2)
-                                    Container(
-                                      margin: EdgeInsets.only(top: 4.h),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 3.h,
-                                        horizontal: 8.w,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: kRedColor,
-                                        borderRadius: BorderRadius.circular(
-                                          30.r,
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "New".tr,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10.sp,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-
-                            // Views counter + Favorite
-                            Positioned(
-                              bottom: 8.h,
-                              right: 8.w,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w,
-                                      vertical: 4.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.7),
-                                      borderRadius: BorderRadius.circular(12.r),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          MaterialCommunityIcons.eye_outline,
-                                          color: Colors.white,
-                                          size: 12.sp,
-                                        ),
-                                        SizedBox(width: 4.w),
-                                        Text(
-                                          "${widget.item.clicks}",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10.sp,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    "${widget.item.clicks}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ],
@@ -1075,7 +1094,10 @@ class _PropertyItemState extends State<PropertyItem> {
                           ],
                         ),
                       ),
-                    ),
+                    ],
+                  ),
+                ),
+              ),),
 
                     // DETAILS SECTION
                     Expanded(
