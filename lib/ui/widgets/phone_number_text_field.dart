@@ -46,11 +46,11 @@ class PhoneNumberTextField extends StatelessWidget {
           fillColor: kWhiteColor,
           errorStyle: kErrorStyle,
           focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: kSuccessColor,width: 1.w),
+            //borderSide: BorderSide(color: kSuccessColor,width: 1.w),
             borderRadius:borderRadius?? kBorderRadius30,
           ) ,
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade300,width: 1.w),
+            borderSide: BorderSide(color: Colors.transparent,width: 1.w),
             borderRadius:borderRadius??  kBorderRadius30,
           ),
           focusedBorder: OutlineInputBorder(

@@ -54,6 +54,11 @@ final kLightTextStyle14 = GoogleFonts.poppins(
   fontSize: 14.sp,
   fontWeight: FontWeight.w500,
 );
+final kDarkTextStyle16 = GoogleFonts.poppins(
+  color: kBlackColor,
+  fontSize: 16.sp,
+  fontWeight: FontWeight.w500,
+);
 final kLocationPostStyle12 = GoogleFonts.poppins(
   color: kWhiteColor,
   fontSize: 12.sp,

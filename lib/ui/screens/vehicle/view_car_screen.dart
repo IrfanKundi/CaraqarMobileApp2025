@@ -1417,7 +1417,6 @@ class ViewCarScreen extends GetView<ViewCarController> {
             _buildStyledRow("Mileage".tr, "${car.mileage} ${"KM".tr}", 8),
             _buildStyledRow("Seats".tr, "${car.seats}", 9),
             _buildStyledRow("Engine".tr, car.engine!, 10),
-            _buildStyledRow("City".tr, car.cityName!, 11),
             _buildStyledRow("Color".tr, car.color!, 12),
             _buildStyledRow("Ad ID".tr, car.carId.toString(), 12),
           ],

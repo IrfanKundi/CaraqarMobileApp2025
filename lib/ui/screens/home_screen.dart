@@ -13,8 +13,6 @@ import 'package:careqar/models/property_model.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/ui/screens/vehicle/coming_soon_screen.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
-import 'package:careqar/ui/widgets/countries_bottom_sheet.dart';
-import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:careqar/ui/widgets/shimmer_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -142,6 +140,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         }
       });
   }
+  loadVehicle() async {
+    _videoPlayerController.dispose();
+    gIsVehicle = true;
+    Future.delayed(const Duration(seconds: 2), () {
+      Get.offAllNamed(Routes.navigationScreen);
+    });
+  }
 
   @override
   void dispose() {
@@ -160,101 +165,162 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               backgroundColor: kWhiteColor,
               elevation: 0,
               title: Container(
-                margin: EdgeInsetsDirectional.only(end: 16.w),
-                child: Row(
+                margin: EdgeInsetsDirectional.only(top: 12.w),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
-                      flex: 3,
-                      child: GestureDetector(
-                        onTap: () {
-                          homeController.propertyController.resetFilters();
-                          homeController.propertyController
-                              .getFilteredProperties();
-                          Get.toNamed(Routes.propertiesScreen);
-                        },
-
-                        child: Container(
-                          padding: EdgeInsets.all(8.w),
-                          height: 40.h,
-                          decoration: BoxDecoration(
-                            color: Colors.black26,
-                            borderRadius: kBorderRadius30,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                MaterialCommunityIcons.magnify,
-                                size: 20.sp,
-                                color: kWhiteColor,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(30),
+                          onTap: () {
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5), // transparent black
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            child: const Text(
+                              "REAL ESTATE",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
-                              kHorizontalSpace4,
-                              Text(
-                                "SearchForProperty".tr,
-                                style: TextStyle(
-                                  color: kWhiteColor,
-                                  fontSize: 14.sp,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-
-                    kHorizontalSpace12,
-
-                    GestureDetector(
-                      onTap: () {
-                        showCountriesSheet(context);
-                      },
-                      child: Container(
-                        height: 40.h,
-                        width: 40.h,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black26,
-                        ),
-                        alignment: Alignment.center,
-                        child: ClipOval(
-                          child: ImageWidget(
-                            gSelectedCountry!.flag,
-                            height: 37.w,
-                            width: 37.w,
-                            fit: BoxFit.cover,
-                            isCircular: true,
+                    Expanded(
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(30),
+                          onTap: () {
+                            if (!gIsVehicle) {
+                              loadVehicle();}
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5), // transparent black
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            child: const Text(
+                              "MOTORS",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ],
-                ),
+                )
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       flex: 3,
+                //       child: GestureDetector(
+                //         onTap: () {
+                //           homeController.propertyController.resetFilters();
+                //           homeController.propertyController
+                //               .getFilteredProperties();
+                //           Get.toNamed(Routes.propertiesScreen);
+                //         },
+                //
+                //         child: Container(
+                //           padding: EdgeInsets.all(8.w),
+                //           height: 40.h,
+                //           decoration: BoxDecoration(
+                //             color: Colors.black26,
+                //             borderRadius: kBorderRadius30,
+                //           ),
+                //           child: Row(
+                //             children: [
+                //               Icon(
+                //                 MaterialCommunityIcons.magnify,
+                //                 size: 20.sp,
+                //                 color: kWhiteColor,
+                //               ),
+                //               kHorizontalSpace4,
+                //               Text(
+                //                 "SearchForProperty".tr,
+                //                 style: TextStyle(
+                //                   color: kWhiteColor,
+                //                   fontSize: 14.sp,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //
+                //     kHorizontalSpace12,
+                //
+                //     GestureDetector(
+                //       onTap: () {
+                //         showCountriesSheet(context);
+                //       },
+                //       child: Container(
+                //         height: 40.h,
+                //         width: 40.h,
+                //         decoration: const BoxDecoration(
+                //           shape: BoxShape.circle,
+                //           color: Colors.black26,
+                //         ),
+                //         alignment: Alignment.center,
+                //         child: ClipOval(
+                //           child: ImageWidget(
+                //             gSelectedCountry!.flag,
+                //             height: 37.w,
+                //             width: 37.w,
+                //             fit: BoxFit.cover,
+                //             isCircular: true,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // )
+                ,
               ),
               //Text
-              leading: Builder(
-                builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      gScaffoldStateKey!.currentState!.openDrawer();
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(7.w),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black26,
-                      ),
-                      child: const Icon(
-                        MaterialCommunityIcons.menu,
-                        color: kWhiteColor,
-                      ),
-                    ),
-                  );
-                },
-              ),
+              // leading: Builder(
+              //   builder: (context) {
+              //     return GestureDetector(
+              //       onTap: () {
+              //         gScaffoldStateKey!.currentState!.openDrawer();
+              //       },
+              //       child: Container(
+              //         margin: EdgeInsets.all(7.w),
+              //         decoration: const BoxDecoration(
+              //           shape: BoxShape.circle,
+              //           color: Colors.black26,
+              //         ),
+              //         child: const Icon(
+              //           MaterialCommunityIcons.menu,
+              //           color: kWhiteColor,
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
 
-              // shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.only(
-              //         bottomLeft: Radius.circular(30.r),
-              //         bottomRight: Radius.circular(30.r))),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30.r),
+                      bottomRight: Radius.circular(30.r))),
               snap: false,
               systemOverlayStyle: SystemUiOverlayStyle.dark,
               titleSpacing: 0,

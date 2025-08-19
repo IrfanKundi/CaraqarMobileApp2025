@@ -58,9 +58,6 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
     {
       playVideo();
     }
-
-
-    // TODO: implement initState
     super.initState();
   }
 
@@ -119,31 +116,20 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
   }
 
   loadRealEstate() async {
+    _videoPlayerController.dispose();
     gIsVehicle = false;
     TypeController typeController = Get.put(TypeController());
-    //typeController.searchedTypes.clear();
     typeController.allTypes.clear();
     typeController.subTypes.clear();
-
     await typeController.getTypes();
     await typeController.getTypesWithSubTypes();
-    //await getAppContent();
-    Future.delayed(Duration(seconds:2),() {
-    //  EasyLoading.dismiss();
+    Future.delayed(const Duration(seconds: 2), () {
       Get.offAllNamed(Routes.navigationScreen);
-    },);
+    });
   }
 
-  loadVehicle() async {
 
-    // EasyLoading.show();
-    gIsVehicle = true;
-    //getAppContent();
-    Future.delayed(Duration(seconds: 2),() {
-      // EasyLoading.dismiss();
-      Get.offAllNamed(Routes.navigationScreen);
-    },);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +209,9 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                         child: InkWell(
                           borderRadius: BorderRadius.circular(30),
                           onTap: () {
-                            // TODO: Handle Real Estate click
+                            if (gIsVehicle) {
+                              loadRealEstate();
+                            }
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -250,8 +238,6 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
                         child: InkWell(
                           borderRadius: BorderRadius.circular(30),
                           onTap: () {
-
-                            loadVehicle();
                           },
                           child: Container(
                             alignment: Alignment.center,

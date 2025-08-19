@@ -87,8 +87,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   onTap: () => controller.updatePageIndex(3),
                 ),
                 _buildNavItem(
-                  icon: gIsVehicle ? FontAwesomeIcons.shop : FontAwesomeIcons.newspaper,
-                  label: gIsVehicle ? "EStore".tr : "News".tr,
+                  icon: FontAwesomeIcons.userGear,
+                  label: "Profile",
                   index: 4,
                   isSelected: controller.index.value == 4,
                   onTap: () => controller.updatePageIndex(4),

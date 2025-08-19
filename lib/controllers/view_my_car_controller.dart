@@ -17,7 +17,6 @@ class ViewMyCarController extends GetxController {
   var delStatus = Status.initial.obs;
   var refreshStatus = Status.initial.obs;
   Rx<Car?> car=Rx(null);
-  // Add these for preloading
   var isImagesPreloaded = false.obs;
   var preloadingProgress = 0.0.obs;
 

@@ -317,7 +317,7 @@ loadRealEstate() async {
   await typeController.getTypes();
   await typeController.getTypesWithSubTypes();
   await getAppContent();
-  Future.delayed(Duration(seconds:2),() {
+  Future.delayed(Duration(seconds:1),() {
     EasyLoading.dismiss();
     Get.offAllNamed(Routes.navigationScreen);
   },);

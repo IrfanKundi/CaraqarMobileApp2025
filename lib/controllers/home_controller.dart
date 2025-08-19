@@ -10,7 +10,7 @@ import 'package:careqar/global_variables.dart';
 import 'package:careqar/services/check_for_update.dart';
 import 'package:careqar/ui/screens/home_screen.dart';
 import 'package:careqar/ui/screens/news_screen.dart';
-import 'package:careqar/ui/screens/requests_screen.dart'; 
+import 'package:careqar/ui/screens/requests_screen.dart';
 import 'package:careqar/ui/screens/vehicle/my_cars_screen.dart';
 import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -40,52 +40,65 @@ class HomeController extends GetxController {
   ContentController  contentController = Get.find<ContentController>();
   var index = 0.obs;
   final screens = [
-   gIsVehicle? const VehicleHomeScreen(): const HomeScreen(),
-    gIsVehicle?MyCarsScreen(): Container(),
-    Container(),
-   gIsVehicle? Container(): RequestsScreen(),
-   //gIsVehicle? FavoritesScreen(): RequestsScreen(),
-    gIsVehicle? Container(): const NewsScreen(),
+    gIsVehicle ? const VehicleHomeScreen() : const HomeScreen(),
+    Container(), // Placeholder since we navigate away
+    Container(), // Placeholder since we navigate away
+    Container(), // Placeholder since we navigate away
+    Container(), // Placeholder since we navigate away
   ];
 
-  updatePageIndex(index,{nearby=false}) {
-    if(index!=2){
-      if(index==1){
-        if(gIsVehicle){
-          this.index(index);
-        }else{
-            if (UserSession.isLoggedIn!) {
-              Get.toNamed(Routes.myPropertiesScreen);
-            } else {
-              Get.toNamed(Routes.loginScreen);
-            }
-        }
-
-      }
-      else if(index==3 && gIsVehicle){
-        if(UserSession.isLoggedIn!){
-         //this.index(index);
-          Get.toNamed(Routes.cartScreen);
-        }else{
-          Get.toNamed(Routes.loginScreen);
-        }
-      }
-      else if(index==4 && gIsVehicle){
-        // Get.toNamed(Routes.eStoreScreen);
-        Navigator.of(gNavigatorKey.currentContext!).push(MaterialPageRoute(builder: (context) => ComingSoonScreen(title: "Estore Screen",)),);
-
-      }
-      else{
-        this.index(index);
-      }
+  updatePageIndex(index, {nearby = false}) {
+    if (index == 0) {
+      // Keep home screen in bottom navigation
+      this.index(index);
+      return;
     }
-    else{
-      if(gIsVehicle){
-        Get.toNamed(Routes.newAdScreen);
-      }else{
-        Get.toNamed(Routes.propertiesScreen);
-      }
+
+    // Navigate to all other pages
+    switch (index) {
+      case 1:
+        if (gIsVehicle) {
+          Get.toNamed(Routes.viewMyCarScreen);
+        } else {
+          if (UserSession.isLoggedIn!) {
+            Get.toNamed(Routes.myPropertiesScreen);
+          } else {
+            Get.toNamed(Routes.loginScreen);
+          }
+        }
+        break;
+
+      case 2:
+        if (gIsVehicle) {
+          Get.toNamed(Routes.newAdScreen);
+        } else {
+          Get.toNamed(Routes.propertiesScreen);
+        }
+        break;
+
+      case 3:
+        if (gIsVehicle) {
+          if (UserSession.isLoggedIn!) {
+            Get.toNamed(Routes.cartScreen);
+          } else {
+            Get.toNamed(Routes.loginScreen);
+          }
+        } else {
+          Get.toNamed(Routes.myRequestsScreen);
+        }
+        break;
+
+      case 4:
+        if (gIsVehicle) {
+          Get.toNamed(Routes.profileScreen);
+        } else {
+          Get.toNamed(Routes.newsDetailScreen);
+        }
+        break;
     }
+
+    // Reset to home index after navigation
+    this.index(0);
   }
 
   DateTime? currentBackPressTime;
