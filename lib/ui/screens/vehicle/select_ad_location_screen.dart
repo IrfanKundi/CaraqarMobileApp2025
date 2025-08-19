@@ -49,7 +49,6 @@ class SelectAdLocationScreen extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               title: Text(location.title??"", style: kTextStyle14),
               onTap: () {
-                // ✅ Return selected location back to previous screen
                 Get.back(result: location);
               },
             );

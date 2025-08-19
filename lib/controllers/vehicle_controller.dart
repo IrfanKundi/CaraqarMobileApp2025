@@ -55,6 +55,7 @@ class VehicleController extends GetxController {
   int? registrationCityId;
   int? locationId;
   String? province;
+  String? RegistrationProvince;
   Brand? brand;
   Model? model;
   String? fuelType;
@@ -62,6 +63,7 @@ class VehicleController extends GetxController {
   String? color;
   String? mileage;
 
+  int? ModelVariant;
   int? seats;
   int? typeId;
   int? brandId;
@@ -372,6 +374,8 @@ if(formKey.currentState!.validate()){
                 "RegistrationCity": registrationCityId,
                 "LocationId":locationId,
                 "province": province,
+                "RegistrationProvince ": registrationCityId.toString(),
+                "ModelVariant ": ModelVariant,
                 "brandId": brand?.brandId,
                 "modelId": model?.modelId,
                 "color": color,
@@ -475,6 +479,8 @@ if(formKey.currentState!.validate()){
       registrationCityId= data.registrationCityId;
       locationId= data.locationId;
       province=data.province;
+      RegistrationProvince=data.registrationCityId.toString();
+      ModelVariant=data.ModelVariant;
       brandId=data.brandId;
       modelId=data.modelId;
       fuelType=data.fuelType;
@@ -522,6 +528,8 @@ if(formKey.currentState!.validate()){
     registrationCityId=null;
     locationId=null;
     province=null;
+    RegistrationProvince =null;
+    ModelVariant =null;
     brandId=null;
     modelId=null;
     fuelType=null;

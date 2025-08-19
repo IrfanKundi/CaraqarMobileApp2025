@@ -65,7 +65,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> with TickerProviderStat
                   tabs: [
                 Tab(text: "Upcoming".tr,),
                     Tab(text: "Past".tr,),
-              ]),
+              ],dividerColor: Colors.transparent),
             ),
             Expanded(child: TabBarView(
                 controller: tabController,

@@ -75,31 +75,31 @@ class _MyPropertiesScreenState extends State<MyPropertiesScreen> with TickerProv
               tabs: [
             Tab(text: "MyAds".tr,),
             Tab(text: "MyRequests".tr,),
-          ]),
+          ],dividerColor: Colors.transparent),
           Expanded(child: TabBarView(
               controller: tabController,
               children: [
          Column(crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Card(
-                    margin: kScreenPadding,
-                    child: Padding(
-                      padding: kScreenPadding,
-                      child: Column(children: [
-                        Text("LookingToSellOrRentOutYourProperty".tr,
-                            style: kTextStyle16,textAlign: TextAlign.center,),
-                        kVerticalSpace12,
-                        ButtonWidget(
-                            text: "PostAnAd",
-                            onPressed: () {
-                              if(UserSession.isLoggedIn!){
-                                Get.toNamed(Routes.newPropertyAdScreen);
-                              }else{
-                                Get.toNamed(Routes.loginScreen);
-                              }
-                            })
-                      ]),
-                    )),
+                // Card(
+                //     margin: kScreenPadding,
+                //     child: Padding(
+                //       padding: kScreenPadding,
+                //       child: Column(children: [
+                //         Text("LookingToSellOrRentOutYourProperty".tr,
+                //             style: kTextStyle16,textAlign: TextAlign.center,),
+                //         kVerticalSpace12,
+                //         ButtonWidget(
+                //             text: "PostAnAd",
+                //             onPressed: () {
+                //               if(UserSession.isLoggedIn!){
+                //                 Get.toNamed(Routes.newPropertyAdScreen);
+                //               }else{
+                //                 Get.toNamed(Routes.loginScreen);
+                //               }
+                //             })
+                //       ]),
+                //     )),
                 Padding(
                   padding: kScreenPadding.copyWith(top: 0),
                   child:Row(

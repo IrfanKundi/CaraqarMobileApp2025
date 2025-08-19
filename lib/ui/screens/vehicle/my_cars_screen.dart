@@ -83,13 +83,13 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
             Tab(text: "Car".tr,),
                 Tab(text: "Bike".tr,),
                 Tab(text: "No.Plate".tr,),
-          ]),
+          ],dividerColor: Colors.transparent),
           Expanded(child: TabBarView(
               controller: tabController,
               children: [
          Column(crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Card(
+                /*Card(
                     margin: kScreenPadding,
                     child: Padding(
                       padding: kScreenPadding,
@@ -107,7 +107,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
                               }
                             })
                       ]),
-                    )),
+                    )),*/
                 Padding(
                   padding: kScreenPadding.copyWith(top: 0),
                   child:Row(
@@ -229,25 +229,25 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
             ),
                 Column(crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Card(
-                        margin: kScreenPadding,
-                        child: Padding(
-                          padding: kScreenPadding,
-                          child: Column(children: [
-                            Text("LookingToSellOrRentOutYourBike".tr,
-                              style: kTextStyle16,textAlign: TextAlign.center,),
-                            kVerticalSpace12,
-                            ButtonWidget(
-                                text: "PostAnAd",
-                                onPressed: () {
-                                  if(UserSession.isLoggedIn!){
-                                    Get.toNamed(Routes.newAdScreen);
-                                  }else{
-                                    Get.toNamed(Routes.loginScreen);
-                                  }
-                                })
-                          ]),
-                        )),
+                    // Card(
+                    //     margin: kScreenPadding,
+                    //     child: Padding(
+                    //       padding: kScreenPadding,
+                    //       child: Column(children: [
+                    //         Text("LookingToSellOrRentOutYourBike".tr,
+                    //           style: kTextStyle16,textAlign: TextAlign.center,),
+                    //         kVerticalSpace12,
+                    //         ButtonWidget(
+                    //             text: "PostAnAd",
+                    //             onPressed: () {
+                    //               if(UserSession.isLoggedIn!){
+                    //                 Get.toNamed(Routes.newAdScreen);
+                    //               }else{
+                    //                 Get.toNamed(Routes.loginScreen);
+                    //               }
+                    //             })
+                    //       ]),
+                    //     )),
                     Padding(
                       padding: kScreenPadding.copyWith(top: 0),
                       child:Row(

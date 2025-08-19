@@ -44,7 +44,7 @@ class _NewPropertyAdScreenState extends State<NewPropertyAdScreen> with TickerPr
               tabs: [
             Tab(text: "AddProperty".tr,),
             Tab(text: "AddRequest".tr,),
-          ]),
+          ],dividerColor: Colors.transparent),
           Expanded(child: TabBarView(
               controller: tabController,
               children: [

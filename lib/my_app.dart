@@ -54,6 +54,7 @@ import 'package:careqar/ui/screens/vehicle/checkout_screen.dart';
 import 'package:careqar/ui/screens/vehicle/choose_ad_type_screen.dart';
 import 'package:careqar/ui/screens/vehicle/choose_brand_screen.dart';
 import 'package:careqar/ui/screens/vehicle/choose_model_screen.dart';
+import 'package:careqar/ui/screens/vehicle/choose_model_variant_screen.dart';
 import 'package:careqar/ui/screens/vehicle/choose_model_year_screen.dart';
 import 'package:careqar/ui/screens/vehicle/choose_service_screen.dart';
 import 'package:careqar/ui/screens/vehicle/choose_subservice_screen.dart';
@@ -213,6 +214,10 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.chooseAdTypeScreen, page: () => const ChooseAdTypeScreen()),
       GetPage(name: Routes.chooseBrandScreen, page: () => ChooseBrandScreen()),
       GetPage(name: Routes.chooseModelScreen, page: () => const ChooseModelScreen()),
+      GetPage(
+        name: Routes.chooseModelVariants,
+        page: () => const ChooseModelVariantScreen(),
+      ),
       GetPage(name: Routes.selectConditionScreen, page: () => const SelectConditionScreen()),
       GetPage(name: Routes.selectRegistrationYearScreen, page: () => const SelectRegistrationYearScreen()),
       GetPage(name: Routes.selectProvinceScreen, page: () => SelectProvinceScreen()),

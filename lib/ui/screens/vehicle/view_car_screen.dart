@@ -1401,7 +1401,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
               3,
             ),
             _buildStyledRow(
-              "Registered".tr,
+              "Registered In".tr,
               car.registrationProvince ?? "NotAvailable".tr,
               4,
             ),

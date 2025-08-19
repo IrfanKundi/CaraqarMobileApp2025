@@ -89,7 +89,7 @@ class _AllAdsScreenState extends State<AllAdsScreen> with TickerProviderStateMix
               Tab(text: "Car".tr,),
                   Tab(text: "Bike".tr,),
                   Tab(text: "No.Plate".tr,),
-            ]),
+            ],dividerColor: Colors.transparent),
           ),
           Expanded(child: TabBarView(
               controller: tabController,

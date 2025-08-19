@@ -26,7 +26,7 @@ import '../../../global_variables.dart';
 
 class ViewMyCarScreen extends GetView<ViewMyCarController> {
   ViewMyCarScreen({Key? key}) : super(key: key) {
-    controller.sliderIndex(0);
+   controller.sliderIndex(0);
   }
 
   @override
@@ -719,7 +719,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
               3,
             ),
             _buildStyledRow(
-              "Registered".tr,
+              "Registered In".tr,
               car.registrationCity?.isNotEmpty == true ? car.registrationCity! : "Not Available",
               4,
             ),

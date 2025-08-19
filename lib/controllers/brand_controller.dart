@@ -1,4 +1,5 @@
 import 'package:careqar/models/brand_model.dart';
+import 'package:careqar/models/model_variant.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +9,9 @@ import '../global_variables.dart';
 class BrandController extends GetxController {
   var searchText = "";
   RxBool searchBoolean = false.obs;
-
+  var variantsStatus = Status.initial.obs;
+  List<ModelVariant> variants = [];
+  List<ModelVariant> searchedVariants = [];
   var brandsStatus = Status.loading.obs;
   var modelsStatus = Status.loading.obs;
   var engineStatus = Status.loading.obs;
@@ -36,6 +39,47 @@ class BrandController extends GetxController {
   var year = "".obs;
 
   final List<String> priorityBrands = ['toyota', 'honda', 'suzuki'];
+
+  Future<void> getVariants(int? modelId) async {
+    try {
+      if (modelId == null) return;
+
+      variantsStatus(Status.loading);
+
+      var response = await gApiProvider.get(
+          path: "vehicleBrand/GetVariants?modelId=$modelId"
+      );
+
+      await response.fold((l) {
+        showSnackBar(message: l.message!);
+        variantsStatus(Status.error);
+      }, (r) async {
+        variantsStatus(Status.success);
+        variants = (r.data as List)
+            .map((x) => ModelVariant.fromMap(x))
+            .toList();
+        searchedVariants = variants;
+      });
+      update();
+    } catch (e) {
+      showSnackBar(message: "Error");
+      variantsStatus(Status.error);
+      update();
+    }
+  }
+
+  void searchVariant(String query) {
+    if (query.isEmpty) {
+      searchedVariants = variants;
+    } else {
+      searchedVariants = variants
+          .where((variant) =>
+      variant.variantName!.toLowerCase().contains(query.toLowerCase()) ||
+          variant.variantNameAr!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+    update();
+  }
 
   void updateDate(DateTime datetime) {
     selectedDate.value = datetime;
