@@ -79,6 +79,7 @@ dependencies:
   flutter_svg: ^2.2.0
   marquee: ^2.3.0
   font_awesome_flutter: ^10.9.0
+  geocoding: ^4.0.0
 
 flutter_launcher_icons:
   android: true

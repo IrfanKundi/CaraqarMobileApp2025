@@ -11,6 +11,7 @@ import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
+import 'package:careqar/ui/widgets/location_map_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -827,6 +828,10 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
         children: [
           // Add your location content here
           Text('Location content goes here'),
+          LocationMapWidget(
+            cityName: car.location, // This gets the city from your car object
+            height: 250,
+          ),
           // Add map or location details
         ],
       ),
