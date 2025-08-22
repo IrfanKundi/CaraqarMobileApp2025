@@ -71,7 +71,7 @@ class Routes {
   static const chooseSubServiceScreen = "/chooseSubServiceScreen";
   static const serviceProvidersScreen = "/serviceProvidersScreen";
   static const chooseModelYearScreen = "/chooseModelYearScreen";
-  static const String chooseModelVariants = '/choose-model-variants';
+  static const String chooseModelVariants = '/chooseModelVariants';
   static const chooseTypeScreen = "/chooseTypeScreen";
   static const selectConditionScreen = "/selectConditionScreen";
   static const selectRegistrationYearScreen = "/selectRegistrationYearScreen";

@@ -2,6 +2,7 @@ import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/location_controller.dart';
@@ -15,6 +16,7 @@ class SelectAdLocationScreen extends StatelessWidget {
     final int cityId = int.tryParse(Get.parameters["cityId"] ?? "") ?? -1;
 
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: buildAppBar(context, title: "SelectCity".tr),
       body: Obx(() {
         final status = locationController.status.value;
@@ -30,7 +32,6 @@ class SelectAdLocationScreen extends StatelessWidget {
         final city = locationController.cityModel.value.cities
             .firstWhereOrNull((element) => element.cityId == cityId);
 
-
         if (city == null) {
           return Center(child: Text("City not found"));
         }
@@ -40,17 +41,63 @@ class SelectAdLocationScreen extends StatelessWidget {
         }
 
         return ListView.separated(
-          padding: kScreenPadding,
-          separatorBuilder: (context, index) => Divider(),
+          padding: EdgeInsets.all(16),
+          separatorBuilder: (context, index) => SizedBox(height: 12),
           itemCount: city.locations.length,
           itemBuilder: (context, index) {
             final location = city.locations[index];
-            return ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(location.title??"", style: kTextStyle14),
+            return InkWell(
               onTap: () {
                 Get.back(result: location);
               },
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.grey.shade200),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.05),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.location_on_outlined,
+                        color: Colors.grey.shade600,
+                        size: 20,
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        location.title ?? "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Get.locale?.languageCode == "ar"
+                          ? MaterialCommunityIcons.chevron_left
+                          : MaterialCommunityIcons.chevron_right,
+                      color: Colors.grey.shade400,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
             );
           },
         );

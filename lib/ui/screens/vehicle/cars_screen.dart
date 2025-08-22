@@ -3,6 +3,7 @@ import 'package:careqar/constants/strings.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/car_controller.dart';
 import 'package:careqar/enums.dart';
+import 'package:careqar/routes.dart';
 import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -92,28 +93,14 @@ class AllCars extends StatelessWidget {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        // Handle bar
-                                        Container(
-                                          width: 40.w,
-                                          height: 4.h,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[300],
-                                            borderRadius: BorderRadius.circular(2.r),
-                                          ),
-                                        ),
-                                        SizedBox(height: 20.h),
-
-                                        // Title
                                         Text(
                                           "Sort By",
                                           style: TextStyle(
-                                            fontSize: 18.sp,
+                                            fontSize: 14.sp,
                                             fontWeight: FontWeight.bold,
                                             color: kBlackColor,
                                           ),
                                         ),
-                                        SizedBox(height: 20.h),
-
                                         // Sort options
                                         _buildSortOption("Date Updated (New to Old)"),
                                         _buildSortOption("Date Updated (Old to New)"),
@@ -143,7 +130,7 @@ class AllCars extends StatelessWidget {
                             color: kAccentColor,
                             text: "Filter",
                             onPressed: () {
-                             // Get.toNamed(Routes.carFilterScreen);
+                              Get.toNamed(Routes.carFilterScreen);
                             },
                             icon: MaterialCommunityIcons.filter_variant,
                           ),
@@ -262,7 +249,7 @@ class AllCars extends StatelessWidget {
   Widget _buildSortOption(String title) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 15.h),
+      padding: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(

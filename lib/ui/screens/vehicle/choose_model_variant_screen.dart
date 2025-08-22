@@ -9,6 +9,7 @@ import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
 import '../../../constants/colors.dart';
@@ -26,6 +27,7 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
     });
 
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: buildAppBar(context, title: "ChooseModelVariant"),
       body: GetBuilder<BrandController>(
         builder: (brandController) => brandController.variantsStatus.value == Status.loading
@@ -37,13 +39,61 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
         )
             : Column(
           children: [
+            // Search Field
+            SizedBox(height: 10,),
             Padding(
-              padding: kHorizontalScreenPadding,
-              child: CupertinoSearchTextField(
-                onChanged: (val) => brandController.searchVariant(val),
-                placeholder: "Search".tr,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.grey.shade200),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.05),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.search,
+                        color: Colors.grey.shade600,
+                        size: 20,
+                      ),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        onChanged: (val) => brandController.searchVariant(val),
+                        decoration: InputDecoration(
+                          hintText: "Search".tr,
+                          hintStyle: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                  ],
+                ),
               ),
             ),
+
+            // Variants List
             Expanded(
               child: brandController.searchedVariants.isEmpty
                   ? Column(
@@ -63,17 +113,26 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                         controller.ModelVariant = null;
                         Get.toNamed(Routes.chooseModelYearScreen);
                       },
+                      borderRadius: BorderRadius.circular(30),
                       child: Container(
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                        margin: kScreenPadding,
+                        margin: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: kLightBlueColor,
                           border: Border.all(
                             color: kLightBlueColor,
                             width: 1.5,
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.05),
+                              spreadRadius: 1,
+                              blurRadius: 3,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
                         ),
                         child: Text(
                           "Continue".tr,
@@ -81,7 +140,7 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: kBlackColor,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -90,13 +149,15 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                 ],
               )
                   : ListView.separated(
-                padding: kScreenPadding,
+                padding: EdgeInsets.all(16),
                 itemCount: brandController.searchedVariants.length,
                 separatorBuilder: (context, index) {
-                  return kVerticalSpace12;
+                  return SizedBox(height: 12);
                 },
                 itemBuilder: (context, index) {
                   var item = brandController.searchedVariants[index];
+                  bool isSelected = controller.ModelVariant == item.variantId;
+
                   return InkWell(
                     onTap: () {
                       controller.ModelVariant = item.variantId;
@@ -106,27 +167,62 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                         Get.toNamed(Routes.chooseModelYearScreen);
                       }
                     },
+                    borderRadius: BorderRadius.circular(30),
                     child: Container(
+                      padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: controller.ModelVariant == item.variantId
-                            ? kLightBlueColor
-                            : null,
+                        color: isSelected ? kLightBlueColor : Colors.white,
+                        borderRadius: BorderRadius.circular(30),
                         border: Border.all(
-                          color: controller.ModelVariant == item.variantId
+                          color: isSelected
                               ? kLightBlueColor
-                              : kGreyColor,
+                              : Colors.grey.shade200,
                         ),
-                        borderRadius: kBorderRadius12,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.05),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
                       ),
-                      padding: EdgeInsets.all(8.w),
-                      child: Text(
-                        item.variantName!,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: kBlackColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15.sp,
-                        ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            child: Icon(
+                              Icons.tune_outlined,
+                              color: isSelected
+                                  ? Colors.white
+                                  : Colors.grey.shade600,
+                              size: 20,
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              item.variantName!,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.grey.shade600,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Get.locale?.languageCode == "ar"
+                                ? MaterialCommunityIcons.chevron_left
+                                : MaterialCommunityIcons.chevron_right,
+                            color: isSelected
+                                ? Colors.white.withOpacity(0.7)
+                                : Colors.grey.shade400,
+                            size: 20,
+                          ),
+                        ],
                       ),
                     ),
                   );

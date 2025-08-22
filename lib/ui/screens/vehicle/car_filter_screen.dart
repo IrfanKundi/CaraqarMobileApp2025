@@ -27,489 +27,436 @@ class CarFilterScreen extends GetView<VehicleController> {
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: (){
         controller.carController.resetFilters();
         return Future.value(true);
       },
       child: Scaffold(
+          backgroundColor: Colors.grey[50],
           appBar: buildAppBar(context, title: "Filters"),
           body: GetBuilder<CarController>(
-            id: "filter",
-            builder: (controller) {
-              return Column(
+              id: "filter",
+              builder: (controller) {
+                return Column(
                   children: [
                     Expanded(
                       child: SingleChildScrollView(
-                          padding: kScreenPadding,
+                          padding: EdgeInsets.all(16),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                            Text(
-                              'Select Province'.tr,
-                              style: TextStyle(
-                                  color: kBlackColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            kVerticalSpace4,
-                            
-                            InkWell(
-                              onTap: () async {
-                                var result = await Get.toNamed(Routes.selectCityScreen, arguments: true);
-                                if (result != null && result is Map) {
-                                  controller.selectedCity = result['city'];
-                                  controller.selectedLocation = result['location'];
-                                  controller.update(["filter"]);
-                                }
-                              },
-                              child: Container(
-                                padding: kHorizontalScreenPadding,
-                                height: 40.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: kBorderRadius4,color: kWhiteColor,
-                                  border: Border.all(color:  Colors.grey.shade300)
-                                ),
-                                child: Row(
-                                  children: [
-
-                                    Expanded(
-                                      child: Text(
-                                        controller.selectedCity?.name ?? 'Select Province'.tr,
-                                        style: TextStyle(
-                                            color: kAccentColor,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    Icon(
-                                        Get.locale?.languageCode=="ar"?MaterialCommunityIcons.chevron_left:
-                                        MaterialCommunityIcons.chevron_right)
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                                kVerticalSpace12,
-
-                                Text(
-                                  "City".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
-                                InkWell(
+                                // Select Province
+                                _buildFilterItem(
+                                  icon: Icons.location_on_outlined,
+                                  title: 'Select Province'.tr,
+                                  selectedValue: controller.selectedCity?.name ?? 'Select Province'.tr,
                                   onTap: () async {
-
-                                if (controller.selectedCity == null) {
-                                  showSnackBar(message: "SelectCity");
-                                }
-                                else {
-                                  var result = await Get.toNamed(
-                                      Routes.searchLocationScreen,
-                                      parameters: {
-                                        "cityId": controller.selectedCity!.cityId
-                                            .toString()
-                                      });
-                                  if (result != null) {
-                                    controller.selectedLocation = result;
-                                    controller.update(["filter"]);
-                                  }
-                                }
-                                  },
-                                  child: Container(
-                                    padding: kHorizontalScreenPadding,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: kBorderRadius4,color: kWhiteColor,
-                                        border: Border.all(color:  Colors.grey.shade300)
-                                    ),
-                                    child: Row(
-                                      children: [
-
-                                        Expanded(
-                                          child: Text(
-                                            "${controller.selectedLocation?.title ?? 'SelectCity'.tr}",
-                                            style: TextStyle(
-                                                color: kAccentColor,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Icon(
-                                            Get.locale?.languageCode=="ar"?MaterialCommunityIcons.chevron_left:
-                                            MaterialCommunityIcons.chevron_right)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                kVerticalSpace12,
-
-                                Text(
-                                  "ChooseBrand".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
-
-                                InkWell(
-                                  onTap: () async {
-                                    var result = await Get.toNamed(Routes.chooseBrandScreen,arguments: false) as Brand;
-                                    if (result != null) {
-                                      controller.brand = result;
-                                      controller.brandId=controller.brand?.brandId;
+                                    var result = await Get.toNamed(Routes.selectCityScreen, arguments: true);
+                                    if (result != null && result is Map) {
+                                      controller.selectedCity = result['city'];
+                                      controller.selectedLocation = result['location'];
                                       controller.update(["filter"]);
                                     }
                                   },
-                                  child: Container(
-                                    padding: kHorizontalScreenPadding,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: kBorderRadius4,color: kWhiteColor,
-                                        border: Border.all(color:  Colors.grey.shade300)
-                                    ),
-                                    child: Row(
-                                      children: [
-
-                                        Expanded(
-                                          child: Text(
-                                            "${controller.brand?.brandName ?? 'ChooseBrand'.tr}",
-                                            style: TextStyle(
-                                                color: kAccentColor,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Icon(
-                                            Get.locale?.languageCode=="ar"?MaterialCommunityIcons.chevron_left:
-                                            MaterialCommunityIcons.chevron_right)
-                                      ],
-                                    ),
-                                  ),
                                 ),
-                                kVerticalSpace12,
-                                Text(
-                                  "ChooseModel".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
 
-                                InkWell(
+                                SizedBox(height: 12),
+
+                                // Select City
+                                _buildFilterItem(
+                                  icon: Icons.location_city_outlined,
+                                  title: "City".tr,
+                                  selectedValue: controller.selectedLocation?.title ?? 'Select City'.tr,
                                   onTap: () async {
-                                    if(controller.brand!=null){
-                                      Get.put(BrandController()).getModels(controller.brand!.brandId!);
-                                      var result = await Get.toNamed(Routes.chooseModelScreen,arguments: true) as Model;
+                                    if (controller.selectedCity == null) {
+                                      showSnackBar(message: "SelectCity");
+                                    } else {
+                                      var result = await Get.toNamed(
+                                          Routes.searchLocationScreen,
+                                          parameters: {
+                                            "cityId": controller.selectedCity!.cityId.toString()
+                                          }
+                                      );
                                       if (result != null) {
-                                        controller.model = result;
-                                        controller.modelId=controller.model?.modelId;
+                                        controller.selectedLocation = result;
                                         controller.update(["filter"]);
                                       }
-                                    }else{
-                                      showSnackBar(message: "SelectBrand");
                                     }
-
                                   },
-                                  child: Container(
-                                    padding: kHorizontalScreenPadding,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: kBorderRadius4,color: kWhiteColor,
-                                        border: Border.all(color:  Colors.grey.shade300)
-                                    ),
-                                    child: Row(
-                                      children: [
-
-                                        Expanded(
-                                          child: Text(
-                                            "${controller.model?.modelName ?? 'ChooseModel'.tr}",
-                                            style: TextStyle(
-                                                color: kAccentColor,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Icon(
-                                            Get.locale?.languageCode=="ar"?MaterialCommunityIcons.chevron_left:
-                                            MaterialCommunityIcons.chevron_right)
-                                      ],
-                                    ),
-                                  ),
                                 ),
-                                kVerticalSpace12,
-                                Text(
-                                  "ModelYear".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
-                                Row(
-                                  children: [
-                                    Expanded(child:  TextFieldWidget(hintText: "ModelYear",  keyboardType: TextInputType.number,
-                                      text: controller.startYear, borderRadius: kBorderRadius8,
-                                      onChanged: (String val){
-                                        controller.startYear=val;
 
-                                      },
-                                      validator: (String? val){
-                                        if(val!.trim().isEmpty) {
-                                          return kRequiredMsg.tr;
-                                        } else
-                                          return null;
-                                      },),),
-                                    Text(" ${"To".tr} ",style: TextStyle(color: kBlackColor,fontSize: 16.sp,fontWeight: FontWeight.w600),)
-                                    ,
-                                    Expanded(child:  TextFieldWidget(hintText: "ModelYear",  keyboardType: TextInputType.number,
-                                      text: controller.endYear, borderRadius: kBorderRadius8,
-                                      onChanged: (String val){
-                                        controller.endYear=val;
+                                SizedBox(height: 12),
 
-                                      },
-                                      validator: (String? val){
-                                        if(val!.trim().isEmpty) {
-                                          return kRequiredMsg.tr;
-                                        } else
-                                          return null;
-                                      },),),
-                                  ],
-                                ),
-                                kVerticalSpace12,
-                                Text(
-                                  "ChooseType".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
-
-                                InkWell(
+                                // Choose Brand
+                                _buildFilterItem(
+                                  icon: Icons.directions_car_outlined,
+                                  title: "Choose Brand".tr,
+                                  selectedValue: controller.brand?.brandName ?? 'Choose Brand'.tr,
                                   onTap: () async {
-                                    var result = await Get.toNamed(Routes.chooseTypeScreen,arguments: true) as Type;
+                                    var result = await Get.toNamed(Routes.chooseBrandScreen, arguments: false) as Brand;
+                                    if (result != null) {
+                                      controller.brand = result;
+                                      controller.brandId = controller.brand?.brandId;
+                                      controller.update(["filter"]);
+                                    }
+                                  },
+                                ),
+
+                                SizedBox(height: 12),
+
+                                // Choose Type
+                                _buildFilterItem(
+                                  icon: Icons.category_outlined,
+                                  title: "Choose Type".tr,
+                                  selectedValue: controller.type?.type ?? 'Choose Type'.tr,
+                                  onTap: () async {
+                                    var result = await Get.toNamed(Routes.chooseTypeScreen, arguments: true) as Type;
                                     if (result != null) {
                                       controller.type = result;
                                       controller.update(["filter"]);
                                     }
                                   },
-                                  child: Container(
-                                    padding: kHorizontalScreenPadding,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: kBorderRadius4,color: kWhiteColor,
-                                        border: Border.all(color:  Colors.grey.shade300)
-                                    ),
-                                    child: Row(
-                                      children: [
-
-                                        Expanded(
-                                          child: Text(
-                                            "${controller.type?.type ?? 'ChooseType'.tr}",
-                                            style: TextStyle(
-                                                color: kAccentColor,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Icon(
-                                            Get.locale?.languageCode=="ar"?MaterialCommunityIcons.chevron_left:
-                                            MaterialCommunityIcons.chevron_right)
-                                      ],
-                                    ),
-                                  ),
                                 ),
 
-                                kVerticalSpace12,
-                                Text(
-                                  "SelectColor".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
+                                SizedBox(height: 12),
 
-                                InkWell(
+                                // Choose Model
+                                _buildFilterItem(
+                                  icon: Icons.model_training_outlined,
+                                  title: "Choose Model".tr,
+                                  selectedValue: controller.model?.modelName ?? 'Choose Model'.tr,
                                   onTap: () async {
-                                    var result = await Get.toNamed(Routes.selectColorScreen,arguments: true) as VehicleColor;
+                                    if(controller.brand != null) {
+                                      Get.put(BrandController()).getModels(controller.brand!.brandId!);
+                                      var result = await Get.toNamed(Routes.chooseModelScreen, arguments: true) as Model;
+                                      if (result != null) {
+                                        controller.model = result;
+                                        controller.modelId = controller.model?.modelId;
+                                        controller.update(["filter"]);
+                                      }
+                                    } else {
+                                      showSnackBar(message: "SelectBrand");
+                                    }
+                                  },
+                                ),
+
+                                SizedBox(height: 12),
+
+                                // Model Year
+                                _buildFilterItem(
+                                  icon: Icons.calendar_today_outlined,
+                                  title: "Model Year".tr,
+                                  selectedValue: _getModelYearText(controller),
+                                  onTap: () {
+                                    _showModelYearDialog(context, controller);
+                                  },
+                                ),
+
+                                SizedBox(height: 12),
+
+                                // Choose Color
+                                _buildFilterItem(
+                                  icon: Icons.palette_outlined,
+                                  title: "Choose Color".tr,
+                                  selectedValue: controller.color?.name ?? 'Choose Color'.tr,
+                                  onTap: () async {
+                                    var result = await Get.toNamed(Routes.selectColorScreen, arguments: true) as VehicleColor;
                                     if (result != null) {
                                       controller.color = result;
                                       controller.update(["filter"]);
                                     }
                                   },
-                                  child: Container(
-                                    padding: kHorizontalScreenPadding,
-                                    height: 40.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: kBorderRadius4,color: kWhiteColor,
-                                        border: Border.all(color:  Colors.grey.shade300)
-                                    ),
-                                    child: Row(
-                                      children: [
-
-                                        Expanded(
-                                          child: Text(
-                                            "${controller.color?.name ?? 'SelectColor'.tr}",
-                                            style: TextStyle(
-                                                color: kAccentColor,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Icon(
-                                            Get.locale?.languageCode=="ar"?MaterialCommunityIcons.chevron_left:
-                                            MaterialCommunityIcons.chevron_right)
-                                      ],
-                                    ),
-                                  ),
                                 ),
-                                kVerticalSpace12,
-                                Text(
-                                  "Condition".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
 
-                                DropdownWidget(
-                                  items: VehicleCondition.values.map((e) => DropdownMenuItem(child: Text("${EnumToString.convertToString(e)}",),value: e,)).toList(),
-                                  value: controller.condition,
-                                  borderRadius: kBorderRadius4,
-                                  onChanged: (val){
-                                    controller.condition=val;
-                                    controller.update(["filter"]);
+                                SizedBox(height: 12),
+
+                                // Condition
+                                _buildFilterItem(
+                                  icon: Icons.verified_outlined,
+                                  title: "Condition".tr,
+                                  selectedValue: controller.condition != null
+                                      ? EnumToString.convertToString(controller.condition!)
+                                      : 'Select Condition'.tr,
+                                  onTap: () {
+                                    _showConditionDialog(context, controller);
                                   },
-                                  hint: "SelectCondition",
                                 ),
-                                kVerticalSpace12,
-                                Text(
-                                  "Transmission".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
 
-                               DropdownWidget(
-                                 items: Transmission.values.map((e) => DropdownMenuItem(child: Text("${EnumToString.convertToString(e)}",),value: e,)).toList(),
-                                 value: controller.transmission,
-                                  borderRadius: kBorderRadius4,
-                                 onChanged: (val){
-                                   controller.transmission=val;
-                                  controller.update(["filter"]);
-                                 },
-                                 hint: "SelectGearType",
-                               ),
-                                kVerticalSpace12,
-                                Text(
-                                  "FuelType".tr,
-                                  style: TextStyle(
-                                      color: kBlackColor,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                kVerticalSpace4,
+                                SizedBox(height: 12),
 
-                                DropdownWidget(
-                                  items: FuelType.values.map((e) => DropdownMenuItem(child: Text("${EnumToString.convertToString(e)}",),value: e,)).toList(),
-                                  value: controller.fuelType,
-                                  borderRadius: kBorderRadius4,
-                                  onChanged: (val){
-                                    controller.fuelType=val;
-                                    controller.update(["filter"]);
+                                // Transmission
+                                _buildFilterItem(
+                                  icon: Icons.settings_outlined,
+                                  title: "Transmission".tr,
+                                  selectedValue: controller.transmission != null
+                                      ? EnumToString.convertToString(controller.transmission!)
+                                      : 'Select Gear Type'.tr,
+                                  onTap: () {
+                                    _showTransmissionDialog(context, controller);
                                   },
-                                  hint: "SelectFuelType",
-                                )
-,
-                                kVerticalSpace12,
-                                  Row(
-                                  children: [
-                                    Text(
-                                      "PriceRange".tr,
-                                      style: TextStyle(
-                                          color: kBlackColor,
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      " (${gSelectedCountry?.currency})",
-                                      style: TextStyle(
-                                          color: kBlackColor,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600),
-                                    )
-                                  ],
-                                ),
-                                kVerticalSpace4,
-                                Row(
-                                  children: [
-                                    Expanded(child:  TextFieldWidget(hintText: "StartPrice",  keyboardType: TextInputType.number,
-                                      text: controller.startPrice, borderRadius: kBorderRadius8,
-                                      onChanged: (String val){
-                                        controller.startPrice=val;
-
-                                      },
-                                      validator: (String? val){
-                                        if(val!.trim().isEmpty) {
-                                          return kRequiredMsg.tr;
-                                        } else
-                                          return null;
-                                      },),),
-                                    Text(" ${"To".tr} ",style: TextStyle(color: kBlackColor,fontSize: 16.sp,fontWeight: FontWeight.w600),)
-                                    ,
-                                    Expanded(child:  TextFieldWidget(hintText: "EndPrice",  keyboardType: TextInputType.number,
-                                      text: controller.endPrice, borderRadius: kBorderRadius8,
-                                      onChanged: (String val){
-                                        controller.endPrice=val;
-
-                                      },
-                                      validator: (String? val){
-                                        if(val!.trim().isEmpty) {
-                                          return kRequiredMsg.tr;
-                                        } else
-                                          return null;
-                                      },),),
-                                  ],
                                 ),
 
+                                SizedBox(height: 12),
 
-                          ])),
+                                // Fuel Type
+                                _buildFilterItem(
+                                  icon: Icons.local_gas_station_outlined,
+                                  title: "Fuel Type".tr,
+                                  selectedValue: controller.fuelType != null
+                                      ? EnumToString.convertToString(controller.fuelType!)
+                                      : 'Select Fuel Type'.tr,
+                                  onTap: () {
+                                    _showFuelTypeDialog(context, controller);
+                                  },
+                                ),
+
+                                SizedBox(height: 20),
+
+                              ]
+                          )
+                      ),
                     ),
-                    Card(
-                      margin: EdgeInsets.zero,
-                      child: Padding(
-                        padding: kScreenPadding,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(child: TextButtonWidget(text: "Reset".tr,onPressed: controller.resetFilters,)),
-                            kHorizontalSpace12,
-                            Expanded(child: ButtonWidget(text: "Apply".tr, onPressed: (){
-                            controller.page.value=1;
-                            controller.loadMore.value=true;
-                              controller.getFilteredCars();
 
-                            }))
-              ],
-              ),
-              )
+                    // Bottom buttons
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, -2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: TextButtonWidget(
+                                text: "Reset".tr,
+                                onPressed: controller.resetFilters,
+                              )
+                          ),
+                          SizedBox(width: 12),
+                          Expanded(
+                              child: ButtonWidget(
+                                  text: "Apply".tr,
+                                  onPressed: () {
+                                    controller.page.value = 1;
+                                    controller.loadMore.value = true;
+                                    controller.getFilteredCars();
+                                  }
+                              )
+                          )
+                        ],
+                      ),
                     )
                   ],
-              );
-            }
-          )),
+                );
+              }
+          )
+      ),
+    );
+  }
+
+  Widget _buildFilterItem({
+    required IconData icon,
+    required String title,
+    required String selectedValue,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(30),
+      child: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: Colors.grey.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.05),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8),
+              child: Icon(
+                color: Colors.grey.shade600,
+                icon,
+                size: 20,
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                selectedValue,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Icon(
+              Get.locale?.languageCode == "ar"
+                  ? MaterialCommunityIcons.chevron_left
+                  : MaterialCommunityIcons.chevron_right,
+              color: Colors.grey.shade400,
+              size: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getModelYearText(CarController controller) {
+    if ((controller.startYear?.isNotEmpty ?? false) || (controller.endYear?.isNotEmpty ?? false)) {
+      return "${controller.startYear ?? ''} - ${controller.endYear ?? ''}";
+    }
+    return "Select Year Range";
+  }
+
+  void _showModelYearDialog(BuildContext context, CarController controller) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Model Year".tr),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                    child: TextFieldWidget(
+                      hintText: "Start Year",
+                      keyboardType: TextInputType.number,
+                      text: controller.startYear,
+                      borderRadius: kBorderRadius8,
+                      onChanged: (String val) {
+                        controller.startYear = val;
+                      },
+                      validator: (String? val) {
+                        if(val!.trim().isEmpty) {
+                          return kRequiredMsg.tr;
+                        } else
+                          return null;
+                      },
+                    )
+                ),
+                Text(" ${"To".tr} ", style: TextStyle(color: kBlackColor, fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                Expanded(
+                    child: TextFieldWidget(
+                      hintText: "End Year",
+                      keyboardType: TextInputType.number,
+                      text: controller.endYear,
+                      borderRadius: kBorderRadius8,
+                      onChanged: (String val) {
+                        controller.endYear = val;
+                      },
+                      validator: (String? val) {
+                        if(val!.trim().isEmpty) {
+                          return kRequiredMsg.tr;
+                        } else
+                          return null;
+                      },
+                    )
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              controller.update(["filter"]);
+              Get.back();
+            },
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showConditionDialog(BuildContext context, CarController controller) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Condition".tr),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: VehicleCondition.values.map((condition) =>
+              ListTile(
+                title: Text(EnumToString.convertToString(condition)),
+                onTap: () {
+                  controller.condition = condition;
+                  controller.update(["filter"]);
+                  Get.back();
+                },
+              )
+          ).toList(),
+        ),
+      ),
+    );
+  }
+
+  void _showTransmissionDialog(BuildContext context, CarController controller) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Transmission".tr),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: Transmission.values.map((transmission) =>
+              ListTile(
+                title: Text(EnumToString.convertToString(transmission)),
+                onTap: () {
+                  controller.transmission = transmission;
+                  controller.update(["filter"]);
+                  Get.back();
+                },
+              )
+          ).toList(),
+        ),
+      ),
+    );
+  }
+
+  void _showFuelTypeDialog(BuildContext context, CarController controller) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Fuel Type".tr),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: FuelType.values.map((fuelType) =>
+              ListTile(
+                title: Text(EnumToString.convertToString(fuelType)),
+                onTap: () {
+                  controller.fuelType = fuelType;
+                  controller.update(["filter"]);
+                  Get.back();
+                },
+              )
+          ).toList(),
+        ),
+      ),
     );
   }
 }
