@@ -125,7 +125,7 @@ class SelectProvinceScreen extends GetView<VehicleController> {
                         controller.province= selectedLocation.title;
                         controller.registrationCityId = selectedLocation.locationId;
                         Get.toNamed(
-                          Routes.selectRegistrationYearScreen,
+                          Routes.selectCityScreen,
                         );
                       }
                     },

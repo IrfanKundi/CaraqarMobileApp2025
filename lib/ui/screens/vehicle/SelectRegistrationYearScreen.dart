@@ -49,7 +49,7 @@ class SelectRegistrationYearScreen extends GetView<VehicleController> {
                     Navigator.pop(context, year);
                   } else {
                     Get.toNamed(
-                      Routes.selectConditionScreen,
+                      Routes.selectProvinceScreen,
                     );
                   }
                 },

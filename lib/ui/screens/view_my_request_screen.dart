@@ -184,7 +184,7 @@ class ViewMyRequestScreen extends GetView<ViewMyRequestController> {
                                               borderRadius: kBorderRadius30,
                                             ),
                                             child: Text(
-                                              "For${request.purpose}".tr.toUpperCase(),
+                                              "For ${request.purpose}".tr.toUpperCase(),
                                               style: TextStyle(
                                                   color: kWhiteColor, fontSize: 9.sp),
                                             ),

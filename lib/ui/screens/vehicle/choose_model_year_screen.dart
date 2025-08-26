@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import '../../../controllers/vehicle_controller.dart';
 
 class ChooseModelYearScreen extends GetView<VehicleController> {
-  ChooseModelYearScreen({Key? key}) : super(key: key){
+  ChooseModelYearScreen({super.key}){
     getYears();
   }
 
@@ -120,7 +120,7 @@ class ChooseModelYearScreen extends GetView<VehicleController> {
                               Navigator.pop(context,e);
                             }else {
                               controller.modelYear = e;
-                              Get.toNamed(Routes.chooseTypeScreen);
+                              Get.toNamed(Routes.selectRegistrationYearScreen);
                             }
                           },
                           borderRadius: BorderRadius.circular(30),

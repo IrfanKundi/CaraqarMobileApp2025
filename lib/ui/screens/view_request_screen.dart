@@ -100,7 +100,7 @@ class ViewRequestScreen extends GetView<ViewRequestController> {
                                         borderRadius: kBorderRadius30,
                                       ),
                                       child: Text(
-                                        "For${request.purpose}".tr.toUpperCase(),
+                                        "For ${request.purpose}".tr.toUpperCase(),
                                         style: TextStyle(
                                             color: kWhiteColor, fontSize: 10.sp),),
                                     ),

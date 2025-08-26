@@ -310,7 +310,7 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                               borderRadius: kBorderRadius30,
                                             ),
                                             child: Text(
-                                              "For${property.purpose}".tr.toUpperCase(),
+                                              "For ${property.purpose}".tr.toUpperCase(),
                                               style: TextStyle(
                                                   color: kWhiteColor, fontSize: 9.sp),
                                             ),
@@ -836,13 +836,29 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
             _buildStyledRow("Purpose", property.purpose!, 3),
             _buildStyledRow("Price", getPrice(property.price!), 4),
             if (property.floors! > 0)
-              _buildStyledRow("Floors", "${property.floors}", 5),
+              _buildStyledRow(
+                property.floors == 1 ? "Floor" : "Floors",
+                "${property.floors}",
+                5,
+              ),
             if (property.bedrooms! > 0)
-              _buildStyledRow("Bedrooms", "${property.bedrooms}", 6),
+              _buildStyledRow(
+                property.bedrooms == 1 ? "Bedroom" : "Bedrooms",
+                "${property.bedrooms}",
+                6,
+              ),
             if (property.baths! > 0)
-              _buildStyledRow("Bathrooms", "${property.baths}", 7),
+              _buildStyledRow(
+                property.baths == 1 ? "Bathroom" : "Bathrooms",
+                "${property.baths}",
+                7,
+              ),
             if (property.kitchens! > 0)
-              _buildStyledRow("Kitchens", "${property.kitchens}", 8),
+              _buildStyledRow(
+                property.kitchens == 1 ? "Kitchen" : "Kitchens",
+                "${property.kitchens}",
+                8,
+              ),
             if (property.furnished != "" && property.furnished != null)
               _buildStyledRow("Furnished", property.furnished!, 9),
           ],

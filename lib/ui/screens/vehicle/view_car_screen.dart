@@ -594,17 +594,17 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                     );
                                                   },
                                                 ),
-                                                SizedBox(width: 8.w),
-                                                _buildCircleIconButton(
-                                                  icon: FaIcon(
-                                                    FontAwesomeIcons.comment,
-                                                    size: 20.w,
-                                                    color: kIconColor,
-                                                  ),
-                                                  onTap: () {
-                                                    // Add your SMS or chat logic
-                                                  },
-                                                ),
+                                                // SizedBox(width: 8.w),
+                                                // _buildCircleIconButton(
+                                                //   icon: FaIcon(
+                                                //     FontAwesomeIcons.comment,
+                                                //     size: 20.w,
+                                                //     color: kIconColor,
+                                                //   ),
+                                                //   onTap: () {
+                                                //     // Add your SMS or chat logic
+                                                //   },
+                                                // ),
                                               ],
                                             ),
                                           ],
@@ -1403,7 +1403,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
             ),
             _buildStyledRow(
               "Registered In".tr,
-              car.registrationProvince ?? "NotAvailable".tr,
+              car.registrationCity?.isNotEmpty == true ? car.registrationCity! : "Not Available",
               4,
             ),
             _buildStyledRow(

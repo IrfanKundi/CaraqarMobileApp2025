@@ -1081,7 +1081,7 @@ class _PropertyItemState extends State<PropertyItem> {
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               child: Text(
-                                "For${widget.item.purpose}".tr,
+                                "For ${widget.item.purpose}".tr,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.sp,
@@ -1341,7 +1341,7 @@ class _PropertyItemState extends State<PropertyItem> {
                                     borderRadius: BorderRadius.circular(30.r),
                                   ),
                                   child: Text(
-                                    "For${widget.item.purpose}".tr,
+                                    "For ${widget.item.purpose}".tr,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12.sp,

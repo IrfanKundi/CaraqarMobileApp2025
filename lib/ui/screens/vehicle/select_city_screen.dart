@@ -127,7 +127,7 @@ class SelectCityScreen extends GetView<VehicleController> {
                         // Continue to next screen
                         if (controller.vehicleType != VehicleType.NumberPlate) {
                           //Get.toNamed(Routes.enterMileageScreen);
-                          Get.toNamed(Routes.enterEngineScreen);
+                          Get.toNamed(Routes.chooseTypeScreen);
                         } else {
                           Get.toNamed(Routes.reviewAdScreen);
                         }

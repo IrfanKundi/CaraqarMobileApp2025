@@ -214,7 +214,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                   borderRadius: BorderRadius.circular(30.r),
                                 ),
                                 child: Text(
-                                  "For${property.purpose}".tr.toUpperCase(),
+                                  "For ${property.purpose}".tr.toUpperCase(),
                                   style: TextStyle(
                                     color: kWhiteColor,
                                     fontSize: 10.sp,
@@ -490,25 +490,25 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                           runSpacing: 12.h,
                           alignment: WrapAlignment.spaceBetween,
                           children: [
-                            if (property.floors! > 0 && property.floors != null)
+                            if (property.floors != null && property.floors! > 0)
                               _buildPropertyInfoItem(
                                 icon: FontAwesomeIcons.building,
-                                label: "${property.floors} ${"Floors".tr}",
+                                label: "${property.floors} ${property.floors == 1 ? "Floor".tr : "Floors".tr}",
                               ),
-                            if (property.bedrooms! > 0 && property.bedrooms != null)
+                            if (property.bedrooms != null && property.bedrooms! > 0)
                               _buildPropertyInfoItem(
                                 icon: FontAwesomeIcons.bed,
-                                label: "${property.bedrooms} ${"Beds".tr}",
+                                label: "${property.bedrooms} ${property.bedrooms == 1 ? "Bed".tr : "Beds".tr}",
                               ),
-                            if (property.baths! > 0 && property.baths != null)
+                            if (property.baths != null && property.baths! > 0)
                               _buildPropertyInfoItem(
                                 icon: FontAwesomeIcons.shower,
-                                label: "${property.baths} ${"Baths".tr}",
+                                label: "${property.baths} ${property.baths == 1 ? "Bath".tr : "Baths".tr}",
                               ),
-                            if (property.kitchens! > 0 && property.kitchens != null)
+                            if (property.kitchens != null && property.kitchens! > 0)
                               _buildPropertyInfoItem(
                                 icon: FontAwesomeIcons.kitchenSet,
-                                label: "${property.kitchens} ${"Kitchens".tr}",
+                                label: "${property.kitchens} ${property.kitchens == 1 ? "Kitchen".tr : "Kitchens".tr}",
                               ),
                             if (property.furnished != "" && property.furnished != null)
                               _buildPropertyInfoItem(
@@ -1139,14 +1139,35 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
           columnWidths: const {0: FlexColumnWidth(1), 1: FlexColumnWidth(1)},
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
-            _buildStyledRow("Purpose", "For${property.purpose}", 1),
+            _buildStyledRow("Purpose", "For ${property.purpose}", 1),
             _buildStyledRow("Type".tr, property.type!, 2),
-            _buildStyledRow("Location".tr, "${property.location}, ${property.cityName}", 3),
+           // _buildStyledRow("Location".tr, "${property.location}, ${property.cityName}", 3),
+            _buildStyledRow("Location".tr, "${property.cityName}", 3),
             _buildStyledRow("Area".tr, "${property.area} ${"Marla".tr}", 4),
-            if (property.floors! > 0) _buildStyledRow("Floors".tr, "${property.floors}", 5),
-            if (property.bedrooms! > 0) _buildStyledRow("Bedrooms".tr, "${property.bedrooms}", 6),
-            if (property.baths! > 0) _buildStyledRow("Bathrooms".tr, "${property.baths}", 7),
-            if (property.kitchens! > 0) _buildStyledRow("Kitchens".tr, "${property.kitchens}", 8),
+            // if (property.floors! > 0)
+            //   _buildStyledRow(
+            //     property.floors == 1 ? "Floor".tr : "Floors".tr,
+            //     "${property.floors}",
+            //     5,
+            //   ),
+            // if (property.bedrooms! > 0)
+            //   _buildStyledRow(
+            //     property.bedrooms == 1 ? "Bedroom".tr : "Bedrooms".tr,
+            //     "${property.bedrooms}",
+            //     6,
+            //   ),
+            // if (property.baths! > 0)
+            //   _buildStyledRow(
+            //     property.baths == 1 ? "Bathroom".tr : "Bathrooms".tr,
+            //     "${property.baths}",
+            //     7,
+            //   ),
+            if (property.kitchens! > 0)
+              _buildStyledRow(
+                property.kitchens == 1 ? "Kitchen".tr : "Kitchens".tr,
+                "${property.kitchens}",
+                8,
+              ),
             if (property.furnished != "" && property.furnished != null)
               _buildStyledRow("Furnished".tr, "${property.furnished!}", 9),
             _buildStyledRow("Ad ID".tr, property.propertyId.toString(), 10),

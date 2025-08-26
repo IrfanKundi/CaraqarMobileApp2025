@@ -121,7 +121,7 @@ class ChooseTypeScreen extends GetView<VehicleController> {
                         Navigator.pop(context, item);
                       } else {
                         Get.toNamed(
-                          Routes.selectOriginScreen,
+                            Routes.selectConditionScreen
                         );
                       }
                     },

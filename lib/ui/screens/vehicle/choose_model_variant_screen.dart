@@ -6,9 +6,7 @@ import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +26,7 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: buildAppBar(context, title: "ChooseModelVariant"),
+      appBar: buildAppBar(context, title: "Choose Variant"),
       body: GetBuilder<BrandController>(
         builder: (brandController) => brandController.variantsStatus.value == Status.loading
             ? CircularLoader()
@@ -164,7 +162,8 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                       if (Get.arguments == true) {
                         Navigator.pop(context, item);
                       } else {
-                        Get.toNamed(Routes.chooseModelYearScreen);
+                        //Get.toNamed(Routes.chooseModelYearScreen);
+                        Get.toNamed(Routes.selectOriginScreen);
                       }
                     },
                     borderRadius: BorderRadius.circular(30),

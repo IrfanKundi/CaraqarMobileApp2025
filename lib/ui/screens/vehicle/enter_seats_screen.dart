@@ -44,7 +44,7 @@ class EnterSeatsScreen extends GetView<VehicleController> {
                           if (Get.arguments == true) {
                             Navigator.pop(context);
                           } else {
-                            Get.toNamed(Routes.reviewAdScreen);
+                            Get.toNamed(Routes.selectPaymentMethodScreen);
                           }
                         },
                         borderRadius: BorderRadius.circular(30),

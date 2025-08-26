@@ -34,7 +34,7 @@ class SelectColorScreen extends GetView<VehicleController> {
                     if(Get.arguments==true){
                       Navigator.pop(context,item);
                     }else {
-                      Get.toNamed(Routes.selectPaymentMethodScreen);
+                      Get.toNamed(Routes.enterEngineScreen);
                     }
                   },
                   borderRadius: BorderRadius.circular(30),

@@ -39,7 +39,7 @@ class SelectOriginScreen extends GetView<VehicleController> {
                 Navigator.pop(context, e);
               } else {
                 Get.toNamed(
-                  Routes.selectProvinceScreen,
+                  Routes.chooseModelYearScreen,
                 );
               }
             },

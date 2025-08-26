@@ -33,7 +33,7 @@ class SelectPaymentMethodScreen extends GetView<VehicleController> {
                   if(Get.arguments==true){
                     Navigator.pop(context,e);
                   }else {
-                    Get.toNamed(Routes.selectCityScreen);
+                    Get.toNamed(Routes.reviewAdScreen);
                   }
                 },
                 borderRadius: BorderRadius.circular(30),
