@@ -108,7 +108,7 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                     padding: const EdgeInsets.only(bottom: 20),
                     child: InkWell(
                       onTap: () {
-                        controller.ModelVariant = null;
+                        controller.modelVariant = null;
                         Get.toNamed(Routes.chooseModelYearScreen);
                       },
                       borderRadius: BorderRadius.circular(30),
@@ -154,11 +154,11 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                 },
                 itemBuilder: (context, index) {
                   var item = brandController.searchedVariants[index];
-                  bool isSelected = controller.ModelVariant == item.variantId;
+                  bool isSelected = controller.modelVariant == item.variantId;
 
                   return InkWell(
                     onTap: () {
-                      controller.ModelVariant = item.variantId;
+                      controller.modelVariant = item.variantId;
                       if (Get.arguments == true) {
                         Navigator.pop(context, item);
                       } else {
@@ -188,17 +188,7 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                       ),
                       child: Row(
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            child: Icon(
-                              Icons.tune_outlined,
-                              color: isSelected
-                                  ? Colors.white
-                                  : Colors.grey.shade600,
-                              size: 20,
-                            ),
-                          ),
-                          SizedBox(width: 12),
+                          SizedBox(height: 40),
                           Expanded(
                             child: Text(
                               item.variantName!,

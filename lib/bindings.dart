@@ -17,6 +17,7 @@ import 'package:careqar/controllers/view_car_controller.dart';
 import 'package:careqar/controllers/view_image_controller.dart';
 import 'package:careqar/controllers/view_my_car_controller.dart';
 import 'package:careqar/controllers/view_request_controller.dart';
+import 'package:careqar/ui/screens/seller_profile_page.dart';
 import 'package:get/get.dart';
 
 import 'controllers/add_car_controller.dart';
@@ -44,6 +45,13 @@ class AppBindings extends Bindings{
     Get.put(AuthController(),permanent: true);
     Get.put(ProfileController(),permanent: true);
 
+  }
+}
+
+class SellerProfileBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<SellerProfileController>(() => SellerProfileController());
   }
 }
 

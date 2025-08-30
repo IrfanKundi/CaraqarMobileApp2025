@@ -8,6 +8,10 @@ import 'package:careqar/controllers/password_controller.dart';
 import 'package:careqar/controllers/profile_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
+import 'package:careqar/ui/screens/current_location_screen.dart';
+import 'package:careqar/ui/screens/favorites_screen.dart';
+import 'package:careqar/ui/screens/news_screen.dart';
+import 'package:careqar/ui/screens/vehicle/my_orders_screen.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
@@ -25,7 +29,10 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 
+import '../../global_variables.dart';
+import '../../locale/app_localizations.dart';
 import '../widgets/crop.dart';
+import '../widgets/language_dropdown_widget.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -292,7 +299,7 @@ class ProfileScreen extends GetView<ProfileController> {
                       icon: MaterialCommunityIcons.package_variant_closed,
                       text: "My Orders",
                       onTap: () {
-                        // TODO: Add navigation
+                        Get.to(() => MyOrdersScreen());
                       },
                     ),
                   ),
@@ -316,7 +323,7 @@ class ProfileScreen extends GetView<ProfileController> {
                       icon: MaterialCommunityIcons.heart_outline ,
                       text: "Favorites",
                       onTap: () {
-                        // TODO: Add navigation
+                        Get.to(() => const FavoritesScreen());
                       },
                     ),
                   ),
@@ -339,7 +346,7 @@ class ProfileScreen extends GetView<ProfileController> {
                     icon: MaterialCommunityIcons.newspaper_variant_outline,
                     text: "News",
                     onTap: () {
-                      // TODO: Add navigation
+                      Get.to(() => const NewsScreen());
                     },
                   ),
                 ),
@@ -363,7 +370,7 @@ class ProfileScreen extends GetView<ProfileController> {
                     icon: MaterialCommunityIcons.earth,
                     text: "Countries",
                     onTap: () {
-                      // TODO: Add navigation
+                      Get.to(()=> const CurrentLocationScreen());
                     },
                   ),
                 ),
@@ -383,13 +390,8 @@ class ProfileScreen extends GetView<ProfileController> {
                       ),
                     ],
                   ),
-                  child: ProfileMenuItem(
-                    icon: MaterialCommunityIcons.translate,
-                    text: "Language",
-                    onTap: () {
-                      // TODO: Add navigation
-                    },
-                  ),
+                  child: LanguageDropdownWidget(),
+
                 ),
 
                 if (authController.authState.value == AuthState.authorized && (UserSession.loginWith == null || UserSession.loginWith == "")) ...[
@@ -618,11 +620,13 @@ class ProfileMenuItem extends StatelessWidget {
     required this.icon,
     required this.text,
     this.onTap,
+    this.trailing, // ✅ new optional trailing widget
   }) : super(key: key);
 
   final IconData icon;
   final String text;
   final VoidCallback? onTap;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -649,6 +653,10 @@ class ProfileMenuItem extends StatelessWidget {
                 ),
               ),
             ),
+            if (trailing != null) ...[
+              trailing!, // ✅ show custom trailing widget
+              SizedBox(width: 8.w),
+            ],
             Icon(
               Get.locale?.languageCode == "ar"
                   ? MaterialCommunityIcons.chevron_left
@@ -662,3 +670,4 @@ class ProfileMenuItem extends StatelessWidget {
     );
   }
 }
+

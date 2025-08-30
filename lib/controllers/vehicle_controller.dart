@@ -55,15 +55,15 @@ class VehicleController extends GetxController {
   int? registrationCityId;
   int? locationId;
   String? province;
-  String? RegistrationProvince;
+  String? registrationProvince;
   Brand? brand;
   Model? model;
   String? fuelType;
   String? transmission;
   String? color;
   String? mileage;
-
-  int? ModelVariant;
+  String? importYear;
+  int? modelVariant;
   int? seats;
   int? typeId;
   int? brandId;
@@ -278,6 +278,8 @@ if(formKey.currentState!.validate()){
             body: {
               "car": {
                 "modelYear": modelYear,
+                "ImportYear": importYear,
+                "ModelVariant": modelVariant,
                 "condition": condition,
                 "ImportedLocal": origin,
                 "RegistrationYear": registrationYear,
@@ -375,7 +377,8 @@ if(formKey.currentState!.validate()){
                 "LocationId":locationId,
                 "province": province,
                 "RegistrationProvince ": registrationCityId.toString(),
-                "ModelVariant ": ModelVariant,
+                "ModelVariant": modelVariant,
+                "ImportYear ": importYear,
                 "brandId": brand?.brandId,
                 "modelId": model?.modelId,
                 "color": color,
@@ -479,8 +482,8 @@ if(formKey.currentState!.validate()){
       registrationCityId= data.registrationCityId;
       locationId= data.locationId;
       province=data.province;
-      RegistrationProvince=data.registrationCityId.toString();
-      ModelVariant=data.ModelVariant;
+      registrationProvince=data.registrationCityId.toString();
+      modelVariant=data.modelVariant;
       brandId=data.brandId;
       modelId=data.modelId;
       fuelType=data.fuelType;
@@ -528,8 +531,9 @@ if(formKey.currentState!.validate()){
     registrationCityId=null;
     locationId=null;
     province=null;
-    RegistrationProvince =null;
-    ModelVariant =null;
+    registrationProvince =null;
+    modelVariant =null;
+    importYear =null;
     brandId=null;
     modelId=null;
     fuelType=null;

@@ -901,13 +901,18 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                   },
                                   child: Padding(
                                     padding: kHorizontalScreenPadding,
-                                    child: Text(
-                                      "View Seller Profile".tr,
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline,
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w500,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.toNamed(Routes.sellerProfile);
+                                      },
+                                      child: Text(
+                                        "View Seller Profile".tr,
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ),

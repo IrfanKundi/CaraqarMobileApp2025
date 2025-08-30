@@ -30,7 +30,7 @@ class EnterEngineScreen extends GetView<VehicleController> {
       builder: (context, setState) {
         return Scaffold(
           backgroundColor: Colors.grey[50],
-          appBar: buildAppBar(context, title: "EnterEngine"),
+          appBar: buildAppBar(context, title: "Select Engine"),
 
           // ✅ Floating Next button
           bottomNavigationBar: Container(
@@ -89,15 +89,7 @@ class EnterEngineScreen extends GetView<VehicleController> {
                     ),
                     child: Row(
                       children: [
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          child: Icon(
-                            Icons.engineering_outlined,
-                            color: Colors.grey.shade600,
-                            size: 20,
-                          ),
-                        ),
-                        SizedBox(width: 12),
+                        SizedBox(height: 40),
                         Expanded(
                           child: TextFormField(
                             initialValue: currentEngine,
@@ -198,17 +190,7 @@ class EnterEngineScreen extends GetView<VehicleController> {
                             ),
                             child: Row(
                               children: [
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Icon(
-                                    Icons.engineering_outlined,
-                                    color: isSelected
-                                        ? Colors.white
-                                        : Colors.grey.shade600,
-                                    size: 20,
-                                  ),
-                                ),
-                                SizedBox(width: 12),
+                                SizedBox(height: 40),
                                 Expanded(
                                   child: Text(
                                     "$size cc",

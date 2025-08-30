@@ -26,7 +26,8 @@ class AllAdsScreen extends StatefulWidget {
   State<AllAdsScreen> createState() => _AllAdsScreenState();
 }
 
-class _AllAdsScreenState extends State<AllAdsScreen> with TickerProviderStateMixin{
+class _AllAdsScreenState extends State<AllAdsScreen>
+    with TickerProviderStateMixin {
 
 
   late TabController tabController;
@@ -34,41 +35,40 @@ class _AllAdsScreenState extends State<AllAdsScreen> with TickerProviderStateMix
   late CarController carController;
   late BikeController bikeController;
 
-  bool personalAds=false;
-  bool companyAds=false;
+  bool personalAds = false;
+  bool companyAds = false;
 
   @override
   void initState() {
-    personalAds=Get.arguments==0;
-    companyAds=Get.arguments==1;
-    var controller= Get.find<VehicleController>();
-    carController=controller.carController;
-    bikeController=controller.bikeController;
-    numberPlateController=Get.put(NumberPlateController());
+    personalAds = Get.arguments == 0;
+    companyAds = Get.arguments == 1;
+    var controller = Get.find<VehicleController>();
+    carController = controller.carController;
+    bikeController = controller.bikeController;
+    numberPlateController = Get.put(NumberPlateController());
 
-    tabController=TabController(initialIndex: 0,length: 3,vsync: this);
-   carController.resetFilters();
-    carController.personalAds=personalAds;
-    carController.companyAds=companyAds;
-   carController.getFilteredCars();
+    tabController = TabController(initialIndex: 0, length: 3, vsync: this);
+    carController.resetFilters();
+    carController.personalAds = personalAds;
+    carController.companyAds = companyAds;
+    carController.getFilteredCars();
     tabController.addListener(() {
-      if(tabController.index==0){
-       carController.resetFilters();
-       carController.personalAds=personalAds;
-       carController.companyAds=companyAds;
+      if (tabController.index == 0) {
+        carController.resetFilters();
+        carController.personalAds = personalAds;
+        carController.companyAds = companyAds;
         carController.getFilteredCars();
-      }else if(tabController.index==1) {
+      } else if (tabController.index == 1) {
         bikeController.resetFilters();
-        bikeController.personalAds=personalAds;
-        bikeController.companyAds=companyAds;
+        bikeController.personalAds = personalAds;
+        bikeController.companyAds = companyAds;
         bikeController.getFilteredBikes();
-      }else{
+      } else {
         numberPlateController.resetFilters();
-        numberPlateController.personalAds=personalAds;
-        numberPlateController.companyAds=companyAds;
+        numberPlateController.personalAds = personalAds;
+        numberPlateController.companyAds = companyAds;
         numberPlateController.getFilteredNumberPlates();
       }
-
     });
     // TODO: implement initState
     super.initState();
@@ -83,27 +83,29 @@ class _AllAdsScreenState extends State<AllAdsScreen> with TickerProviderStateMix
           Container(
             color: kWhiteColor,
             child: TabBar(
-              labelStyle: kTextStyle16,
+                labelStyle: kTextStyle16,
                 controller: tabController,
                 tabs: [
-              Tab(text: "Car".tr,),
+                  Tab(text: "Car".tr,),
                   Tab(text: "Bike".tr,),
                   Tab(text: "No.Plate".tr,),
-            ],dividerColor: Colors.transparent),
+                ], dividerColor: Colors.transparent),
           ),
           Expanded(child: TabBarView(
               controller: tabController,
               children: [
                 AllCars(),
                 AllBikes(),
-                Center(child: Text("ComingSoon".tr.toUpperCase(), style: kTextStyle16,))
+                Center(child: Text(
+                  "ComingSoon".tr.toUpperCase(), style: kTextStyle16,))
 
                 // Commented the below code due to coming soon option
                 // AllNumberPlates()
 
 
-      ])
-          )],
+              ])
+          )
+        ],
       ),
     );
   }
@@ -112,12 +114,13 @@ class _AllAdsScreenState extends State<AllAdsScreen> with TickerProviderStateMix
 class MyCarItem extends StatelessWidget {
   const MyCarItem({
     super.key,
-    required this.item,  this.isGridView=true
+    required this.item, this.isGridView = true
   });
 
   final Car item;
 
   final bool isGridView;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -129,13 +132,13 @@ class MyCarItem extends StatelessWidget {
             item);
       },
       child: Card(
-        margin:  isGridView?
-        EdgeInsets.all(5.w):
-        EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.w),
+        margin: isGridView ?
+        EdgeInsets.all(5.w) :
+        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
 
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         child:
-        isGridView?
+        isGridView ?
         Column(
             crossAxisAlignment:
             CrossAxisAlignment
@@ -151,23 +154,25 @@ class MyCarItem extends StatelessWidget {
                       fit: BoxFit
                           .cover,
                     ),
-                item.isSold!?Container():  PositionedDirectional(
-                                        top: 4.w,
-                                        start: 4.w,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 8),
-                                          decoration: BoxDecoration(
-                                            color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
-                                            borderRadius: kBorderRadius30,
-                                          ),
-                                          child:   Text(
-                                            "${item.status}".tr,
-                                            style: TextStyle(
-                                                color: kWhiteColor, fontSize: 12.sp),
+                    item.isSold! ? Container() : PositionedDirectional(
+                        top: 4.w,
+                        start: 4.w,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: item.status == "Approved"
+                                ? kSuccessColor
+                                : Colors.orangeAccent,
+                            borderRadius: kBorderRadius30,
+                          ),
+                          child: Text(
+                            "${item.status}".tr,
+                            style: TextStyle(
+                                color: kWhiteColor, fontSize: 12.sp),
 
-                                          ),
-                                        )),
+                          ),
+                        )),
                     PositionedDirectional(
                         top: 4.w,
                         end: 4.w,
@@ -180,7 +185,8 @@ class MyCarItem extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
+                              Icon(MaterialCommunityIcons.eye_outline, size: 16
+                                  .sp, color: kWhiteColor,),
                               Text(
                                 " ${item.clicks}",
                                 style: TextStyle(
@@ -200,37 +206,46 @@ class MyCarItem extends StatelessWidget {
                       CrossAxisAlignment.start,
                       children: [
 
-                        Text("${item.brandName} ${item.modelName} ${item.modelYear}",
+                        Text("${item.brandName} ${item.modelName} ${item
+                            .modelYear}",
                           maxLines: 2,
                           style: kTextStyle16.copyWith(color: kAccentColor),),
                         kVerticalSpace4,
 
                         Row(
-                          children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                            color: kLightBlueColor,),
+                          children: [
+                            Icon(MaterialCommunityIcons.map_marker_outline,
+                              size: 16.sp,
+                              color: kLightBlueColor,),
                             Expanded(
                               child: Text(
                                 "${item.cityName}",
                                 maxLines:
                                 1,
                                 style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
+                                TextStyle(color: kGreyColor,
+                                    height: 1.3,
+                                    fontSize: 12.sp),
                               ),
                             ),
                           ],
                         ),
                         kVerticalSpace4,
                         Text(
-                          format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode),textDirection: TextDirection.ltr, maxLines:
+                          format(item.createdAt!,
+                              locale: gSelectedLocale?.locale?.languageCode),
+                          textDirection: TextDirection.ltr, maxLines:
                         1,
-                          style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
+                          style: TextStyle(
+                              color: kGreyColor, height: 1.3, fontSize: 12.sp),
                         ),
 
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: AlignmentDirectional.centerStart,
                           child: Text(
-                            getPrice(item.price!), textDirection: TextDirection.ltr,
+                            getPrice(item.price!),
+                            textDirection: TextDirection.ltr,
                             style: TextStyle(
                                 color: kPrimaryColor,
                                 height: 1.3,
@@ -242,9 +257,9 @@ class MyCarItem extends StatelessWidget {
                       ],
                     ),
                   ))
-            ]):
+            ]) :
         SizedBox(
-          height:   120.h,
+          height: 120.h,
           child: Row(
               crossAxisAlignment:
               CrossAxisAlignment
@@ -260,17 +275,19 @@ class MyCarItem extends StatelessWidget {
                         fit: BoxFit
                             .cover,
                       ),
-                      item.isSold!?Container():  PositionedDirectional(
+                      item.isSold! ? Container() : PositionedDirectional(
                           top: 4.h,
                           start: 4.w,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 8),
                             decoration: BoxDecoration(
-                              color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
+                              color: item.status == "Approved"
+                                  ? kSuccessColor
+                                  : Colors.orangeAccent,
                               borderRadius: kBorderRadius30,
                             ),
-                            child:   Text(
+                            child: Text(
                               "${item.status}".tr,
                               style: TextStyle(
                                   color: kWhiteColor, fontSize: 12.sp),
@@ -289,7 +306,8 @@ class MyCarItem extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
+                                Icon(MaterialCommunityIcons.eye_outline,
+                                  size: 16.sp, color: kWhiteColor,),
                                 Text(
                                   " ${item.clicks}",
                                   style: TextStyle(
@@ -309,13 +327,15 @@ class MyCarItem extends StatelessWidget {
                         CrossAxisAlignment.start,
                         children: [
 
-                          Text("${item.brandName} ${item.modelName} ${item.modelYear}",
+                          Text("${item.brandName} ${item.modelName} ${item
+                              .modelYear}",
                             maxLines: 2,
                             style: kTextStyle16.copyWith(color: kAccentColor),),
                           kVerticalSpace4,
 
                           Row(
-                            children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
+                            children: [ Icon(MaterialCommunityIcons
+                                .map_marker_outline, size: 16.sp,
                               color: kLightBlueColor,),
                               Expanded(
                                 child: Text(
@@ -323,23 +343,30 @@ class MyCarItem extends StatelessWidget {
                                   maxLines:
                                   1,
                                   style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
+                                  TextStyle(color: kGreyColor,
+                                      height: 1.3,
+                                      fontSize: 12.sp),
                                 ),
                               ),
                             ],
-                          ),    kVerticalSpace4,
+                          ), kVerticalSpace4,
 
 
                           Text(
-                            format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode),textDirection: TextDirection.ltr, maxLines:
+                            format(item.createdAt!,
+                                locale: gSelectedLocale?.locale?.languageCode),
+                            textDirection: TextDirection.ltr, maxLines:
                           1,
-                            style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
+                            style: TextStyle(color: kGreyColor,
+                                height: 1.3,
+                                fontSize: 12.sp),
                           ),
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             alignment: AlignmentDirectional.centerStart,
                             child: Text(
-                              getPrice(item.price!),textDirection: TextDirection.ltr,
+                              getPrice(item.price!),
+                              textDirection: TextDirection.ltr,
                               style: TextStyle(
                                   color: kPrimaryColor,
                                   height: 1.2,
@@ -362,12 +389,13 @@ class MyCarItem extends StatelessWidget {
 class MyBikeItem extends StatelessWidget {
   const MyBikeItem({
     super.key,
-    required this.item,  this.isGridView=true
+    required this.item, this.isGridView = true
   });
 
   final Bike item;
 
   final bool isGridView;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -379,13 +407,13 @@ class MyBikeItem extends StatelessWidget {
             item);
       },
       child: Card(
-        margin:  isGridView?
-        EdgeInsets.all(5.w):
-        EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.w),
+        margin: isGridView ?
+        EdgeInsets.all(5.w) :
+        EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
 
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         child:
-        isGridView?
+        isGridView ?
         Column(
             crossAxisAlignment:
             CrossAxisAlignment
@@ -401,17 +429,19 @@ class MyBikeItem extends StatelessWidget {
                       fit: BoxFit
                           .cover,
                     ),
-                    item.isSold!?Container():  PositionedDirectional(
+                    item.isSold! ? Container() : PositionedDirectional(
                         top: 4.w,
                         start: 4.w,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 2, horizontal: 8),
                           decoration: BoxDecoration(
-                            color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
+                            color: item.status == "Approved"
+                                ? kSuccessColor
+                                : Colors.orangeAccent,
                             borderRadius: kBorderRadius30,
                           ),
-                          child:   Text(
+                          child: Text(
                             "${item.status}".tr,
                             style: TextStyle(
                                 color: kWhiteColor, fontSize: 12.sp),
@@ -430,7 +460,8 @@ class MyBikeItem extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
+                              Icon(MaterialCommunityIcons.eye_outline, size: 16
+                                  .sp, color: kWhiteColor,),
                               Text(
                                 " ${item.clicks}",
                                 style: TextStyle(
@@ -450,37 +481,46 @@ class MyBikeItem extends StatelessWidget {
                       CrossAxisAlignment.start,
                       children: [
 
-                        Text("${item.brandName} ${item.modelName} ${item.modelYear}",
+                        Text("${item.brandName} ${item.modelName} ${item
+                            .modelYear}",
                           maxLines: 2,
                           style: kTextStyle16.copyWith(color: kAccentColor),),
                         kVerticalSpace4,
 
                         Row(
-                          children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
-                            color: kLightBlueColor,),
+                          children: [
+                            Icon(MaterialCommunityIcons.map_marker_outline,
+                              size: 16.sp,
+                              color: kLightBlueColor,),
                             Expanded(
                               child: Text(
                                 "${item.cityName}",
                                 maxLines:
                                 1,
                                 style:
-                                TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
+                                TextStyle(color: kGreyColor,
+                                    height: 1.3,
+                                    fontSize: 12.sp),
                               ),
                             ),
                           ],
                         ),
                         kVerticalSpace4,
                         Text(
-                          format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode),textDirection: TextDirection.ltr, maxLines:
+                          format(item.createdAt!,
+                              locale: gSelectedLocale?.locale?.languageCode),
+                          textDirection: TextDirection.ltr, maxLines:
                         1,
-                          style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
+                          style: TextStyle(
+                              color: kGreyColor, height: 1.3, fontSize: 12.sp),
                         ),
 
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           alignment: AlignmentDirectional.centerStart,
                           child: Text(
-                            getPrice(item.price!), textDirection: TextDirection.ltr,
+                            getPrice(item.price!),
+                            textDirection: TextDirection.ltr,
                             style: TextStyle(
                                 color: kPrimaryColor,
                                 height: 1.3,
@@ -492,9 +532,9 @@ class MyBikeItem extends StatelessWidget {
                       ],
                     ),
                   ))
-            ]):
+            ]) :
         SizedBox(
-          height:   120.h,
+          height: 120.h,
           child: Row(
               crossAxisAlignment:
               CrossAxisAlignment
@@ -510,17 +550,19 @@ class MyBikeItem extends StatelessWidget {
                         fit: BoxFit
                             .cover,
                       ),
-                      item.isSold!?Container():  PositionedDirectional(
+                      item.isSold! ? Container() : PositionedDirectional(
                           top: 4.h,
                           start: 4.w,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 8),
                             decoration: BoxDecoration(
-                              color:item.status=="Approved"? kSuccessColor:Colors.orangeAccent,
+                              color: item.status == "Approved"
+                                  ? kSuccessColor
+                                  : Colors.orangeAccent,
                               borderRadius: kBorderRadius30,
                             ),
-                            child:   Text(
+                            child: Text(
                               "${item.status}".tr,
                               style: TextStyle(
                                   color: kWhiteColor, fontSize: 12.sp),
@@ -539,7 +581,8 @@ class MyBikeItem extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Icon(MaterialCommunityIcons.eye_outline,size: 16.sp,color: kWhiteColor,),
+                                Icon(MaterialCommunityIcons.eye_outline,
+                                  size: 16.sp, color: kWhiteColor,),
                                 Text(
                                   " ${item.clicks}",
                                   style: TextStyle(
@@ -559,13 +602,15 @@ class MyBikeItem extends StatelessWidget {
                         CrossAxisAlignment.start,
                         children: [
 
-                          Text("${item.brandName} ${item.modelName} ${item.modelYear}",
+                          Text("${item.brandName} ${item.modelName} ${item
+                              .modelYear}",
                             maxLines: 2,
                             style: kTextStyle16.copyWith(color: kAccentColor),),
                           kVerticalSpace4,
 
                           Row(
-                            children: [   Icon(  MaterialCommunityIcons.map_marker_outline,    size: 16.sp,
+                            children: [ Icon(MaterialCommunityIcons
+                                .map_marker_outline, size: 16.sp,
                               color: kLightBlueColor,),
                               Expanded(
                                 child: Text(
@@ -573,23 +618,30 @@ class MyBikeItem extends StatelessWidget {
                                   maxLines:
                                   1,
                                   style:
-                                  TextStyle(color: kGreyColor,    height: 1.3, fontSize: 12.sp),
+                                  TextStyle(color: kGreyColor,
+                                      height: 1.3,
+                                      fontSize: 12.sp),
                                 ),
                               ),
                             ],
-                          ),    kVerticalSpace4,
+                          ), kVerticalSpace4,
 
 
                           Text(
-                            format(item.createdAt!,locale: gSelectedLocale?.locale?.languageCode),textDirection: TextDirection.ltr, maxLines:
+                            format(item.createdAt!,
+                                locale: gSelectedLocale?.locale?.languageCode),
+                            textDirection: TextDirection.ltr, maxLines:
                           1,
-                            style: TextStyle(color: kGreyColor,     height: 1.3,fontSize: 12.sp),
+                            style: TextStyle(color: kGreyColor,
+                                height: 1.3,
+                                fontSize: 12.sp),
                           ),
                           FittedBox(
                             fit: BoxFit.scaleDown,
                             alignment: AlignmentDirectional.centerStart,
                             child: Text(
-                              getPrice(item.price!),textDirection: TextDirection.ltr,
+                              getPrice(item.price!),
+                              textDirection: TextDirection.ltr,
                               style: TextStyle(
                                   color: kPrimaryColor,
                                   height: 1.2,

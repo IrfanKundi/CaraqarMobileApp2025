@@ -124,7 +124,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                             },
                           ),
                         ReviewAdItem(
-                          title: "Vehicle Origin".tr,
+                          title: "Vehicle Assembly".tr,
                           value: "${controller.origin}".tr,
                           onPressed: () async {
                             await Get.toNamed(
@@ -134,6 +134,18 @@ class ReviewAdScreen extends GetView<VehicleController> {
                             controller.update();
                           },
                         ),
+                        if (controller.importYear != null && controller.importYear!.isNotEmpty)
+                          ReviewAdItem(
+                            title: "Import Year".tr,
+                            value: "${controller.importYear}".tr,
+                            onPressed: () async {
+                              await Get.toNamed(
+                                Routes.importYearScreen,
+                                arguments: true,
+                              );
+                              controller.update();
+                            },
+                          ),
                         ReviewAdItem(
                           title: "Registration".tr,
                           value: "${controller.province}".tr,

@@ -1,4 +1,3 @@
-// Add this enum to your enums file
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +22,7 @@ class SelectOriginScreen extends GetView<VehicleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: buildAppBar(context, title: "Vehicle Origin"),
+      appBar: buildAppBar(context, title: "Vehicle Assembly"),
       body: ListView.separated(
         separatorBuilder: (context, index) => SizedBox(height: 12),
         itemCount: VehicleOrigin.values.length,
@@ -38,9 +37,11 @@ class SelectOriginScreen extends GetView<VehicleController> {
               if (Get.arguments == true) {
                 Navigator.pop(context, e);
               } else {
-                Get.toNamed(
-                  Routes.chooseModelYearScreen,
-                );
+                if (e.toLowerCase() == "imported") {
+                  Get.toNamed(Routes.importYearScreen);
+                } else {
+                  Get.toNamed(Routes.chooseModelYearScreen);
+                }
               }
             },
             borderRadius: BorderRadius.circular(30),
@@ -65,20 +66,10 @@ class SelectOriginScreen extends GetView<VehicleController> {
               ),
               child: Row(
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(
-                      Icons.public_outlined,
-                      color: isSelected
-                          ? Colors.white
-                          : Colors.grey.shade600,
-                      size: 20,
-                    ),
-                  ),
-                  SizedBox(width: 12),
+                  SizedBox(height: 40),
                   Expanded(
                     child: Text(
-                      "${e}".tr,
+                      e.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,

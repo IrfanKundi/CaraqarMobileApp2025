@@ -97,13 +97,14 @@ class Routes {
   static const addToCartScreen = "/addToCartScreen";
   static const cartScreen = "/cartScreen";
   static const checkoutScreen = "/checkoutScreen";
+  static const String sellerProfile = '/seller-profile';
   static const orderDetailScreen = "/orderDetailScreen";
   static const pickLocationScreen = "/pickLocationScreen";
 
   static const eStoreScreen = "/eStoreScreen";
   static const newsDetailScreen = "/newsDetailScreen";
   static const pdfViewScreen = "/pdfViewScreen";
-
+  static const importYearScreen = '/importYearScreen';
   static const requirementDetailScreen = "/requirementDetailScreen";
   static const showroomsScreen = "/showroomsScreen";
 

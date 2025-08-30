@@ -58,20 +58,10 @@ class SelectFuelTypeScreen extends GetView<VehicleController> {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.local_gas_station_outlined,
-                        color: isSelected
-                            ? Colors.white
-                            : Colors.grey.shade600,
-                        size: 20,
-                      ),
-                    ),
-                    SizedBox(width: 12),
+                    SizedBox(height: 40),
                     Expanded(
                       child: Text(
-                        "${e}".tr,
+                        e.tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 14,

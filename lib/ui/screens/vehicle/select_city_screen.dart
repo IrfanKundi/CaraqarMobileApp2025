@@ -23,7 +23,7 @@ class SelectCityScreen extends GetView<VehicleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: buildAppBar(context, title: "Select Province"),
+      appBar: buildAppBar(context, title: "Your Location"),
       body: GetBuilder<CityController>(
         builder: (cityController) =>
         cityController.status.value == Status.loading
@@ -111,7 +111,10 @@ class SelectCityScreen extends GetView<VehicleController> {
                       // Navigate to location screen
                       final selectedLocation = await Get.toNamed(
                         Routes.selectAdLocationScreen,
-                        parameters: {"cityId": item.cityId.toString()},
+                        parameters: {
+                          "cityId": item.cityId.toString(),
+                          "title": "Your City",
+                        },
                       );
 
                       if (selectedLocation == null) return; // user cancelled

@@ -1081,7 +1081,10 @@ class _PropertyItemState extends State<PropertyItem> {
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               child: Text(
-                                "For ${widget.item.purpose}".tr,
+                                (widget.item.purpose != null && widget.item.purpose!.toLowerCase() == "sell"
+                                        ? "For Sale"
+                                        : "For ${widget.item.purpose}"
+                                ).tr,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12.sp,
@@ -1141,13 +1144,13 @@ class _PropertyItemState extends State<PropertyItem> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
-                                    MaterialCommunityIcons.eye_outline,
+                                    Icons.photo_library_outlined,
                                     color: Colors.white,
                                     size: 12.sp,
                                   ),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    "${widget.item.clicks}",
+                                    "${widget.item.images.length}",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 10.sp,
@@ -1267,15 +1270,44 @@ class _PropertyItemState extends State<PropertyItem> {
                             SizedBox(height: 4.h),
 
                             // Time
-                            Text(
-                              format(
-                                widget.item.createdAt!,
-                                locale: gSelectedLocale?.locale?.languageCode,
-                              ),
-                              style: TextStyle(
-                                color: Colors.grey.shade500,
-                                fontSize: 11.sp,
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  format(widget.item.createdAt!, locale: gSelectedLocale?.locale?.languageCode),
+                                  style: TextStyle(
+                                    color: Colors.grey.shade500,
+                                    fontSize: 10.sp,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 5.w, vertical: 2.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade400,
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        MaterialCommunityIcons.eye_outline,
+                                        color: Colors.white,
+                                        size: 12.sp,
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        "${widget.item.clicks}",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(height: 2.h),
 
@@ -1341,7 +1373,11 @@ class _PropertyItemState extends State<PropertyItem> {
                                     borderRadius: BorderRadius.circular(30.r),
                                   ),
                                   child: Text(
-                                    "For ${widget.item.purpose}".tr,
+                                    (
+                                        widget.item.purpose != null && widget.item.purpose!.toLowerCase() == "sell"
+                                            ? "For Sale"
+                                            : "For ${widget.item.purpose}"
+                                    ).tr,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12.sp,
@@ -1354,10 +1390,7 @@ class _PropertyItemState extends State<PropertyItem> {
                                 bottom: 8.h,
                                 right: 8.w,
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w,
-                                    vertical: 4.h,
-                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                                   decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.7),
                                     borderRadius: BorderRadius.circular(12.r),
@@ -1366,13 +1399,13 @@ class _PropertyItemState extends State<PropertyItem> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(
-                                        MaterialCommunityIcons.eye_outline,
+                                        Icons.photo_library_outlined,
                                         color: Colors.white,
                                         size: 12.sp,
                                       ),
                                       SizedBox(width: 4.w),
                                       Text(
-                                        "${widget.item.clicks}",
+                                        "${widget.item.images.length}",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 10.sp,
@@ -1453,15 +1486,44 @@ class _PropertyItemState extends State<PropertyItem> {
                               SizedBox(height: 4.h),
 
                               // Time
-                              Text(
-                                format(
-                                  widget.item.createdAt!,
-                                  locale: gSelectedLocale?.locale?.languageCode,
-                                ),
-                                style: TextStyle(
-                                  color: Colors.grey.shade500,
-                                  fontSize: 11.sp,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    format(widget.item.createdAt!, locale: gSelectedLocale?.locale?.languageCode),
+                                    style: TextStyle(
+                                      color: Colors.grey.shade500,
+                                      fontSize: 10.sp,
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5.w, vertical: 2.h),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade400,
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          MaterialCommunityIcons.eye_outline,
+                                          color: Colors.white,
+                                          size: 12.sp,
+                                        ),
+                                        SizedBox(width: 4.w),
+                                        Text(
+                                          "${widget.item.clicks}",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 2.h),
 

@@ -15,7 +15,7 @@ class OrderModel{
 
 }
 
-class Order{
+class Order {
   int? orderId;
   String? invoiceNo;
   String? firstName;
@@ -34,33 +34,39 @@ class Order{
   double? deliveryFee;
   String? note;
 
-  List<OrderItem> items=[];
+  List<OrderItem> items = [];
 
+  Order(order) {
+    orderId = order["OrderId"];
+    firstName = order["FirstName"];
+    lastName = order["LastName"];
+    phoneNumber = order["Contact"];
+    countryCode = order["CountryCode"];
+    email = order["Email"];
+    deliveryAddress = order["ShippingAddress"];
+    deliveryCoordinates = order["DeliveryCoordinates"];
 
+    // ✅ Safely handle OrderDate
+    if (order["OrderDate"] != null && order["OrderDate"].toString().isNotEmpty) {
+      try {
+        createdAt = DateFormat("dd-MM-yyyy")
+            .format(DateTime.parse(order["OrderDate"]));
+      } catch (e) {
+        createdAt = "N/A"; // fallback if parsing fails
+      }
+    } else {
+      createdAt = "N/A";
+    }
 
-  Order(order){
-
-    orderId=order["OrderId"];
-    firstName=order["FirstName"];
-    lastName=order["LastName"];
-    phoneNumber=order["Contact"];
-    countryCode=order["CountryCode"];
-    email=order["Email"];
-    deliveryAddress=order["ShippingAddress"];
-    deliveryCoordinates=order["DeliveryCoordinates"];
-    createdAt=DateFormat("dd-MM-yyyy").format(DateTime.parse(order["OrderDate"]));
-    orderStatus=order["Status"];
-    status=order["OrderStatus"];
-    note=order["Note"];
-    totalPrice=order["Total"];
-    //_paymentStatus=order["PaymentStatus"];
-    deliveryType=order["DeliveryType"];
-    deliveryFee=order["DeliveryFee"];
-    invoiceNo=order["InvoiceNo"];
+    orderStatus = order["Status"] ?? "Unknown";
+    status = order["OrderStatus"] ?? 0;
+    note = order["Note"] ?? "";
+    totalPrice = (order["Total"] ?? 0).toDouble();
+    deliveryType = order["DeliveryType"];
+    deliveryFee = (order["DeliveryFee"] ?? 0).toDouble();
+    invoiceNo = order["InvoiceNo"] ?? "-";
   }
-
 }
-
 
 class OrderItem {
   String? supplierNameEn;

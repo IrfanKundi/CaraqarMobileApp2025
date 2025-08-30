@@ -17,7 +17,7 @@ class EnterSeatsScreen extends GetView<VehicleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: buildAppBar(context, title: "Seats"),
+      appBar: buildAppBar(context, title: "Select Seats"),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: GetBuilder<VehicleController>(
@@ -69,17 +69,7 @@ class EnterSeatsScreen extends GetView<VehicleController> {
                           ),
                           child: Row(
                             children: [
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                child: Icon(
-                                  Icons.event_seat_outlined,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.grey.shade600,
-                                  size: 20,
-                                ),
-                              ),
-                              SizedBox(width: 12),
+                              SizedBox(height: 40),
                               Expanded(
                                 child: Text(
                                   "$seatCount ${'Seats'.tr}",

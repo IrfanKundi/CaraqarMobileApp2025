@@ -1,4 +1,3 @@
-import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +13,10 @@ class SelectAdLocationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final locationController = Get.find<LocationController>();
     final int cityId = int.tryParse(Get.parameters["cityId"] ?? "") ?? -1;
-
+    final String title = Get.parameters["title"] ?? "SelectCity".tr;
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: buildAppBar(context, title: "SelectCity".tr),
+      appBar: buildAppBar(context, title: title),
       body: Obx(() {
         final status = locationController.status.value;
 
@@ -68,15 +67,7 @@ class SelectAdLocationScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        Icons.location_on_outlined,
-                        color: Colors.grey.shade600,
-                        size: 20,
-                      ),
-                    ),
-                    SizedBox(width: 12),
+                    SizedBox(height: 40),
                     Expanded(
                       child: Text(
                         location.title ?? "",

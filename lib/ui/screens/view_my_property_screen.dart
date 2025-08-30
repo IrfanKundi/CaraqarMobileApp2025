@@ -310,7 +310,10 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                                               borderRadius: kBorderRadius30,
                                             ),
                                             child: Text(
-                                              "For ${property.purpose}".tr.toUpperCase(),
+                                                (property.purpose != null && property.purpose?.toLowerCase() == "sell"
+                                                        ? "For Sale"
+                                                        : "For ${property.purpose}"
+                                                ).tr.toUpperCase(),
                                               style: TextStyle(
                                                   color: kWhiteColor, fontSize: 9.sp),
                                             ),
@@ -833,7 +836,12 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
             //_buildStyledRow("Title", property.title!, 0),
             _buildStyledRow("Location", "${property.location}, ${property.cityName}", 1),
             _buildStyledRow("Area", "${property.area} ${"Marla".tr}", 2),
-            _buildStyledRow("Purpose", property.purpose!, 3),
+            _buildStyledRow(
+              "Purpose",
+              property.purpose != null && property.purpose.toLowerCase() == "sell"
+                  ? "Sale"
+                  : property.purpose!,
+              3,),
             _buildStyledRow("Price", getPrice(property.price!), 4),
             if (property.floors! > 0)
               _buildStyledRow(

@@ -11,6 +11,7 @@ import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/cities_bottom_sheet.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
+import 'package:careqar/ui/widgets/small_button.dart';
 import 'package:careqar/ui/widgets/text_button_widget.dart';
 import 'package:careqar/ui/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -46,115 +47,207 @@ class PropertiesScreen extends GetView<PropertyController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButtonWidget(color: kAccentColor,
-                    onPressed: (){
-                      controller.isGridView=!controller.isGridView;
-                      controller.update();
-                    },icon:controller.isGridView?
-                    MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
-                    ,
-                  iconSize: 32.sp,
-                  ),
-                  const Spacer(),
-                  Container(
-                    width: 0.32.sw,height: 30.h,
-                    decoration: BoxDecoration(
-
-                        borderRadius: kBorderRadius30,
-                        color:kWhiteColor,
-                      border: Border.all(color: kMehrunColor)
-
-                    ),
-                    child: Obx(
-                          () => Row(
+              padding: EdgeInsets.symmetric(horizontal: 12.w,vertical: 8.w),
+              child: Column(
+                  children: [
+                    // Search Bar and Toggle Row
+                    Padding(
+                      padding: EdgeInsets.only(bottom:8.h),
+                      child: Row(
                         children: [
                           Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                if(controller.isBuyerMode.value==true){
-                                  controller.isBuyerMode.value=null;
-                                }else{
-                                  controller.isBuyerMode.value=true;
-                                }
-
-                                controller.loadMore.value=true;
-                                controller.page.value=1;
-                                controller.getFilteredProperties();
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: controller.isBuyerMode.value==true
-                                      ? kMehrunColor
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadiusDirectional.horizontal(start: Radius.circular(30.r)),
-                                ),
-                                child: Text(
-                                  "Sell".tr,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: controller
-                                          .isBuyerMode
-                                          .value==true
-                                          ? kWhiteColor
-                                          : kMehrunColor,
-                                      fontSize: 16.sp,
-                                      fontWeight:
-                                      FontWeight.w600),
-                                ),
+                            child: Container(
+                              height: 40.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(22.5.r),
+                              ),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 16.w),
+                                    child: Icon(
+                                      Icons.search,
+                                      color: Colors.grey.shade600,
+                                      size: 20.sp,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                        hintText: "Search for property",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 14.sp,
+                                        ),
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                                      ),
+                                      style: TextStyle(fontSize: 14.sp),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  if(controller.isBuyerMode.value==false){
-                                    controller.isBuyerMode.value=null;
-                                  }else{
-                                    controller.isBuyerMode.value=false;
-                                  }
-                                  controller.loadMore.value=true;
-                                  controller.page.value=1;
-                                  controller.getFilteredProperties();
-
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: controller
-                                        .isBuyerMode.value==false
-                                        ? kMehrunColor:Colors.transparent
-                                    ,
-                                    borderRadius: BorderRadiusDirectional.horizontal(end: Radius.circular(30.r)),
-                                  ),
-                                  child: Text(
-                                    "Rent".tr,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: controller
-                                            .isBuyerMode.value==false
-                                            ? kWhiteColor
-                                            : kMehrunColor,
-                                        fontSize: 16.sp,
-                                        fontWeight:
-                                        FontWeight.w600),
-                                  ),
-                                ),
-                              ))
+                          SizedBox(width: 8.w),
+                          IconButtonWidget(
+                            color: kAccentColor,
+                            onPressed: () {
+                              controller.isGridView = !controller.isGridView;
+                              controller.update();
+                            },
+                            icon: controller.isGridView
+                                ? MaterialCommunityIcons.view_list
+                                : MaterialCommunityIcons.view_grid,
+                            iconSize: 32.sp,
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  kHorizontalSpace8,
-                  ButtonWidget(width: 0.32.sw,height: 30.h,color: kAccentColor,text: "Filter",
+
+                    // Original Control Row with Sort Button Added
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SmallButtonWidget(
+                          height: 30.h,
+                          color: kLableColor,
+                          text: "Sort",
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20.r),
+                                ),
+                              ),
+                              builder: (BuildContext context) {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(vertical:20),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Sort By",
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: kBlackColor,
+                                        ),
+                                      ),
+                                      // Sort options
+                                      _buildSortOption("Date Updated (New to Old)"),
+                                      _buildSortOption("Date Updated (Old to New)"),
+                                      _buildSortOption("Price (High to Low)"),
+                                      _buildSortOption("Price (Low to High)"),
+                                      SizedBox(height: 20.h),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: Icons.sort,
+                        ),
+                        const Spacer(),
+                        // Your Original Sell/Rent Toggle (Unchanged)
+                        Container(
+                          width: 0.28.sw,
+                          height: 30.h,
+                          decoration: BoxDecoration(
+                              borderRadius: kBorderRadius30,
+                              color: kWhiteColor,
+                              border: Border.all(color: kMehrunColor)
+                          ),
+                          child: Obx(
+                                () => Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (controller.isBuyerMode.value == true) {
+                                        controller.isBuyerMode.value = null;
+                                      } else {
+                                        controller.isBuyerMode.value = true;
+                                      }
+
+                                      controller.loadMore.value = true;
+                                      controller.page.value = 1;
+                                      controller.getFilteredProperties();
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: controller.isBuyerMode.value == true
+                                            ? kMehrunColor
+                                            : Colors.transparent,
+                                        borderRadius: BorderRadiusDirectional.horizontal(start: Radius.circular(30.r)),
+                                      ),
+                                      child: Text(
+                                        "Sell".tr,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: controller
+                                                .isBuyerMode
+                                                .value == true
+                                                ? kWhiteColor
+                                                : kMehrunColor,
+                                            fontSize: 16.sp,
+                                            fontWeight:
+                                            FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (controller.isBuyerMode.value == false) {
+                                          controller.isBuyerMode.value = null;
+                                        } else {
+                                          controller.isBuyerMode.value = false;
+                                        }
+                                        controller.loadMore.value = true;
+                                        controller.page.value = 1;
+                                        controller.getFilteredProperties();
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: controller
+                                              .isBuyerMode.value == false
+                                              ? kMehrunColor : Colors.transparent,
+                                          borderRadius: BorderRadiusDirectional.horizontal(end: Radius.circular(30.r)),
+                                        ),
+                                        child: Text(
+                                          "Rent".tr,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: controller
+                                                  .isBuyerMode.value == false
+                                                  ? kWhiteColor
+                                                  : kMehrunColor,
+                                              fontSize: 16.sp,
+                                              fontWeight:
+                                              FontWeight.w600),
+                                        ),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          ),
+                        ),
+                        kHorizontalSpace8,
+                        // Your Original Filter Button (Unchanged)
+                        ButtonWidget(
+                          width: 0.34.sw,
+                          height: 30.h,
+                          color: kAccentColor,
+                          text: "Filter",
                     onPressed: (){
                    Get.dialog(
-
-
                      Container(
                    height: 1.sh,
                        padding: kHorizontalScreenPadding,
@@ -706,7 +799,7 @@ class PropertiesScreen extends GetView<PropertyController> {
                     },icon: MaterialCommunityIcons.filter_variant,),
 
                 ],
-              ),
+              ),])
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:16),
@@ -786,8 +879,27 @@ kVerticalSpace8,
           ),
         )],
         ),
-      ))
-
-    ;
+      ));
   }
+   Widget _buildSortOption(String title) {
+     return Container(
+       width: double.infinity,
+       padding: EdgeInsets.all(12.h),
+       decoration: BoxDecoration(
+         border: Border(
+           bottom: BorderSide(
+             color: Colors.grey[200]!,
+             width: 1,
+           ),
+         ),
+       ),
+       child: Text(
+         title,
+         style: TextStyle(
+           fontSize: 14.sp,
+           color: kBlackColor,
+         ),
+       ),
+     );
+   }
 }

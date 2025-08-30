@@ -112,7 +112,9 @@ import 'controllers/location_controller.dart';
 import 'controllers/view_car_controller.dart';
 import 'global_variables.dart';
 import 'my_route_observer.dart';
+import 'ui/screens/seller_profile_page.dart';
 import 'ui/screens/vehicle/choose_type_screen.dart';
+import 'ui/screens/vehicle/import_year_screen.dart';
 import 'ui/screens/vehicle/provider_detail_screen.dart';
 
 class MyApp extends StatelessWidget {
@@ -182,7 +184,15 @@ class MyApp extends StatelessWidget {
 
   _getPages() {
     return  [
-
+      GetPage(
+        name: Routes.sellerProfile,
+        page: () => SellerProfilePage(),
+        binding: SellerProfileBinding(),
+      ),
+      GetPage(
+        name: Routes.importYearScreen,
+        page: () => ImportYearScreen(),
+      ),
       GetPage(name: Routes.checkoutScreen, page: () => CheckoutScreen(),binding: CheckoutBindings()),
       GetPage(name: Routes.myOrdersScreen, page: () => MyOrdersScreen(),binding: OrderBindings()),
       GetPage(name: Routes.orderDetailScreen, page: () => OrderDetailScreen()),

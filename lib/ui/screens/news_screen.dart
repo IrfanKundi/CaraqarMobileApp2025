@@ -4,6 +4,7 @@ import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/content_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
+import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class _NewsScreenState extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: buildAppBar(context,title: "News"),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 50.h),
         child: Column(
@@ -80,7 +82,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 if (controller.news.isEmpty) {
                   return SizedBox(
                     height: 0.9.sh,
-                    child: Center(child: Text("NoDataFound".tr)),
+                    child: Center(child: Text("No news at the moment".tr)),
                   );
                 }
 

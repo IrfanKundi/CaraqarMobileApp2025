@@ -25,7 +25,7 @@ class SelectProvinceScreen extends GetView<VehicleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: buildAppBar(context, title: "Registration Province"),
+      appBar: buildAppBar(context, title: "Registration In"),
       body: GetBuilder<CityController>(
         builder:
             (cityController) =>
@@ -113,8 +113,12 @@ class SelectProvinceScreen extends GetView<VehicleController> {
                       // Navigate to location screen
                       final selectedLocation = await Get.toNamed(
                         Routes.selectAdLocationScreen,
-                        parameters: {"cityId": item.cityId.toString()},
+                        parameters: {
+                          "cityId": item.cityId.toString(),
+                          "title": "Registration City",
+                        },
                       );
+
                       if (selectedLocation == null) return; // user cancelled
                       if (Get.arguments == true) {
                         Get.back(result: {
@@ -151,17 +155,7 @@ class SelectProvinceScreen extends GetView<VehicleController> {
                       ),
                       child: Row(
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            child: Icon(
-                              Icons.location_on_outlined,
-                              color: isSelected
-                                  ? Colors.white
-                                  : Colors.grey.shade600,
-                              size: 20,
-                            ),
-                          ),
-                          SizedBox(width: 12),
+                          SizedBox(height: 40),
                           Expanded(
                             child: Text(
                               item.name!,
