@@ -25,7 +25,7 @@ class SelectProvinceScreen extends GetView<VehicleController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: buildAppBar(context, title: "Registration In"),
+      appBar: buildAppBar(context, title: "Registered In"),
       body: GetBuilder<CityController>(
         builder:
             (cityController) =>

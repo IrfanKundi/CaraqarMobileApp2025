@@ -47,22 +47,22 @@ class _MyCarsScreenState extends State<MyCarsScreen> with TickerProviderStateMix
     // Load initial data only if logged in
     if(UserSession.isLoggedIn!) {
       Get.find<MyCarController>().getCars();
-      Get.find<MyBikeController>().getBikes(); // ✅ Add this line!
+      Get.find<MyBikeController>().getBikes();
     }
 
     tabController!.addListener(() {
       if(tabController!.index == 0) {
-        if(UserSession.isLoggedIn!) { // ✅ Fixed: should be logged IN
+        if(UserSession.isLoggedIn!) {
           Get.find<MyCarController>().getCars(reset: true);
         }
       }
       else if(tabController!.index == 1) {
-        if(UserSession.isLoggedIn!) { // ✅ Fixed: should be logged IN
+        if(UserSession.isLoggedIn!) {
           Get.find<MyBikeController>().getBikes(reset: true);
         }
       }
       else {
-        if(UserSession.isLoggedIn!) { // ✅ Fixed: should be logged IN
+        if(UserSession.isLoggedIn!) {
           Get.find<MyNumberPlateController>().getNumberPlates(reset: true);
         }
       }

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -361,48 +362,40 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                         horizontal: 16.w,
                         vertical: 5.h,
                       ),
-                      height: 50.h,
                       decoration: BoxDecoration(
                         color: Colors.grey[100],
                         borderRadius: BorderRadius.circular(20.r),
                       ),
-                      child: Row(
-                        children: [
-                          if (property.floors! > 0 && property.floors != null)
-                            Expanded(
-                              child: _buildPropertyInfoItem(
-                                icon: "assets/images/floor.png",
-                                label: "${property.floors} ${"Floors".tr}",
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        child: Wrap(
+                          spacing: 12.w,
+                          runSpacing: 12.h,
+                          alignment: WrapAlignment.spaceBetween,
+                          children: [
+
+                            if (property.bedrooms != null && property.bedrooms! > 0)
+                              _buildPropertyInfoItem(
+                                icon: FontAwesomeIcons.bed,
+                                label: "${property.bedrooms} ${property.bedrooms == 1 ? "Bed".tr : "Beds".tr}",
                               ),
-                            ),
-                          if (property.floors! > 0 && property.bedrooms! > 0)
-                            _buildVerticalDivider(),
-                          if (property.bedrooms! > 0 && property.bedrooms != null)
-                            Expanded(
-                              child: _buildPropertyInfoItem(
-                                icon: "assets/images/bedroom.png",
-                                label: "${property.bedrooms} ${"Beds".tr}",
+                            if (property.baths != null && property.baths! > 0)
+                              _buildPropertyInfoItem(
+                                icon: FontAwesomeIcons.shower,
+                                label: "${property.baths} ${property.baths == 1 ? "Bath".tr : "Baths".tr}",
                               ),
-                            ),
-                          if (property.bedrooms! > 0 && property.baths! > 0)
-                            _buildVerticalDivider(),
-                          if (property.baths! > 0 && property.baths != null)
-                            Expanded(
-                              child: _buildPropertyInfoItem(
-                                icon: "assets/images/shower.png",
-                                label: "${property.baths} ${"Baths".tr}",
+                            if (property.area != null && property.area! > 0)
+                              _buildPropertyInfoItem(
+                                icon: FontAwesomeIcons.rulerCombined,
+                                label: "${property.area} ${"Marla".tr}",
                               ),
-                            ),
-                          if (property.baths! > 0 && property.kitchens! > 0)
-                            _buildVerticalDivider(),
-                          if (property.kitchens! > 0 && property.kitchens != null)
-                            Expanded(
-                              child: _buildPropertyInfoItem(
-                                icon: "assets/images/kitchen.png",
-                                label: "${property.kitchens} ${"Kitchens".tr}",
+                            if (property.floors != null && property.floors! > 0)
+                              _buildPropertyInfoItem(
+                                icon: FontAwesomeIcons.building,
+                                label: "${property.floors} ${property.floors == 1 ? "Floor".tr : "Floors".tr}",
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
 
@@ -783,37 +776,29 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
     });
   }
 
-  Widget _buildPropertyInfoItem({required String icon, required String label}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          icon,
-          width: 20.w,
-          height: 20.w,
-          color: kLightBlueColor,
-        ),
-        SizedBox(height: 6.h),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: kTableColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 12.sp,
+  Widget _buildPropertyInfoItem({required IconData icon, required String label}) {
+    return SizedBox(
+      child: Column(
+        children: [
+          FaIcon(
+            icon,
+            size: 25.w,
+            color: kLightBlueColor,
           ),
-        ),
-      ],
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: kAccentColor,
+              fontSize: 12.sp,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _buildVerticalDivider() {
-    return Container(
-      width: 1,
-      height: double.infinity,
-      color: Colors.white,
-    );
-  }
+
 
   Widget _buildInformationTab(property) {
     return Padding(
@@ -833,42 +818,24 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
           columnWidths: const {0: FlexColumnWidth(1), 1: FlexColumnWidth(1)},
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
-            //_buildStyledRow("Title", property.title!, 0),
-            _buildStyledRow("Location", "${property.location}, ${property.cityName}", 1),
-            _buildStyledRow("Area", "${property.area} ${"Marla".tr}", 2),
             _buildStyledRow(
-              "Purpose",
+              "Purpose".tr,
               property.purpose != null && property.purpose.toLowerCase() == "sell"
-                  ? "Sale"
-                  : property.purpose!,
-              3,),
-            _buildStyledRow("Price", getPrice(property.price!), 4),
-            if (property.floors! > 0)
+                  ? "For Sale"
+                  : "For ${property.purpose}",
+              1,
+            ),
+            _buildStyledRow("Type".tr, property.type ?? "", 2),
+            if (property.kitchens != null && property.kitchens! > 0)
               _buildStyledRow(
-                property.floors == 1 ? "Floor" : "Floors",
-                "${property.floors}",
-                5,
-              ),
-            if (property.bedrooms! > 0)
-              _buildStyledRow(
-                property.bedrooms == 1 ? "Bedroom" : "Bedrooms",
-                "${property.bedrooms}",
-                6,
-              ),
-            if (property.baths! > 0)
-              _buildStyledRow(
-                property.baths == 1 ? "Bathroom" : "Bathrooms",
-                "${property.baths}",
-                7,
-              ),
-            if (property.kitchens! > 0)
-              _buildStyledRow(
-                property.kitchens == 1 ? "Kitchen" : "Kitchens",
+                property.kitchens == 1 ? "Kitchen".tr : "Kitchens".tr,
                 "${property.kitchens}",
-                8,
+                4,
               ),
-            if (property.furnished != "" && property.furnished != null)
-              _buildStyledRow("Furnished", property.furnished!, 9),
+            _buildStyledRow("Province".tr, property.cityName ?? "", 3), // Assuming cityName holds province info
+            if (property.furnished != null && property.furnished!.isNotEmpty)
+              _buildStyledRow("Furnished".tr, property.furnished!, 5),
+            _buildStyledRow("Ad ID".tr, property.propertyId.toString(), 6),
           ],
         ),
       ),

@@ -20,6 +20,7 @@ import '../../controllers/country_controller.dart';
 import '../../controllers/type_controller.dart';
 import '../../global_variables.dart';
 import '../../models/content_model.dart';
+import '../widgets/switching_screen.dart';
 
 class ChooseOptionScreen extends StatefulWidget {
   const ChooseOptionScreen({Key? key}) : super(key: key);
@@ -210,32 +211,41 @@ class _ChooseOptionScreenState extends State<ChooseOptionScreen> {
 }
 
 loadRealEstate() async {
-  EasyLoading.show();
+  Get.dialog(
+    const SwitchingScreen(
+      label: 'Switching to Real Estate',
+      icon: Icons.swap_horiz, // or use your custom icon
+    ),
+    barrierDismissible: false,
+  );
   gIsVehicle = false;
   TypeController typeController = Get.put(TypeController());
-  //typeController.searchedTypes.clear();
   typeController.allTypes.clear();
   typeController.subTypes.clear();
-
   await typeController.getTypes();
   await typeController.getTypesWithSubTypes();
   await getAppContent();
-  Future.delayed(Duration(seconds:2),() {
-    EasyLoading.dismiss();
-    Get.offAllNamed(Routes.navigationScreen);
-  },);
+  Get.back(); // dismiss loading screen
+  Get.offAllNamed(Routes.navigationScreen);
 }
+
 
 loadVehicle() async {
-
-  // EasyLoading.show();
+  Get.dialog(
+    const SwitchingScreen(
+      label: 'Switching to Motors',
+      icon: Icons.swap_horiz, // same icon or use a vehicle icon
+    ),
+    barrierDismissible: false,
+  );
   gIsVehicle = true;
-  getAppContent();
-  Future.delayed(Duration(seconds: 2),() {
-    // EasyLoading.dismiss();
+  await getAppContent();
+  Future.delayed(const Duration(milliseconds: 50), () {
+    Get.back(); // dismiss loading screen
     Get.offAllNamed(Routes.navigationScreen);
-  },);
+  });
 }
+
 
 Future<void> getAppContent() async {
   try {

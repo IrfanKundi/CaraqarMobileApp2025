@@ -164,68 +164,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             SliverAppBar(
               backgroundColor: kWhiteColor,
               elevation: 0,
-              title: Container(
-                margin: EdgeInsetsDirectional.only(top: 12.w),
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child:
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(30),
-                          onTap: () {
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5), // transparent black
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            child: const Text(
-                              "REAL ESTATE",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(30),
-                          onTap: () {
-                            if (!gIsVehicle) {
-                              loadVehicle();}
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5), // transparent black
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            child: const Text(
-                              "MOTORS",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+              // title: Container(
+              //   margin: EdgeInsetsDirectional.only(top: 12.w),
+              //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+              //   child:
+              //   Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //     children: [
+              //       Expanded(
+              //         child: Material(
+              //           color: Colors.transparent,
+              //           child: InkWell(
+              //             borderRadius: BorderRadius.circular(30),
+              //             onTap: () {
+              //             },
+              //             child: Container(
+              //               alignment: Alignment.center,
+              //               decoration: BoxDecoration(
+              //                 color: Colors.black.withOpacity(0.5), // transparent black
+              //                 borderRadius: BorderRadius.circular(30),
+              //               ),
+              //               padding: const EdgeInsets.symmetric(vertical: 12),
+              //               margin: const EdgeInsets.symmetric(horizontal: 8),
+              //               child: const Text(
+              //                 "REAL ESTATE",
+              //                 style: TextStyle(
+              //                   color: Colors.white,
+              //                   fontWeight: FontWeight.bold,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         child: Material(
+              //           color: Colors.transparent,
+              //           child: InkWell(
+              //             borderRadius: BorderRadius.circular(30),
+              //             onTap: () {
+              //               if (!gIsVehicle) {
+              //                 loadVehicle();}
+              //             },
+              //             child: Container(
+              //               alignment: Alignment.center,
+              //               decoration: BoxDecoration(
+              //                 color: Colors.black.withOpacity(0.5), // transparent black
+              //                 borderRadius: BorderRadius.circular(30),
+              //               ),
+              //               padding: const EdgeInsets.symmetric(vertical: 12),
+              //               margin: const EdgeInsets.symmetric(horizontal: 8),
+              //               child: const Text(
+              //                 "MOTORS",
+              //                 style: TextStyle(
+              //                   color: Colors.white,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
                 // Row(
                 //   children: [
                 //     Expanded(
@@ -293,8 +294,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 //     ),
                 //   ],
                 // )
-                ,
-              ),
+
               //Text
               // leading: Builder(
               //   builder: (context) {
@@ -539,20 +539,46 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               ),
                                         ),
                                         kHorizontalSpace8,
+                                        // Expanded(
+                                        //   child: GestureDetector(
+                                        //     onTap: () {
+                                        //       homeController.propertyController
+                                        //           .resetFilters();
+                                        //       homeController
+                                        //           .propertyController
+                                        //           .isBuyerMode
+                                        //           .value = false;
+                                        //       homeController.propertyController
+                                        //           .getFilteredProperties();
+                                        //       Get.toNamed(
+                                        //         Routes.propertiesScreen,
+                                        //       );
+                                        //     },
+                                        //     child: Container(
+                                        //       height: 40.h,
+                                        //       alignment: Alignment.center,
+                                        //       padding: EdgeInsets.symmetric(
+                                        //         horizontal: 4.w,
+                                        //       ),
+                                        //       decoration: BoxDecoration(
+                                        //         color: kMehrunColor,
+                                        //         borderRadius: kBorderRadius8,
+                                        //       ),
+                                        //       child: Text(
+                                        //         "Rents".tr,
+                                        //         textAlign: TextAlign.center,
+                                        //         style: TextStyle(
+                                        //           color: kWhiteColor,
+                                        //           fontSize: 16.sp,
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         Expanded(
                                           child: GestureDetector(
                                             onTap: () {
-                                              homeController.propertyController
-                                                  .resetFilters();
-                                              homeController
-                                                  .propertyController
-                                                  .isBuyerMode
-                                                  .value = false;
-                                              homeController.propertyController
-                                                  .getFilteredProperties();
-                                              Get.toNamed(
-                                                Routes.propertiesScreen,
-                                              );
+                                              Get.toNamed(Routes.servicesScreen);
                                             },
                                             child: Container(
                                               height: 40.h,
@@ -565,7 +591,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 borderRadius: kBorderRadius8,
                                               ),
                                               child: Text(
-                                                "Rent".tr,
+                                                "Services".tr,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: kWhiteColor,

@@ -15,7 +15,11 @@ class ViewImageScreen extends GetView<ViewImageController> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-      ),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+      )
+      ,
       body: SafeArea(
         child: PhotoViewGallery.builder(
           scrollPhysics: const BouncingScrollPhysics(),

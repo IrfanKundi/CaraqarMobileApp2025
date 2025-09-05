@@ -9,7 +9,7 @@ import '../../widgets/app_bar.dart';
 
 class ShowroomsScreen extends StatefulWidget {
 
-  const ShowroomsScreen({Key? key}) : super(key: key);
+  const ShowroomsScreen({super.key});
 
   @override
   State<ShowroomsScreen> createState() => _ShowroomsScreenState();
@@ -74,8 +74,6 @@ class _ShowroomsScreenState extends State<ShowroomsScreen> with TickerProviderSt
                   Center(child: Text("ComingSoon".tr.toUpperCase(), style: kTextStyle16,))
                   // Commented the below code due to coming soon option
                   // ShowroomScreen("NumberPlate")
-
-
         ])
             )],
         ),

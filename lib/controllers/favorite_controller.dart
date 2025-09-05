@@ -76,11 +76,11 @@ class FavoriteController extends GetxController {
 
 
 
-    await  response.fold((l) {
+      await  response.fold((l) {
         showSnackBar(message: l.message!);
         status(Status.error);
       }, (r) async {
-      status(Status.success);
+        status(Status.success);
         numberPlates.value = NumberPlateModel.fromMap(r.data).numberPlates;
 
       });  update();
@@ -117,14 +117,12 @@ class FavoriteController extends GetxController {
   Future<bool> deleteFavorite({Property? property,Car? car,Bike? bike,NumberPlate? numberPlate,removeFav=false}) async {
     try {
       actionStatus(Status.loading);
-      EasyLoading.show();
 
       var response = await gApiProvider.get(
           path: "favorite/delete?favoriteId=${ property!=null? property.favoriteId:car!=null?car.favoriteId:bike!=null?bike.favoriteId:numberPlate?.favoriteId}",
           authorization: true);
 
-      EasyLoading.dismiss();
-     return response.fold((l) {
+      return response.fold((l) {
         showSnackBar(message: l.message!);
         actionStatus(Status.error);
         return false;
@@ -169,7 +167,6 @@ class FavoriteController extends GetxController {
         return true;
       });
     } catch (e) {
-      EasyLoading.dismiss();
       showSnackBar(message: "Error");
       actionStatus(Status.error);
       return false;
@@ -179,13 +176,11 @@ class FavoriteController extends GetxController {
   Future<bool> addToFavorites({Property? property,Car? car,Bike? bike,NumberPlate? numberPlate}) async {
     try {
       status(Status.loading);
-      EasyLoading.show(status: "ProcessingPleaseWait".tr);
       //is tey kam krny
       var response = await gApiProvider
           .post(
         path: "favorite/save?propertyId=${property==null?'':property.propertyId}&carId=${car==null?'':car.carId}&bikeId=${bike==null?'':bike.bikeId}&numberPlateId=${numberPlate==null?'':numberPlate.numberPlateId}", authorization: true,);
 
-      EasyLoading.dismiss();
       return  response.fold((l) {
         if(l.errorCode == 401){
           showSnackBar(message: "Please login first");
@@ -213,7 +208,6 @@ class FavoriteController extends GetxController {
       });
 
     } catch (e) {
-      EasyLoading.dismiss();
       showSnackBar(message: "OperationFailed");
       status(Status.error);
       return false;

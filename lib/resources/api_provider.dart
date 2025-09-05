@@ -65,8 +65,8 @@ class ApiProvider {
               "content-type": "application/json",
               "accept": "application/json",
               "API_KEY": kApiKey,
-              "authorization": authorization
-                  ? "Bearer ${accessToken ?? UserSession.accessToken}"
+              "Authorization": authorization
+                  ? "Bearer ${accessToken ?? UserSession.accessToken ?? ''}"
                   : ""
             });
       }
@@ -127,12 +127,9 @@ class ApiProvider {
   }) async {
     try {
       Response response;
+        print("SAHAr📥 [GET] → $kApiBaseUrl/$path");
+        if (body != null) print("SAHAr Request Params: $accessToken  ${jsonEncode(body)}");
 
-      // 🟡 Request debug
-      if (kDebugMode) {
-        debugPrint("SAHAr📥 [GET] → $kApiBaseUrl/$path");
-        if (body != null) debugPrint("SAHAr📦 Request Params: $accessToken  ${jsonEncode(body)}");
-      }
 
       if (isFormData) {
         var request = MultipartRequest("GET", Uri.parse("$kApiBaseUrl/$path"));
@@ -153,17 +150,17 @@ class ApiProvider {
           "content-type": "application/json",
           "accept": "application/json",
           "API_KEY": kApiKey,
-          "authorization": authorization
-              ? "Bearer ${accessToken ?? UserSession.accessToken}"
+          "Authorization": authorization
+              ? "Bearer ${accessToken ?? UserSession.accessToken ?? ''}"
               : ""
         });
       }
 
       // 🟢 Response debug
-      if (kDebugMode) {
-        debugPrint("SAHAr✅ [GET] Status Code: ${UserSession.accessToken} ${response.statusCode}");
-        debugPrint("SAHAr📨 [GET] Response Body: ${response.body}");
-      }
+
+        print("SAHAr ✅ [GET] Status Code: ${UserSession.accessToken} ${response.statusCode}");
+        print("SAHAr 📨 [GET] Response Body: ${response.body}");
+
 
       var parsedBody = jsonDecode(response.body);
 

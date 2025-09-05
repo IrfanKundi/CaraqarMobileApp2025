@@ -34,6 +34,7 @@ import 'package:careqar/ui/screens/requirement_detail_screen.dart';
 import 'package:careqar/ui/screens/requirements_screen.dart';
 import 'package:careqar/ui/screens/reset_password_screen.dart';
 import 'package:careqar/ui/screens/search_location_screen.dart';
+import 'package:careqar/ui/screens/services_screen.dart';
 import 'package:careqar/ui/screens/signup_screen.dart';
 import 'package:careqar/ui/screens/splash_screen.dart';
 import 'package:careqar/ui/screens/vehicle/SelectOriginScreen.dart';
@@ -192,6 +193,10 @@ class MyApp extends StatelessWidget {
       GetPage(
         name: Routes.importYearScreen,
         page: () => ImportYearScreen(),
+      ),
+      GetPage(
+        name: Routes.servicesScreen,
+        page: () => const ServicesScreen(),
       ),
       GetPage(name: Routes.checkoutScreen, page: () => CheckoutScreen(),binding: CheckoutBindings()),
       GetPage(name: Routes.myOrdersScreen, page: () => MyOrdersScreen(),binding: OrderBindings()),

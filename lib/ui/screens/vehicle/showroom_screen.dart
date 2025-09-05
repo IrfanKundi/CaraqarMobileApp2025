@@ -228,7 +228,7 @@ class ShowroomScreen extends GetView<CompanyController> {
                                           Icon(Icons.group, color: Colors.white, size: 12.sp),
                                           SizedBox(width: 4.w),
                                           Text(
-                                            "Followers 999",
+                                            "Followers ${item.followers.toString()}",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 10.sp,

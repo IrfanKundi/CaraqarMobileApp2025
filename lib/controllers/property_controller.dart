@@ -70,6 +70,9 @@ class PropertyController extends GetxController {
   var loadMore= true.obs;
   var isLoadingMore=false.obs;
 
+  // Add sort parameter
+  var selectedSortBy = ''.obs;
+
   resetFilters(){
     selectedType=null;
     selectedCity.value=null;
@@ -103,6 +106,10 @@ class PropertyController extends GetxController {
     subTypes.clear();
     loadMore.value=true;
     properties.value.clear();
+
+    // Reset sort parameter
+    selectedSortBy.value = '';
+
     update(["filters"]);
   }
 
@@ -255,8 +262,8 @@ class PropertyController extends GetxController {
       washroomFrom = washrooms.start.toInt();
       washroomTo = washrooms.end.toInt();
 
-      // Updated path with kitchen and washroom parameters
-      String path =  "property/get?countryId=${gSelectedCountry!.countryId}&furnished=${furnished.value}&purpose=${isBuyerMode.value==null ? '': isBuyerMode.value==true?'Sell': 'Rent'}&page=${page.value}&fetch=${fetch.value}&cityId=${selectedCity.value !=null ? selectedCity.value!.cityId : ''}&locationId=${selectedLocation.value !=null ? selectedLocation.value?.locationId : ''}&subTypes=${subTypes.isNotEmpty  ? subTypes.join(",").toString() : ''}&subTypeId=${subTypeId.value > 0 ? subTypeId.value : ''}&bedroomFrom=${bedroomFrom > 0 ? bedroomFrom : ''}&bedroomTo=${bedroomTo > 0 ? bedroomTo : ''}&kitchenFrom=${kitchenFrom > 0 ? kitchenFrom : ''}&kitchenTo=${kitchenTo > 0 ? kitchenTo : ''}&washroomFrom=${washroomFrom > 0 ? washroomFrom : ''}&washroomTo=${washroomTo > 0 ? washroomTo : ''}&startPrice=${startPrice ?? ''}&endPrice=${endPrice ?? ''}&startSize=${startSize ?? ''}&endSize=${endSize ?? ''}";
+      // Updated path with kitchen, washroom, and sortBy parameters
+      String path =  "property/get?countryId=${gSelectedCountry!.countryId}&furnished=${furnished.value}&purpose=${isBuyerMode.value==null ? '': isBuyerMode.value==true?'Sell': 'Rent'}&page=${page.value}&fetch=${fetch.value}&cityId=${selectedCity.value !=null ? selectedCity.value!.cityId : ''}&locationId=${selectedLocation.value !=null ? selectedLocation.value?.locationId : ''}&subTypes=${subTypes.isNotEmpty  ? subTypes.join(",").toString() : ''}&subTypeId=${subTypeId.value > 0 ? subTypeId.value : ''}&bedroomFrom=${bedroomFrom > 0 ? bedroomFrom : ''}&bedroomTo=${bedroomTo > 0 ? bedroomTo : ''}&kitchenFrom=${kitchenFrom > 0 ? kitchenFrom : ''}&kitchenTo=${kitchenTo > 0 ? kitchenTo : ''}&washroomFrom=${washroomFrom > 0 ? washroomFrom : ''}&washroomTo=${washroomTo > 0 ? washroomTo : ''}&startPrice=${startPrice ?? ''}&endPrice=${endPrice ?? ''}&startSize=${startSize ?? ''}&endSize=${endSize ?? ''}&sortBy=${selectedSortBy.value}";
 
       if (kDebugMode) {
         print("path: $path");

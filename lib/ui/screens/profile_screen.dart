@@ -10,8 +10,10 @@ import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/ui/screens/current_location_screen.dart';
 import 'package:careqar/ui/screens/favorites_screen.dart';
+import 'package:careqar/ui/screens/home_screen.dart';
 import 'package:careqar/ui/screens/news_screen.dart';
 import 'package:careqar/ui/screens/vehicle/my_orders_screen.dart';
+import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
@@ -33,6 +35,7 @@ import '../../global_variables.dart';
 import '../../locale/app_localizations.dart';
 import '../widgets/crop.dart';
 import '../widgets/language_dropdown_widget.dart';
+import 'choose_option_screen.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -251,8 +254,6 @@ class ProfileScreen extends GetView<ProfileController> {
                 ),
 
                 SizedBox(height: 20.h),
-
-                // Individual Menu Items with their own containers
                 // Edit Profile
                 Container(
                   decoration: BoxDecoration(
@@ -275,6 +276,48 @@ class ProfileScreen extends GetView<ProfileController> {
                       } else {
                         Get.toNamed(Routes.loginScreen);
                       }
+                    },
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ProfileMenuItem(
+                    icon: MaterialCommunityIcons.car,
+                    text: "Motors",
+                    onTap: () {
+                      loadVehicle();
+                    },
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ProfileMenuItem(
+                    icon: MaterialCommunityIcons.home,
+                    text: "Real Estate",
+                    onTap: () {
+                      loadRealEstate();
                     },
                   ),
                 ),

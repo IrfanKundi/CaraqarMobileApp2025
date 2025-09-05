@@ -40,7 +40,7 @@ class ResetPasswordScreen extends GetView<PasswordController> {
 
 
                                         Text(
-                                          "PleaseEnterThe6DigitsVerificationCode".tr,
+                                          "Please Enter The 4 Digits Verification Code".tr,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(fontSize: 14.sp, color: kBlackColor)),
                                         kVerticalSpace24,

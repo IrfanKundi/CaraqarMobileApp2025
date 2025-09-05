@@ -879,7 +879,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                           arguments: car.companyId,
                                           parameters: {
                                             "type": "Car",
-                                            "agentAds": "${car.isAgentAd}",
+                                            "agentAds": "${car.userId}",
                                           },
                                         );
                                       }
@@ -903,7 +903,28 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                     padding: kHorizontalScreenPadding,
                                     child: InkWell(
                                       onTap: () {
-                                        Get.toNamed(Routes.sellerProfile);
+                                        // 🔍 Debug what we're getting
+                                        debugPrint('SAHAr 🔍 car.userId: ${car.userId}');
+                                        debugPrint('SAHAr 🔍 car.contactNo: ${car.contactNo}');
+                                        debugPrint('SAHAr 🔍 car.agentName: ${car.agentName}');
+                                        debugPrint('SAHAr 🔍 car.userId == 0: ${car.userId == 0}');
+                                        debugPrint('SAHAr 🔍 car.userId == null: ${car.userId == null}');
+
+                                        if (car.userId == null || car.userId == 0) {
+                                          debugPrint('SAHAr 🎭 Going to fake profile route');
+                                          // Pass additional data for fake profile
+                                          Get.toNamed(Routes.sellerProfile, arguments: {
+                                            'userId': car.userId ?? 0,
+                                            'contactNo': car.contactNo,
+                                            'agentName': car.agentName,
+                                          });
+                                        } else {
+                                          debugPrint('SAHAr 🌐 Going to real profile route');
+                                          // Normal user profile
+                                          Get.toNamed(Routes.sellerProfile, arguments: {
+                                            'userId': car.userId,
+                                          });
+                                        }
                                       },
                                       child: Text(
                                         "View Seller Profile".tr,
@@ -1398,6 +1419,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
           children: [
             _buildStyledRow("Brand", car.brandName!, 0),
             _buildStyledRow("Model".tr, car.modelName!, 1),
+            _buildStyledRow("Model Variant".tr, car.variantName!, 1),
             _buildStyledRow("Model Year".tr, car.modelYear!, 2),
             _buildStyledRow(
               "Registered Year".tr,
@@ -1408,7 +1430,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
             ),
             _buildStyledRow(
               "Registered In".tr,
-              car.registrationCity?.isNotEmpty == true ? car.registrationCity! : "Not Available",
+              car.registrationProvince?.isNotEmpty == true ? car.registrationProvince! : "Not Available",
               4,
             ),
             _buildStyledRow(

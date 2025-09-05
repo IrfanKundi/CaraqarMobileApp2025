@@ -22,7 +22,7 @@ class CarController extends GetxController {
   var followedStatus = Status.initial.obs;
   var nearByStatus = Status.initial.obs;
   var status = Status.initial.obs;
-
+  String? sortBy;
   bool personalAds=false;
   bool companyAds=false;
   bool isGridView=true;
@@ -188,68 +188,85 @@ class CarController extends GetxController {
   }
 
 
-  Future<void> getFilteredCars({nearBy=false,}) async {
+  Future<void> getFilteredCars({nearBy = false}) async {
     try {
-      if(Get.focusScope!.hasFocus){
+      if (Get.focusScope!.hasFocus) {
         Get.focusScope?.unfocus();
       }
-      if(page>1){
 
+      if (page > 1) {
         isLoadingMore.value = true;
-      }else{
+      } else {
         status(Status.loading);
       }
 
       update();
-      //EasyLoading.show();
 
-      String path =  "car/get?companyAds=$companyAds&personalAds=$personalAds&condition=${condition!=null?EnumToString.convertToString(condition):''}&fuelType=${fuelType!=null?EnumToString.convertToString(fuelType):''}&transmission=${transmission!=null?EnumToString.convertToString(transmission):''}&color=${color?.name??''}&modelId=${model?.modelId??""}&brandId=${brand?.brandId??""}&typeId=${type?.typeId??""}&countryId=${gSelectedCountry!.countryId}&page=${page.value}&fetch=${fetch.value}&cityId=${selectedCity?.cityId ?? ''}&locationId=${selectedLocation?.locationId ?? ''}&startPrice=${startPrice ?? ''}&endPrice=${endPrice ?? ''}&startModelYear=${startYear ?? ''}&endModelYear=${endYear ?? ''}";
+      // Build query path
+      String path =
+          "car/get?companyAds=$companyAds"
+          "&personalAds=$personalAds"
+          "&condition=${condition != null ? EnumToString.convertToString(condition) : ''}"
+          "&fuelType=${fuelType != null ? EnumToString.convertToString(fuelType) : ''}"
+          "&transmission=${transmission != null ? EnumToString.convertToString(transmission) : ''}"
+          "&color=${color?.name ?? ''}"
+          "&modelId=${model?.modelId ?? ''}"
+          "&brandId=${brand?.brandId ?? ''}"
+          "&typeId=${type?.typeId ?? ''}"
+          "&countryId=${gSelectedCountry!.countryId}"
+          "&page=${page.value}&fetch=${fetch.value}"
+          "&cityId=${selectedCity?.cityId ?? ''}"
+          "&locationId=${selectedLocation?.locationId ?? ''}"
+          "&startPrice=${startPrice ?? ''}"
+          "&endPrice=${endPrice ?? ''}"
+          "&startModelYear=${startYear ?? ''}"
+          "&endModelYear=${endYear ?? ''}";
 
-    if(nearBy){
-        path+="&coordinates=${gCurrentLocation!.latitude},${gCurrentLocation?.longitude}";
+      // ✅ Add sorting if available
+      if (sortBy != null && sortBy!.isNotEmpty) {
+        path += "&sortBy=$sortBy";
       }
-      var response = await gApiProvider.get(
-          path:path,
-               authorization: true);
 
-     // EasyLoading.dismiss();
-      isLoadingMore.value =false;
+      // ✅ Add nearby filter if true
+      if (nearBy) {
+        path += "&coordinates=${gCurrentLocation!.latitude},${gCurrentLocation?.longitude}";
+      }
 
-     await response.fold((l) {
+      var response = await gApiProvider.get(path: path, authorization: true);
+
+      isLoadingMore.value = false;
+
+      await response.fold((l) {
         showSnackBar(message: l.message!);
         status(Status.error);
-
       }, (r) async {
         status(Status.success);
 
-
-        if(page.value>1){
-          var list =CarModel.fromMap(r.data).cars;
-          if(list.isEmpty){
-            loadMore.value=false;
+        if (page.value > 1) {
+          var list = CarModel.fromMap(r.data).cars;
+          if (list.isEmpty) {
+            loadMore.value = false;
           }
           cars.value.addAll(list);
-
-
-        }else{
+        } else {
           cars.value = CarModel.fromMap(r.data["cars"]).cars;
-          totalAds=r.data["totalAds"];
-
+          totalAds = r.data["totalAds"];
         }
 
-        if(Get.currentRoute==Routes.carFilterScreen){
-            Get.back();
+        if (Get.currentRoute == Routes.carFilterScreen) {
+          Get.back();
         }
       });
+
       update();
     } catch (e) {
-      isLoadingMore.value =false;
-     // EasyLoading.dismiss();
+      isLoadingMore.value = false;
       showSnackBar(message: "Error");
       status(Status.error);
       update();
     }
   }
+
 }
 
 

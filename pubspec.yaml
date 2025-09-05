@@ -127,6 +127,7 @@ flutter:
     - assets/images/
     - assets/videos/
     - assets/icon/
+    - assets/profiles/
 
   fonts:
     - family: AppFonts

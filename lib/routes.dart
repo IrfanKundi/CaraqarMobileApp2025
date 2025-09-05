@@ -97,10 +97,10 @@ class Routes {
   static const addToCartScreen = "/addToCartScreen";
   static const cartScreen = "/cartScreen";
   static const checkoutScreen = "/checkoutScreen";
-  static const String sellerProfile = '/seller-profile';
+  static const String sellerProfile = '/sellerProfile';
   static const orderDetailScreen = "/orderDetailScreen";
   static const pickLocationScreen = "/pickLocationScreen";
-
+  static const String servicesScreen = '/services';
   static const eStoreScreen = "/eStoreScreen";
   static const newsDetailScreen = "/newsDetailScreen";
   static const pdfViewScreen = "/pdfViewScreen";

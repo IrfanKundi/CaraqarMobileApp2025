@@ -171,29 +171,119 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                             }).toList(),
                           ),
                         ),
-
-                        // 🔹 Page indicator
                         Positioned(
                           top: 12.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              property.images.length,
-                                  (index) => Container(
-                                margin: EdgeInsets.symmetric(horizontal: 3.w),
-                                width: 8.w,
-                                height: 8.w,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: Obx(() {
+                              const int maxVisibleDots = 4;
+                              final int totalImages = property.images.length;
+                              final int currentIndex = controller.sliderIndex.value;
+
+                              // If we have 4 or fewer images, just show them all
+                              if (totalImages <= maxVisibleDots) {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(20.r),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(totalImages, (i) {
+                                      final bool isActive = i == currentIndex;
+                                      return AnimatedContainer(
+                                        duration: const Duration(milliseconds: 250),
+                                        curve: Curves.easeOut,
+                                        margin: EdgeInsets.symmetric(horizontal: 3.w),
+                                        width: isActive ? 10.w : 8.w,
+                                        height: isActive ? 10.w : 8.w,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: isActive ? Colors.white : Colors.white54,
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                );
+                              }
+
+                              // CORRECT sliding window logic
+                              int startIndex;
+                              if (currentIndex < 2) {
+                                // First 2 positions: [0,1,2,3]
+                                startIndex = 0;
+                              } else if (currentIndex >= totalImages - 2) {
+                                // Last 2 positions: show last 4
+                                startIndex = totalImages - maxVisibleDots;
+                              } else {
+                                // Middle positions: slide the window
+                                // Put current index at position 2 (3rd dot)
+                                startIndex = currentIndex - 2;
+                              }
+
+                              // Debug print to see what's happening
+                              print("Index: $currentIndex, StartIndex: $startIndex, Window: [${startIndex}, ${startIndex+1}, ${startIndex+2}, ${startIndex+3}]");
+
+                              // Build the visible dots with sliding animation
+                              return Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                                 decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: controller.sliderIndex.value == index
-                                      ? Colors.white
-                                      : Colors.white54,
+                                  color: Colors.black.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(20.r),
                                 ),
-                              ),
-                            ),
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 300),
+                                  transitionBuilder: (child, animation) {
+                                    return SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(0.3, 0), // Slide from right
+                                        end: Offset.zero,
+                                      ).animate(CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.easeOutCubic,
+                                      )),
+                                      child: FadeTransition(
+                                        opacity: animation,
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                                  child: Row(
+                                    key: ValueKey(startIndex), // Important: key changes trigger animation
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(maxVisibleDots, (i) {
+                                      final int dotIndex = startIndex + i;
+                                      final bool isActive = dotIndex == currentIndex;
+
+                                      return TweenAnimationBuilder<double>(
+                                        duration: Duration(milliseconds: 200 + (i * 50)), // Staggered animation
+                                        tween: Tween(begin: 0.0, end: 1.0),
+                                        builder: (context, value, child) {
+                                          return Transform.scale(
+                                            scale: value,
+                                            child: AnimatedContainer(
+                                              duration: const Duration(milliseconds: 250),
+                                              curve: Curves.easeOut,
+                                              margin: EdgeInsets.symmetric(horizontal: 3.w),
+                                              width: isActive ? 10.w : 8.w,
+                                              height: isActive ? 10.w : 8.w,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: isActive ? Colors.white : Colors.white54,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              );
+                            }),
                           ),
                         ),
-
                         Positioned(
                           bottom: 16.h,
                           right: 16.w,

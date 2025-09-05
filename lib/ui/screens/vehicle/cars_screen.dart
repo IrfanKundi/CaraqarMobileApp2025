@@ -102,14 +102,15 @@ class AllCars extends StatelessWidget {
                                           ),
                                         ),
                                         // Sort options
-                                        _buildSortOption("Date Updated (New to Old)"),
-                                        _buildSortOption("Date Updated (Old to New)"),
-                                        _buildSortOption("Price (High to Low)"),
-                                        _buildSortOption("Price (Low to High)"),
-                                        _buildSortOption("Manufactured Year (New to Old)"),
-                                        _buildSortOption("Manufactured Year (Old to New)"),
-                                        _buildSortOption("Mileage (High to Low)"),
-                                        _buildSortOption("Mileage (Low to High)"),
+                                        _buildSortOption("Date Updated (New to Old)", "DateUpdatedDesc"),
+                                        _buildSortOption("Date Updated (Old to New)", "DateUpdatedAsc"),
+                                        _buildSortOption("Price (High to Low)", "PriceDesc"),
+                                        _buildSortOption("Price (Low to High)", "PriceAsc"),
+                                        _buildSortOption("Manufactured Year (New to Old)", "YearDesc"),
+                                        _buildSortOption("Manufactured Year (Old to New)", "YearAsc"),
+                                        _buildSortOption("Mileage (High to Low)", "MileageDesc"),
+                                        _buildSortOption("Mileage (Low to High)", "MileageAsc"),
+
                                         SizedBox(height: 20.h),
                                       ],
                                     ),
@@ -246,25 +247,35 @@ class AllCars extends StatelessWidget {
           ),
     );
   }
-  Widget _buildSortOption(String title) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 10.h),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey[200]!,
-            width: 1,
+  Widget _buildSortOption(String title, String sortKey) {
+    return GestureDetector(
+      onTap: () {
+        final controller = Get.find<CarController>();
+        controller.sortBy = sortKey;
+        controller.page.value = 1;
+        controller.getFilteredCars(); // call API with sort
+        Get.back(); // close bottom sheet
+      },
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 10.h),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.grey[200]!,
+              width: 1,
+            ),
           ),
         ),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 14.sp,
-          color: kBlackColor,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: kBlackColor,
+          ),
         ),
       ),
     );
   }
+
 }

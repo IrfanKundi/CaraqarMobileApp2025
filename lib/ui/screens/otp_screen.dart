@@ -39,7 +39,7 @@ class OtpScreen extends GetView<OtpController> {
                                 Text("VerifyOTP".tr,textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 20.sp),),
                                 kVerticalSpace8,
                                 Text(
-                                  "PleaseEnterThe6DigitsVerificationCode".tr,
+                                  "Please Enter The 4 Digits Verification Code".tr,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 14.sp, color: kBlackColor)),
                                 kVerticalSpace24,

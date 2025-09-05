@@ -30,6 +30,7 @@ import 'controllers/content_controller.dart';
 import 'controllers/my_numberplate_controller.dart';
 import 'controllers/my_request_controller.dart';
 import 'controllers/number_plate_controller.dart';
+import 'controllers/seller_profile_controller.dart';
 import 'controllers/view_bike_controller.dart';
 import 'controllers/view_my_bike_controller.dart';
 import 'controllers/view_my_numberplate_controller.dart';
@@ -51,7 +52,7 @@ class AppBindings extends Bindings{
 class SellerProfileBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<SellerProfileController>(() => SellerProfileController());
+   Get.lazyPut<SellerProfileController>(() => SellerProfileController());
   }
 }
 

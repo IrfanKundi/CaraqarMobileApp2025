@@ -71,7 +71,9 @@ class Car{
   String? engine;
   bool? isUsed;
   List<FeatureHead> featureHeads=[];
-
+  String? importYear;
+  String? variantName;
+  int? userId;
   String? email;
   String? get title => gSelectedLocale?.locale?.languageCode=="ar"?titleAr==null || titleAr=="" ? titleEn :titleAr : titleEn==null || titleEn=="" ?titleAr:titleEn;
   String? get description => gSelectedLocale?.locale?.languageCode=="ar"?descriptionAr==null || descriptionAr=="" ?descriptionEn:descriptionAr:
@@ -147,7 +149,9 @@ class Car{
     cityId=map["CityId"];
     price=map["Price"];
     images.addAll(map["Images"].toString().split(",").toList());
-
+    importYear = map["ImportYear"];       // Mapped: Import year
+    variantName = map["VariantName"];     // Mapped: Variant name
+    userId = map["UserId"];
     for(var item in map["CarFeatures"]){
       features.add(VehicleFeature.fromMap(item));
     }

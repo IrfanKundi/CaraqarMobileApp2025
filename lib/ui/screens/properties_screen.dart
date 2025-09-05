@@ -882,22 +882,48 @@ kVerticalSpace8,
       ));
   }
    Widget _buildSortOption(String title) {
-     return Container(
-       width: double.infinity,
-       padding: EdgeInsets.all(12.h),
-       decoration: BoxDecoration(
-         border: Border(
-           bottom: BorderSide(
-             color: Colors.grey[200]!,
-             width: 1,
+     // Map display titles to API sort values
+     String getSortValue(String title) {
+       switch (title) {
+         case "Date Updated (New to Old)":
+           return "DateUpdatedDesc";
+         case "Date Updated (Old to New)":
+           return "DateUpdatedAsc";
+         case "Price (High to Low)":
+           return "PriceDesc";
+         case "Price (Low to High)":
+           return "PriceAsc";
+         default:
+           return "";
+       }
+     }
+
+     return GestureDetector(
+       onTap: () {
+         String sortValue = getSortValue(title);
+         controller.selectedSortBy.value = sortValue;
+         controller.loadMore.value = true;
+         controller.page.value = 1;
+         controller.getFilteredProperties();
+         Get.back(); // Close the bottom sheet
+       },
+       child: Container(
+         width: double.infinity,
+         padding: EdgeInsets.all(12.h),
+         decoration: BoxDecoration(
+           border: Border(
+             bottom: BorderSide(
+               color: Colors.grey[200]!,
+               width: 1,
+             ),
            ),
          ),
-       ),
-       child: Text(
-         title,
-         style: TextStyle(
-           fontSize: 14.sp,
-           color: kBlackColor,
+         child: Text(
+           title,
+           style: TextStyle(
+             fontSize: 14.sp,
+             color: kBlackColor,
+           ),
          ),
        ),
      );
