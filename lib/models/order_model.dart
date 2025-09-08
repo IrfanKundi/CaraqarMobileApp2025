@@ -46,7 +46,7 @@ class Order {
     deliveryAddress = order["ShippingAddress"];
     deliveryCoordinates = order["DeliveryCoordinates"];
 
-    // ✅ Safely handle OrderDate
+    // Safely handle OrderDate
     if (order["OrderDate"] != null && order["OrderDate"].toString().isNotEmpty) {
       try {
         createdAt = DateFormat("dd-MM-yyyy")

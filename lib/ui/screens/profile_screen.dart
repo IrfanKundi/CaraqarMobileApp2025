@@ -7,18 +7,16 @@ import 'package:careqar/controllers/auth_controller.dart';
 import 'package:careqar/controllers/password_controller.dart';
 import 'package:careqar/controllers/profile_controller.dart';
 import 'package:careqar/enums.dart';
+import 'package:careqar/global_variables.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/screens/current_location_screen.dart';
+import 'package:careqar/ui/screens/choose_option_screen_new.dart';
 import 'package:careqar/ui/screens/favorites_screen.dart';
-import 'package:careqar/ui/screens/home_screen.dart';
 import 'package:careqar/ui/screens/news_screen.dart';
 import 'package:careqar/ui/screens/vehicle/my_orders_screen.dart';
-import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
-import 'package:careqar/ui/widgets/text_button_widget.dart';
 import 'package:careqar/ui/widgets/text_field_widget.dart';
 import 'package:careqar/user_session.dart';
 import 'package:file_picker/file_picker.dart';
@@ -31,11 +29,8 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-import '../../global_variables.dart';
-import '../../locale/app_localizations.dart';
 import '../widgets/crop.dart';
 import '../widgets/language_dropdown_widget.dart';
-import 'choose_option_screen.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -295,8 +290,13 @@ class ProfileScreen extends GetView<ProfileController> {
                   child: ProfileMenuItem(
                     icon: MaterialCommunityIcons.car,
                     text: "Motors",
+                    isSelected: gIsVehicle, // Selected when in motors (gIsVehicle = true)
                     onTap: () {
-                      loadVehicle();
+                      if(!gIsVehicle){
+                        loadVehicle();
+                      }else{
+                        Get.back();
+                      }
                     },
                   ),
                 ),
@@ -316,8 +316,13 @@ class ProfileScreen extends GetView<ProfileController> {
                   child: ProfileMenuItem(
                     icon: MaterialCommunityIcons.home,
                     text: "Real Estate",
+                    isSelected: !gIsVehicle, // Selected when in real estate (gIsVehicle = false)
                     onTap: () {
-                      loadRealEstate();
+                      if(gIsVehicle){
+                        loadRealEstate();
+                      }else{
+                        Get.back();
+                      }
                     },
                   ),
                 ),
@@ -413,7 +418,8 @@ class ProfileScreen extends GetView<ProfileController> {
                     icon: MaterialCommunityIcons.earth,
                     text: "Countries",
                     onTap: () {
-                      Get.to(()=> const CurrentLocationScreen());
+                      Get.toNamed(Routes.selectCountryScreen);
+                      //showCountriesSheet(context);
                     },
                   ),
                 ),
@@ -663,51 +669,59 @@ class ProfileMenuItem extends StatelessWidget {
     required this.icon,
     required this.text,
     this.onTap,
-    this.trailing, // ✅ new optional trailing widget
+    this.trailing,
+    this.isSelected = false, // new optional selection state
   }) : super(key: key);
 
   final IconData icon;
   final String text;
   final VoidCallback? onTap;
   final Widget? trailing;
+  final bool isSelected; // selection state with default false
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(50.r),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: Colors.grey[600],
-              size: 22.sp,
-            ),
-            SizedBox(width: 16.w),
-            Expanded(
-              child: Text(
-                text.tr,
-                style: TextStyle(
-                  color: kBlackColor,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
+      child: Container(
+        decoration: BoxDecoration(
+          color: isSelected ? kAccentColor.withOpacity(0.1) : Colors.transparent, // accent color background when selected
+          borderRadius: BorderRadius.circular(50.r),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? kAccentColor : Colors.grey[600], // accent color icon when selected
+                size: 22.sp,
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Text(
+                  text.tr,
+                  style: TextStyle(
+                    color: isSelected ? kAccentColor : kBlackColor, // accent color text when selected
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            if (trailing != null) ...[
-              trailing!, // ✅ show custom trailing widget
-              SizedBox(width: 8.w),
+              if (trailing != null) ...[
+                trailing!,
+                SizedBox(width: 8.w),
+              ],
+              Icon(
+                Get.locale?.languageCode == "ar"
+                    ? MaterialCommunityIcons.chevron_left
+                    : MaterialCommunityIcons.chevron_right,
+                color: isSelected ? kAccentColor : Colors.grey[400], // accent color chevron when selected
+                size: 18.sp,
+              ),
             ],
-            Icon(
-              Get.locale?.languageCode == "ar"
-                  ? MaterialCommunityIcons.chevron_left
-                  : MaterialCommunityIcons.chevron_right,
-              color: Colors.grey[400],
-              size: 18.sp,
-            ),
-          ],
+          ),
         ),
       ),
     );

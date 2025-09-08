@@ -32,7 +32,7 @@ class EnterEngineScreen extends GetView<VehicleController> {
           backgroundColor: Colors.grey[50],
           appBar: buildAppBar(context, title: "Select Engine"),
 
-          // ✅ Floating Next button
+
           bottomNavigationBar: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -63,7 +63,7 @@ class EnterEngineScreen extends GetView<VehicleController> {
             ),
           ),
 
-          // ✅ Scrollable body
+
           body: Padding(
             padding: EdgeInsets.all(16),
             child: Form(
@@ -72,7 +72,7 @@ class EnterEngineScreen extends GetView<VehicleController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // ✅ Engine input field
+
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -141,7 +141,6 @@ class EnterEngineScreen extends GetView<VehicleController> {
 
                   SizedBox(height: 16),
 
-                  // ✅ Engine list styled like other selection screens
                   Expanded(
                     child: ListView.separated(
                       itemCount: engineSizes.length,

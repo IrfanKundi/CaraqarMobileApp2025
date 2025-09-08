@@ -721,7 +721,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
             ),
             _buildStyledRow(
               "Registered In".tr,
-              car.registrationCity?.isNotEmpty == true ? car.registrationCity! : "Not Available",
+              car.registrationCity?.isNotEmpty == true ? car.registration! : "Not Available",
               4,
             ),
             _buildStyledRow(
@@ -729,6 +729,8 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
               car.importedLocal?.isNotEmpty == true ? car.importedLocal! : "Not Available",
               5,
             ),
+          if (car.importYear?.isNotEmpty ?? false)
+            _buildStyledRow("Import Year".tr, car.importYear ?? "Not Available", 6),
             _buildStyledRow("Type".tr, car.type!, 6),
             _buildStyledRow("Transmission".tr, car.transmission!, 7),
             _buildStyledRow("FuelType".tr, car.fuelType!, 8),

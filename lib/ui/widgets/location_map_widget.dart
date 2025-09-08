@@ -55,7 +55,7 @@ class _LocationMapWidgetState extends State<LocationMapWidget> {
       });
     }
 
-    debugPrint("SAHAr ✅ _loadCityCoordinates() finished");
+    debugPrint("SAHAr _loadCityCoordinates() finished");
   }
 
 

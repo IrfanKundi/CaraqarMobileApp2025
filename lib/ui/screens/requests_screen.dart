@@ -17,7 +17,7 @@ import 'package:get/get.dart';
 
 import '../../routes.dart';
 
-class RequestsScreen extends StatefulWidget {
+/*class RequestsScreen extends StatefulWidget {
    const RequestsScreen({Key? key}) : super(key: key);
 
   @override
@@ -762,6 +762,37 @@ class RequestItem extends StatelessWidget {
               ]),
         )
         ,
+      ),
+    );
+  }
+}*/
+class RequestsScreen extends StatelessWidget {
+  const RequestsScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: buildAppBar(context, title: "Requests".tr),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/not_found.png',
+              width: 100.w,
+              height: 100.h,
+              color: Colors.grey[400],
+            ),
+            Text(
+              "Coming Soon".tr,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[400],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

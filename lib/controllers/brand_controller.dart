@@ -38,7 +38,7 @@ class BrandController extends GetxController {
   var engine = "".obs;
   var year = "".obs;
 
-  final List<String> priorityBrands = ['toyota', 'honda', 'suzuki'];
+  final List<String> priorityBrands = ['Toyota', 'Honda', 'Suzuki', 'Hyundai' , 'KIA', 'Changan Auto', 'MG', 'Prince'];
 
   Future<void> getVariants(int? modelId) async {
     try {
@@ -114,7 +114,7 @@ class BrandController extends GetxController {
     update();
   }
 
-  /// ✅ Search with prioritized brands
+  /// Search with prioritized brands
   void search(String text) {
     final lowerText = text.trim().toLowerCase();
 
@@ -142,7 +142,7 @@ class BrandController extends GetxController {
     update();
   }
 
-  /// ✅ Search for models
+  /// Search for models
   void searchModel(String text) {
     searchedModels.clear();
     searchedModels.addAll(allModels
@@ -153,7 +153,7 @@ class BrandController extends GetxController {
     update();
   }
 
-  /// ✅ Load brands and apply priority sort initially
+  /// Load brands and apply priority sort initially
   Future<void> getBrands(String vehicleType) async {
     try {
       brandsStatus(Status.loading);

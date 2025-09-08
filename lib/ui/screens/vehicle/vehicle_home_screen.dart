@@ -26,6 +26,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../widgets/switching_screen.dart';
+
 class VehicleHomeScreen extends StatefulWidget {
   const VehicleHomeScreen({Key? key}) : super(key: key,);
 
@@ -116,6 +118,13 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
   }
 
   loadRealEstate() async {
+    Get.dialog(
+      const SwitchingScreen(
+        label: 'Switching to Real Estate',
+        icon: Icons.swap_horiz, // or use your custom icon
+      ),
+      barrierDismissible: false,
+    );
     _videoPlayerController.dispose();
     gIsVehicle = false;
     TypeController typeController = Get.put(TypeController());
@@ -124,6 +133,7 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
     await typeController.getTypes();
     await typeController.getTypesWithSubTypes();
     Future.delayed(const Duration(seconds: 1), () {
+      Get.back();
       Get.offAllNamed(Routes.navigationScreen);
     });
   }

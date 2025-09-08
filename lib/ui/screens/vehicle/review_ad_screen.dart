@@ -65,17 +65,6 @@ class ReviewAdScreen extends GetView<VehicleController> {
                         ? Column(
                       children: [
                         ReviewAdItem(
-                          title: "Type".tr,
-                          value: "${controller.type?.type}",
-                          onPressed: () async {
-                            await Get.toNamed(
-                              Routes.chooseTypeScreen,
-                              arguments: true,
-                            );
-                            controller.update();
-                          },
-                        ),
-                        ReviewAdItem(
                           title: "Brand".tr,
                           value: "${controller.brand?.brandName}",
                           onPressed: () async {
@@ -101,7 +90,21 @@ class ReviewAdScreen extends GetView<VehicleController> {
                           },
                         ),
                         ReviewAdItem(
-                          title: "Year".tr,
+                          title: "Variant".tr,
+                          value: "${controller.modelVariant}",
+                          onPressed: () async {
+                            Get.put(
+                              BrandController(),
+                            ).getModels(controller.brand!.brandId!);
+                            await Get.toNamed(
+                              Routes.chooseModelVariants,
+                              arguments: true,
+                            );
+                            controller.update();
+                          },
+                        ),
+                        ReviewAdItem(
+                          title: "Model Year".tr,
                           value: "${controller.modelYear}",
                           onPressed: () async {
                             await Get.toNamed(
@@ -111,20 +114,8 @@ class ReviewAdScreen extends GetView<VehicleController> {
                             controller.update();
                           },
                         ),
-                        if (VehicleType.Car == controller.vehicleType)
-                          ReviewAdItem(
-                            title: "FuelType".tr,
-                            value: "${controller.fuelType}".tr,
-                            onPressed: () async {
-                              await Get.toNamed(
-                                Routes.selectFuelTypeScreen,
-                                arguments: true,
-                              );
-                              controller.update();
-                            },
-                          ),
                         ReviewAdItem(
-                          title: "Vehicle Assembly".tr,
+                          title: "Assembly".tr,
                           value: "${controller.origin}".tr,
                           onPressed: () async {
                             await Get.toNamed(
@@ -147,8 +138,8 @@ class ReviewAdScreen extends GetView<VehicleController> {
                             },
                           ),
                         ReviewAdItem(
-                          title: "Registration".tr,
-                          value: "${controller.province}".tr,
+                          title: "Registered In".tr,
+                          value: "${controller.registrationProvince}".tr,
                           onPressed: () async {
                             await Get.toNamed(
                               Routes.selectProvinceScreen,
@@ -158,16 +149,28 @@ class ReviewAdScreen extends GetView<VehicleController> {
                           },
                         ),
                         ReviewAdItem(
-                          title: "Vehicle Condition".tr,
-                          value: "${controller.condition}".tr,
+                          title: "Your Location".tr,
+                          value: "${controller.city?.name}",
                           onPressed: () async {
                             await Get.toNamed(
-                              Routes.selectConditionScreen,
+                              Routes.selectCityScreen,
                               arguments: true,
                             );
                             controller.update();
                           },
                         ),
+                        ReviewAdItem(
+                          title: "Body Type".tr,
+                          value: "${controller.type?.type}",
+                          onPressed: () async {
+                            await Get.toNamed(
+                              Routes.chooseTypeScreen,
+                              arguments: true,
+                            );
+                            controller.update();
+                          },
+                        ),
+
                         ReviewAdItem(
                           title: "Registration Year".tr,
                           value: "${controller.registrationYear}".tr,
@@ -186,6 +189,18 @@ class ReviewAdScreen extends GetView<VehicleController> {
                             onPressed: () async {
                               await Get.toNamed(
                                 Routes.chooseTransmissionScreen,
+                                arguments: true,
+                              );
+                              controller.update();
+                            },
+                          ),
+                        if (VehicleType.Car == controller.vehicleType)
+                          ReviewAdItem(
+                            title: "FuelType".tr,
+                            value: "${controller.fuelType}".tr,
+                            onPressed: () async {
+                              await Get.toNamed(
+                                Routes.selectFuelTypeScreen,
                                 arguments: true,
                               );
                               controller.update();
@@ -226,11 +241,11 @@ class ReviewAdScreen extends GetView<VehicleController> {
                             },
                           ),
                         ReviewAdItem(
-                          title: "City".tr,
-                          value: "${controller.city?.name}",
+                          title: "Vehicle Condition".tr,
+                          value: "${controller.condition}".tr,
                           onPressed: () async {
                             await Get.toNamed(
-                              Routes.selectCityScreen,
+                              Routes.selectConditionScreen,
                               arguments: true,
                             );
                             controller.update();

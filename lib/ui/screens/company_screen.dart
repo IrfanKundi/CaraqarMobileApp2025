@@ -31,8 +31,6 @@ class CompanyScreen extends StatelessWidget {
   CompanyScreen({Key? key}) : super(key: key){
     initData();
       //controller.getCompanies();
-
-
   }
 
   void initData() {

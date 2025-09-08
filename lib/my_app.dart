@@ -1,5 +1,6 @@
 import 'package:careqar/locale/app_localizations.dart';
 import 'package:careqar/routes.dart';
+import 'package:careqar/select_country_screen.dart';
 import 'package:careqar/ui/screens/add_features_screen.dart';
 import 'package:careqar/ui/screens/add_property_screen.dart';
 import 'package:careqar/ui/screens/agent_screen.dart';
@@ -197,6 +198,11 @@ class MyApp extends StatelessWidget {
       GetPage(
         name: Routes.servicesScreen,
         page: () => const ServicesScreen(),
+      ),
+      GetPage(
+        name: Routes.selectCountryScreen,
+        page: () => const SelectCountryScreen(),
+        binding: SelectCountryBinding(),
       ),
       GetPage(name: Routes.checkoutScreen, page: () => CheckoutScreen(),binding: CheckoutBindings()),
       GetPage(name: Routes.myOrdersScreen, page: () => MyOrdersScreen(),binding: OrderBindings()),

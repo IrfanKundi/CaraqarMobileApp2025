@@ -142,7 +142,7 @@ class SellerProfileController extends GetxController {
         userProfile.value = UserProfile.fromJson(fakeProfileData);
 
         if (kDebugMode) {
-          debugPrint(' SAHAr ✅ Fake profile created successfully for: ${userProfile.value?.fullName}');
+          debugPrint(' SAHAr Fake profile created successfully for: ${userProfile.value?.fullName}');
         }
 
         isLoading.value = false;
@@ -180,7 +180,7 @@ class SellerProfileController extends GetxController {
             if (dataList.isNotEmpty) {
               userProfile.value = UserProfile.fromJson(dataList[0]);
               if (kDebugMode) {
-                debugPrint(' SAHAr ✅ Profile loaded successfully for: ${userProfile.value?.fullName}');
+                debugPrint(' SAHAr Profile loaded successfully for: ${userProfile.value?.fullName}');
               }
             } else {
               error.value = 'No profile data found';
@@ -324,7 +324,7 @@ class SellerProfileController extends GetxController {
     await loadSellerCars();
   }
 
-  void makeCall() {
+  String? makeCall() {
     String? phoneNumber;
 
     if (userProfile.value?.userId == 0) {
@@ -335,10 +335,13 @@ class SellerProfileController extends GetxController {
 
     if (phoneNumber?.isNotEmpty == true) {
       if (kDebugMode) {
-        debugPrint(' SAHAr 📞 Calling: $phoneNumber');
+        debugPrint('SAHAr 📞 Calling: $phoneNumber');
       }
     }
+
+    return phoneNumber;
   }
+
 
   void sendWhatsAppMessage() {
     String? phoneNumber;

@@ -123,7 +123,7 @@ class ChooseBrandScreen extends GetView<VehicleController> {
                 itemBuilder: (context, index) {
                   final item = brandController.searchedBrands[index];
                   final isSelected = controller.brandId == item.brandId;
-                  final isPriority = ['Toyota', 'Honda', 'Suzuki'].contains(item.brandName);
+                  final isPriority = ['Toyota', 'Honda', 'Suzuki', 'Hyundai' , 'KIA ', 'Changan Auto', 'MG', 'Prince'].contains(item.brandName);
 
                   return InkWell(
                     onTap: () {

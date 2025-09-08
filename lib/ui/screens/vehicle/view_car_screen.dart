@@ -103,67 +103,97 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                           height: double.infinity,
                                           autoPlayCurve: Curves.linearToEaseOut,
                                           autoPlay: true,
-                                          scrollPhysics: const BouncingScrollPhysics(),
+                                          scrollPhysics:
+                                              const BouncingScrollPhysics(),
                                           enableInfiniteScroll: false,
                                           viewportFraction: 1,
                                           enlargeCenterPage: false,
-                                          initialPage: controller.sliderIndex.value,
+                                          initialPage:
+                                              controller.sliderIndex.value,
                                           onPageChanged: (index, reason) {
-                                            controller.sliderIndex.value = index;
+                                            controller.sliderIndex.value =
+                                                index;
                                             controller.update();
                                           },
                                         ),
-                                        items: car!.images.map((item) {
-                                          return Builder(
-                                            builder: (BuildContext context) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                    Routes.staggeredGalleryScreen,
-                                                    arguments: car.images,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  height: double.infinity,
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: item,
-                                                    width: double.infinity,
-                                                    height: double.infinity,
-                                                    fit: BoxFit.cover,
-                                                    imageBuilder: (context, imageProvider) {
-                                                      return Image(
-                                                        image: imageProvider,
-                                                        fit: BoxFit.cover,
-                                                        width: double.infinity,
-                                                        height: double.infinity,
+                                        items:
+                                            car!.images.map((item) {
+                                              return Builder(
+                                                builder: (
+                                                  BuildContext context,
+                                                ) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                        Routes
+                                                            .staggeredGalleryScreen,
+                                                        arguments: car.images,
                                                       );
                                                     },
-                                                    placeholder: (context, url) => Container(
-                                                      color: Colors.grey[200],
-                                                      child: const Center(
-                                                        child: CircularProgressIndicator(),
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      height: double.infinity,
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: item,
+                                                        width: double.infinity,
+                                                        height: double.infinity,
+                                                        fit: BoxFit.cover,
+                                                        imageBuilder: (
+                                                          context,
+                                                          imageProvider,
+                                                        ) {
+                                                          return Image(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover,
+                                                            width:
+                                                                double.infinity,
+                                                            height:
+                                                                double.infinity,
+                                                          );
+                                                        },
+                                                        placeholder:
+                                                            (
+                                                              context,
+                                                              url,
+                                                            ) => Container(
+                                                              color:
+                                                                  Colors
+                                                                      .grey[200],
+                                                              child: const Center(
+                                                                child:
+                                                                    CircularProgressIndicator(),
+                                                              ),
+                                                            ),
+                                                        errorWidget:
+                                                            (
+                                                              context,
+                                                              url,
+                                                              error,
+                                                            ) => Container(
+                                                              color:
+                                                                  Colors
+                                                                      .grey[200],
+                                                              child:
+                                                                  const Center(
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .error,
+                                                                      size: 50,
+                                                                    ),
+                                                                  ),
+                                                            ),
+                                                        memCacheWidth: 800,
+                                                        memCacheHeight: 600,
+                                                        maxWidthDiskCache: 1000,
+                                                        maxHeightDiskCache:
+                                                            1000,
                                                       ),
                                                     ),
-                                                    errorWidget: (context, url, error) => Container(
-                                                      color: Colors.grey[200],
-                                                      child: const Center(
-                                                        child: Icon(
-                                                          Icons.error,
-                                                          size: 50,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    memCacheWidth: 800,
-                                                    memCacheHeight: 600,
-                                                    maxWidthDiskCache: 1000,
-                                                    maxHeightDiskCache: 1000,
-                                                  ),
-                                                ),
+                                                  );
+                                                },
                                               );
-                                            },
-                                          );
-                                        }).toList(),
+                                            }).toList(),
                                       ),
 
                                       // Add the indicator at the top
@@ -172,10 +202,13 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                         left: 0,
                                         right: 0,
                                         child: Center(
-                                          child: Obx(() => WorkingSlidingIndicator(
-                                            itemCount: car!.images.length,
-                                            currentIndex: controller.sliderIndex.value,
-                                          )),
+                                          child: Obx(
+                                            () => WorkingSlidingIndicator(
+                                              itemCount: car!.images.length,
+                                              currentIndex:
+                                                  controller.sliderIndex.value,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -193,54 +226,77 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                           height: double.infinity,
                                           autoPlayCurve: Curves.linearToEaseOut,
                                           autoPlay: true,
-                                          scrollPhysics: const BouncingScrollPhysics(),
+                                          scrollPhysics:
+                                              const BouncingScrollPhysics(),
                                           enableInfiniteScroll: false,
                                           viewportFraction: 1,
                                           enlargeCenterPage: false,
-                                          initialPage: controller.sliderIndex.value,
+                                          initialPage:
+                                              controller.sliderIndex.value,
                                           onPageChanged: (index, reason) {
-                                            controller.sliderIndex.value = index;
+                                            controller.sliderIndex.value =
+                                                index;
                                             controller.update();
                                           },
                                         ),
-                                        items: car!.images.map((item) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(
-                                                Routes.staggeredGalleryScreen,
-                                                arguments: car.images,
-                                              );
-                                            },
-                                            child: CachedNetworkImage(
-                                              imageUrl: item,
-                                              width: double.infinity,
-                                              height: double.infinity,
-                                              fit: BoxFit.cover,
-                                              imageBuilder: (context, imageProvider) {
-                                                return Image(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover,
+                                        items:
+                                            car!.images.map((item) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                    Routes
+                                                        .staggeredGalleryScreen,
+                                                    arguments: car.images,
+                                                  );
+                                                },
+                                                child: CachedNetworkImage(
+                                                  imageUrl: item,
                                                   width: double.infinity,
                                                   height: double.infinity,
-                                                );
-                                              },
-                                              placeholder: (context, url) => Container(
-                                                color: Colors.grey[200],
-                                                child: const Center(child: CircularProgressIndicator()),
-                                              ),
-                                              errorWidget: (context, url, error) => Container(
-                                                color: Colors.grey[200],
-                                                child: const Center(
-                                                  child: Icon(Icons.error, size: 50),
+                                                  fit: BoxFit.cover,
+                                                  imageBuilder: (
+                                                    context,
+                                                    imageProvider,
+                                                  ) {
+                                                    return Image(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                      width: double.infinity,
+                                                      height: double.infinity,
+                                                    );
+                                                  },
+                                                  placeholder:
+                                                      (
+                                                        context,
+                                                        url,
+                                                      ) => Container(
+                                                        color: Colors.grey[200],
+                                                        child: const Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        ),
+                                                      ),
+                                                  errorWidget:
+                                                      (
+                                                        context,
+                                                        url,
+                                                        error,
+                                                      ) => Container(
+                                                        color: Colors.grey[200],
+                                                        child: const Center(
+                                                          child: Icon(
+                                                            Icons.error,
+                                                            size: 50,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  memCacheWidth: 800,
+                                                  memCacheHeight: 600,
+                                                  maxWidthDiskCache: 1000,
+                                                  maxHeightDiskCache: 1000,
                                                 ),
-                                              ),
-                                              memCacheWidth: 800,
-                                              memCacheHeight: 600,
-                                              maxWidthDiskCache: 1000,
-                                              maxHeightDiskCache: 1000,
-                                            ),
-                                          );
-                                        }).toList(),
+                                              );
+                                            }).toList(),
                                       ),
 
                                       // FIXED Moving dots indicator
@@ -251,33 +307,64 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                         child: Center(
                                           child: Obx(() {
                                             const int maxVisibleDots = 4;
-                                            final int totalImages = car!.images.length;
-                                            final int currentIndex = controller.sliderIndex.value;
+                                            final int totalImages =
+                                                car!.images.length;
+                                            final int currentIndex =
+                                                controller.sliderIndex.value;
 
                                             // If we have 4 or fewer images, just show them all
                                             if (totalImages <= maxVisibleDots) {
                                               return Container(
-                                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.w,
+                                                  vertical: 8.h,
+                                                ),
                                                 decoration: BoxDecoration(
-                                                  color: Colors.black.withOpacity(0.3),
-                                                  borderRadius: BorderRadius.circular(20.r),
+                                                  color: Colors.black
+                                                      .withOpacity(0.3),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        20.r,
+                                                      ),
                                                 ),
                                                 child: Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: List.generate(totalImages, (i) {
-                                                    final bool isActive = i == currentIndex;
-                                                    return AnimatedContainer(
-                                                      duration: const Duration(milliseconds: 250),
-                                                      curve: Curves.easeOut,
-                                                      margin: EdgeInsets.symmetric(horizontal: 3.w),
-                                                      width: isActive ? 10.w : 8.w,
-                                                      height: isActive ? 10.w : 8.w,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: isActive ? Colors.white : Colors.white54,
-                                                      ),
-                                                    );
-                                                  }),
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: List.generate(
+                                                    totalImages,
+                                                    (i) {
+                                                      final bool isActive =
+                                                          i == currentIndex;
+                                                      return AnimatedContainer(
+                                                        duration:
+                                                            const Duration(
+                                                              milliseconds: 250,
+                                                            ),
+                                                        curve: Curves.easeOut,
+                                                        margin:
+                                                            EdgeInsets.symmetric(
+                                                              horizontal: 3.w,
+                                                            ),
+                                                        width:
+                                                            isActive
+                                                                ? 10.w
+                                                                : 8.w,
+                                                        height:
+                                                            isActive
+                                                                ? 10.w
+                                                                : 8.w,
+                                                        decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              isActive
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .white54,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
                                                 ),
                                               );
                                             }
@@ -287,9 +374,11 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                             if (currentIndex < 2) {
                                               // First 2 positions: [0,1,2,3]
                                               startIndex = 0;
-                                            } else if (currentIndex >= totalImages - 2) {
+                                            } else if (currentIndex >=
+                                                totalImages - 2) {
                                               // Last 2 positions: show last 4
-                                              startIndex = totalImages - maxVisibleDots;
+                                              startIndex =
+                                                  totalImages - maxVisibleDots;
                                             } else {
                                               // Middle positions: slide the window
                                               // Put current index at position 2 (3rd dot)
@@ -297,26 +386,46 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                             }
 
                                             // Debug print to see what's happening
-                                            print("Index: $currentIndex, StartIndex: $startIndex, Window: [${startIndex}, ${startIndex+1}, ${startIndex+2}, ${startIndex+3}]");
+                                            print(
+                                              "Index: $currentIndex, StartIndex: $startIndex, Window: [${startIndex}, ${startIndex + 1}, ${startIndex + 2}, ${startIndex + 3}]",
+                                            );
 
                                             // Build the visible dots with sliding animation
                                             return Container(
-                                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 12.w,
+                                                vertical: 8.h,
+                                              ),
                                               decoration: BoxDecoration(
-                                                color: Colors.black.withOpacity(0.3),
-                                                borderRadius: BorderRadius.circular(20.r),
+                                                color: Colors.black.withOpacity(
+                                                  0.3,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(20.r),
                                               ),
                                               child: AnimatedSwitcher(
-                                                duration: const Duration(milliseconds: 300),
-                                                transitionBuilder: (child, animation) {
+                                                duration: const Duration(
+                                                  milliseconds: 300,
+                                                ),
+                                                transitionBuilder: (
+                                                  child,
+                                                  animation,
+                                                ) {
                                                   return SlideTransition(
                                                     position: Tween<Offset>(
-                                                      begin: const Offset(0.3, 0), // Slide from right
+                                                      begin: const Offset(
+                                                        0.3,
+                                                        0,
+                                                      ),
+                                                      // Slide from right
                                                       end: Offset.zero,
-                                                    ).animate(CurvedAnimation(
-                                                      parent: animation,
-                                                      curve: Curves.easeOutCubic,
-                                                    )),
+                                                    ).animate(
+                                                      CurvedAnimation(
+                                                        parent: animation,
+                                                        curve:
+                                                            Curves.easeOutCubic,
+                                                      ),
+                                                    ),
                                                     child: FadeTransition(
                                                       opacity: animation,
                                                       child: child,
@@ -324,27 +433,69 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                   );
                                                 },
                                                 child: Row(
-                                                  key: ValueKey(startIndex), // Important: key changes trigger animation
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: List.generate(maxVisibleDots, (i) {
-                                                    final int dotIndex = startIndex + i;
-                                                    final bool isActive = dotIndex == currentIndex;
+                                                  key: ValueKey(startIndex),
+                                                  // Important: key changes trigger animation
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: List.generate(maxVisibleDots, (
+                                                    i,
+                                                  ) {
+                                                    final int dotIndex =
+                                                        startIndex + i;
+                                                    final bool isActive =
+                                                        dotIndex ==
+                                                        currentIndex;
 
-                                                    return TweenAnimationBuilder<double>(
-                                                      duration: Duration(milliseconds: 200 + (i * 50)), // Staggered animation
-                                                      tween: Tween(begin: 0.0, end: 1.0),
-                                                      builder: (context, value, child) {
+                                                    return TweenAnimationBuilder<
+                                                      double
+                                                    >(
+                                                      duration: Duration(
+                                                        milliseconds:
+                                                            200 + (i * 50),
+                                                      ),
+                                                      // Staggered animation
+                                                      tween: Tween(
+                                                        begin: 0.0,
+                                                        end: 1.0,
+                                                      ),
+                                                      builder: (
+                                                        context,
+                                                        value,
+                                                        child,
+                                                      ) {
                                                         return Transform.scale(
                                                           scale: value,
                                                           child: AnimatedContainer(
-                                                            duration: const Duration(milliseconds: 250),
-                                                            curve: Curves.easeOut,
-                                                            margin: EdgeInsets.symmetric(horizontal: 3.w),
-                                                            width: isActive ? 10.w : 8.w,
-                                                            height: isActive ? 10.w : 8.w,
+                                                            duration:
+                                                                const Duration(
+                                                                  milliseconds:
+                                                                      250,
+                                                                ),
+                                                            curve:
+                                                                Curves.easeOut,
+                                                            margin:
+                                                                EdgeInsets.symmetric(
+                                                                  horizontal:
+                                                                      3.w,
+                                                                ),
+                                                            width:
+                                                                isActive
+                                                                    ? 10.w
+                                                                    : 8.w,
+                                                            height:
+                                                                isActive
+                                                                    ? 10.w
+                                                                    : 8.w,
                                                             decoration: BoxDecoration(
-                                                              shape: BoxShape.circle,
-                                                              color: isActive ? Colors.white : Colors.white54,
+                                                              shape:
+                                                                  BoxShape
+                                                                      .circle,
+                                                              color:
+                                                                  isActive
+                                                                      ? Colors
+                                                                          .white
+                                                                      : Colors
+                                                                          .white54,
                                                             ),
                                                           ),
                                                         );
@@ -553,7 +704,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                             // Icons on right
                                             Row(
                                               children: [
-                                                _buildCircleIconButton(
+                                                buildCircleIconButton(
                                                   icon: FaIcon(
                                                     FontAwesomeIcons.phone,
                                                     size: 20.w,
@@ -570,25 +721,31 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                 ),
 
                                                 SizedBox(width: 8.w),
-                                                _buildCircleIconButton(
-                                                  image: 'assets/images/whatsapp.png',
+                                                buildCircleIconButton(
+                                                  image:
+                                                      'assets/images/whatsapp.png',
                                                   onTap: () async {
                                                     controller.updateClicks(
                                                       isWhatsapp: true,
                                                     );
-                                                    String adUrl = await DynamicLink.createDynamicLink(
+                                                    String
+                                                    adUrl = await DynamicLink.createDynamicLink(
                                                       false,
-                                                      uri: "/Cars/Detail/${car.carId!}",
-                                                      title: "${car.brandName!} ${car.modelName} ${car.modelYear}",
+                                                      uri:
+                                                          "/Cars/Detail/${car.carId!}",
+                                                      title:
+                                                          "${car.brandName!} ${car.modelName} ${car.modelYear}",
                                                       desc: car.description,
                                                       image: car.images.first,
                                                     );
-                                                    String message = Uri.encodeFull(
+                                                    String
+                                                    message = Uri.encodeFull(
                                                       "Hello,\n${car.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
                                                     );
-                                                    String url = Platform.isIOS
-                                                        ? "https://wa.me/${car.contactNo}?text=$message"
-                                                        : "whatsapp://send?phone=${car.contactNo}&text=$message";
+                                                    String url =
+                                                        Platform.isIOS
+                                                            ? "https://wa.me/${car.contactNo}?text=$message"
+                                                            : "whatsapp://send?phone=${car.contactNo}&text=$message";
                                                     await launchUrl(
                                                       Uri.parse(url),
                                                     );
@@ -650,9 +807,9 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                     child: _buildCarInfoItem(
                                       icon: FontAwesomeIcons.gear,
                                       label:
-                                      car.transmission!
-                                          .replaceAll("Automatic", "Auto")
-                                          .tr,
+                                          car.transmission!
+                                              .replaceAll("Automatic", "Auto")
+                                              .tr,
                                     ),
                                   ),
                                   _buildVerticalDivider(),
@@ -869,9 +1026,11 @@ class ViewCarScreen extends GetView<ViewCarController> {
 
                                 GestureDetector(
                                   onTap: () {
-                                    if (car.companyId != null) {
+                                    // Check companyId first - must not be null and not equal to 0
+                                    if (car.companyId != null &&
+                                        car.companyId != 0) {
                                       if (Get.previousRoute ==
-                                          "${Routes.companyScreen}?type=Car&agentAds=${car.isAgentAd}") {
+                                          "${Routes.companyScreen}?type=Car&agentAds=${car.userId}") {
                                         Get.back();
                                       } else {
                                         Get.offNamed(
@@ -883,7 +1042,10 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                           },
                                         );
                                       }
-                                    } else if (car.agentId != null) {
+                                    }
+                                    // Check agentId second - must not be null and not equal to 0
+                                    else if (car.agentId != null &&
+                                        car.agentId != 0) {
                                       if (Get.previousRoute ==
                                           "${Routes.agentScreen}?type=Car&agentAds=${car.isAgentAd}") {
                                         Get.back();
@@ -898,19 +1060,41 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                         );
                                       }
                                     }
+                                    // If neither companyId nor agentId are valid, do nothing here
+                                    // The userId logic is handled by the InkWell onTap below
                                   },
                                   child: Padding(
                                     padding: kHorizontalScreenPadding,
                                     child: InkWell(
                                       onTap: () {
                                         // 🔍 Debug what we're getting
+                                        debugPrint('SAHAr 🔍 car.companyId: ${car.companyId}');
+                                        debugPrint('SAHAr 🔍 car.agentId: ${car.agentId}');
                                         debugPrint('SAHAr 🔍 car.userId: ${car.userId}');
                                         debugPrint('SAHAr 🔍 car.contactNo: ${car.contactNo}');
                                         debugPrint('SAHAr 🔍 car.agentName: ${car.agentName}');
-                                        debugPrint('SAHAr 🔍 car.userId == 0: ${car.userId == 0}');
-                                        debugPrint('SAHAr 🔍 car.userId == null: ${car.userId == null}');
 
-                                        if (car.userId == null || car.userId == 0) {
+
+                                        if (car.companyId != null && car.companyId != 0) {
+                                          debugPrint('SAHAr 🏢 Going to company screen');
+                                          Get.toNamed(
+                                            Routes.companyScreen,
+                                            arguments: car.companyId,  // ← Pass company ID as arguments
+                                            parameters: {
+                                              "type": "Car",
+                                              "agentAds": "${car.companyId}",
+                                            },
+                                          );
+                                        }
+
+                                        // else if (car.agentId != null && car.agentId != 0) {
+                                        //   debugPrint('SAHAr 👨‍💼 Going to agent screen');
+                                        //   Get.toNamed(
+                                        //       '${Routes.agentScreen}?type=Car&agentAds=${car.isAgentAd}'
+                                        //   );
+                                        // }
+                                        // 3rd Priority: Check userId (your existing logic)
+                                        else if (car.userId == null || car.userId == 0) {
                                           debugPrint('SAHAr 🎭 Going to fake profile route');
                                           // Pass additional data for fake profile
                                           Get.toNamed(Routes.sellerProfile, arguments: {
@@ -1332,11 +1516,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FaIcon(
-            icon,
-            size: 20.w,
-            color: kIconColor,
-          ),
+          FaIcon(icon, size: 20.w, color: kIconColor),
           SizedBox(height: 6.h),
           Text(
             label,
@@ -1362,7 +1542,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
   }
 
   /// Reusable white circular icon button
-  Widget _buildCircleIconButton({
+  Widget buildCircleIconButton({
     Widget? icon,
     String? image,
     required VoidCallback onTap,
@@ -1385,13 +1565,10 @@ class ViewCarScreen extends GetView<ViewCarController> {
           ],
         ),
         child: Center(
-          child: image != null
-              ? Image.asset(
-            image,
-            width: 24.w,
-            height: 24.w,
-          )
-              : icon,
+          child:
+              image != null
+                  ? Image.asset(image, width: 24.w, height: 24.w)
+                  : icon,
         ),
       ),
     );
@@ -1430,7 +1607,9 @@ class ViewCarScreen extends GetView<ViewCarController> {
             ),
             _buildStyledRow(
               "Registered In".tr,
-              car.registrationProvince?.isNotEmpty == true ? car.registrationProvince! : "Not Available",
+              car.registrationProvince?.isNotEmpty == true
+                  ? car.registrationProvince!
+                  : "Not Available",
               4,
             ),
             _buildStyledRow(
@@ -1440,6 +1619,8 @@ class ViewCarScreen extends GetView<ViewCarController> {
                   : "Not Available",
               5,
             ),
+            if (car.importYear?.isNotEmpty ?? false)
+              _buildStyledRow("Import Year".tr, car.importYear ?? "Not Available", 6),
             _buildStyledRow("Type".tr, car.type!, 6),
             _buildStyledRow("Condition".tr, car.condition!, 7),
             _buildStyledRow("Mileage".tr, "${car.mileage} ${"KM".tr}", 8),
@@ -1459,78 +1640,80 @@ class ViewCarScreen extends GetView<ViewCarController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           // Create a single table with all features
-          ...car.featureHeads.map<Widget>((e) => Container(
-            margin: EdgeInsets.only(bottom: 32.h),
-            child: Card(
-              elevation: 0,
-              margin: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.r),
-                side: BorderSide(
-                  color: Colors.grey.shade400,
-                  width: 1,
-                ),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Table(
-                border: TableBorder(
-                  horizontalInside: BorderSide(
-                    color: Colors.grey.shade400,
-                    width: 1,
-                  ),
-                  verticalInside: BorderSide(
-                    color: Colors.grey.shade400,
-                    width: 1,
-                  ),
-                ),
-                columnWidths: const {
-                  0: FlexColumnWidth(2),
-                  1: FlexColumnWidth(3),
-                },
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: List.generate(e.features.length, (index) {
-                  bool isOddRow = index % 2 == 1;
-                  Color rowColor = isOddRow ? Colors.grey.shade100 : Colors.white;
-
-                  return TableRow(
-                    decoration: BoxDecoration(color: rowColor),
-                    children: [
-                      // Icon cell
-                      Container(
-                        child: Center(
-                          child: ImageWidget(
-                            e.features[index].image,
-                            width: 30.w,
-                            height: 30.w,
-                          ),
+          ...car.featureHeads
+              .map<Widget>(
+                (e) => Container(
+                  margin: EdgeInsets.only(bottom: 32.h),
+                  child: Card(
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                      side: BorderSide(color: Colors.grey.shade400, width: 1),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Table(
+                      border: TableBorder(
+                        horizontalInside: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
+                        verticalInside: BorderSide(
+                          color: Colors.grey.shade400,
+                          width: 1,
                         ),
                       ),
+                      columnWidths: const {
+                        0: FlexColumnWidth(2),
+                        1: FlexColumnWidth(3),
+                      },
+                      defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
+                      children: List.generate(e.features.length, (index) {
+                        bool isOddRow = index % 2 == 1;
+                        Color rowColor =
+                            isOddRow ? Colors.grey.shade100 : Colors.white;
 
-// Text cell
-                      Container(
-                        padding: const EdgeInsets.all(10), // added padding of 10
-                        child: Text(
-                          "${e.features[index].title}",
-                              // "${(e.features[index].quantity != null && e.features[index].quantity! > 0)
-                              // ? ": ${e.features[index].quantity}"
-                              // : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty)
-                              // ? ": ${e.features[index].featureOption}"
-                              // : ""}",
-                          style: kLightTextStyle14.copyWith(
-                            color: kTableColor,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                      ),
+                        return TableRow(
+                          decoration: BoxDecoration(color: rowColor),
+                          children: [
+                            // Icon cell
+                            Container(
+                              child: Center(
+                                child: ImageWidget(
+                                  e.features[index].image,
+                                  width: 30.w,
+                                  height: 30.w,
+                                ),
+                              ),
+                            ),
 
-                    ],
-                  );
-                }),
-              ),
-            ),
-          )).toList(),
+                            // Text cell
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              // added padding of 10
+                              child: Text(
+                                "${e.features[index].title}",
+                                // "${(e.features[index].quantity != null && e.features[index].quantity! > 0)
+                                // ? ": ${e.features[index].quantity}"
+                                // : (e.features[index].featureOption != null && e.features[index].featureOption.toString().isNotEmpty)
+                                // ? ": ${e.features[index].featureOption}"
+                                // : ""}",
+                                style: kLightTextStyle14.copyWith(
+                                  color: kTableColor,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
         ],
       ),
     );

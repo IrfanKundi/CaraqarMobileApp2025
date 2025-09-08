@@ -12,7 +12,7 @@ buildAppBar(
       Widget? child,
       List<Widget>? actions,
       bool isPrimaryAppBar = false,
-      bool showBack = true, // ✅ default true
+      bool showBack = true, // default true
     }) {
   return AppBar(
     centerTitle: true,

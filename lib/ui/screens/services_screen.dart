@@ -1,4 +1,3 @@
-import 'package:careqar/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,15 +10,26 @@ class ServicesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, title: "Services".tr),
+      appBar: buildAppBar(context, title: "Service".tr),
       body: Center(
-        child: Text(
-          "Coming Soon".tr,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w400,
-            color: kBlackColor,
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/not_found.png',
+              width: 100.w,
+              height: 100.h,
+              color: Colors.grey[400],
+            ),
+            Text(
+              "Coming Soon".tr,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[400],
+              ),
+            ),
+          ],
         ),
       ),
     );

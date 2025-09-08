@@ -21,7 +21,6 @@ import 'package:get/get.dart';
 
 import '../enums.dart';
 import '../routes.dart';
-import '../ui/screens/vehicle/coming_soon_screen.dart';
 import '../user_session.dart';
 import 'content_controller.dart';
 

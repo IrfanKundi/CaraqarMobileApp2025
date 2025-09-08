@@ -126,7 +126,7 @@ class SelectProvinceScreen extends GetView<VehicleController> {
                         });
                       } else {
                         // Continue to next screen
-                        controller.province= selectedLocation.title;
+                        controller.registrationProvince= item.cityId.toString();
                         controller.registrationCityId = selectedLocation.locationId;
                         Get.toNamed(
                           Routes.selectCityScreen,

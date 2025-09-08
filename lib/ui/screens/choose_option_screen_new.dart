@@ -18,6 +18,7 @@ import '../../controllers/type_controller.dart';
 import '../../global_variables.dart';
 import '../../models/content_model.dart';
 import '../../user_session.dart';
+import '../widgets/switching_screen.dart';
 
 class ChooseOptionScreenNew extends StatefulWidget {
   const ChooseOptionScreenNew({Key? key}) : super(key: key);
@@ -308,7 +309,13 @@ class SlideData {
 
 
 loadRealEstate() async {
-  EasyLoading.show();
+  Get.dialog(
+    const SwitchingScreen(
+      label: 'Switching to Real Estate',
+      icon: Icons.swap_horiz, // or use your custom icon
+    ),
+    barrierDismissible: false,
+  );
   gIsVehicle = false;
   TypeController typeController = Get.put(TypeController());
   typeController.allTypes.clear();
@@ -318,18 +325,23 @@ loadRealEstate() async {
   await typeController.getTypesWithSubTypes();
   await getAppContent();
   Future.delayed(Duration(seconds:1),() {
-    EasyLoading.dismiss();
+    Get.back();
     Get.offAllNamed(Routes.navigationScreen);
   },);
 }
 
 loadVehicle() async {
-
-  // EasyLoading.show();
+  Get.dialog(
+    const SwitchingScreen(
+      label: 'Switching to Motors',
+      icon: Icons.swap_horiz, // or use your custom icon
+    ),
+    barrierDismissible: false,
+  );
   gIsVehicle = true;
   getAppContent();
-  Future.delayed(Duration(seconds: 2),() {
-    // EasyLoading.dismiss();
+  Future.delayed(Duration(seconds: 1),() {
+    Get.back();
     Get.offAllNamed(Routes.navigationScreen);
   },);
 }

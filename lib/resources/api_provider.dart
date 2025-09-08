@@ -158,7 +158,7 @@ class ApiProvider {
 
       // 🟢 Response debug
 
-        print("SAHAr ✅ [GET] Status Code: ${UserSession.accessToken} ${response.statusCode}");
+        print("SAHAr [GET] Status Code: ${UserSession.accessToken} ${response.statusCode}");
         print("SAHAr 📨 [GET] Response Body: ${response.body}");
 
 

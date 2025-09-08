@@ -222,12 +222,12 @@ class CarController extends GetxController {
           "&startModelYear=${startYear ?? ''}"
           "&endModelYear=${endYear ?? ''}";
 
-      // ✅ Add sorting if available
+      // Add sorting if available
       if (sortBy != null && sortBy!.isNotEmpty) {
         path += "&sortBy=$sortBy";
       }
 
-      // ✅ Add nearby filter if true
+      // Add nearby filter if true
       if (nearBy) {
         path += "&coordinates=${gCurrentLocation!.latitude},${gCurrentLocation?.longitude}";
       }

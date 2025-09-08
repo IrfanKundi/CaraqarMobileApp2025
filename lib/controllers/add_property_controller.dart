@@ -269,7 +269,7 @@ EasyLoading.dismiss();
           showSnackBar(message: l.message!);
           status(Status.error);
         }, (r) async {
-          // ✅ Compress images before upload
+
           final originalImages = images.value.whereType<File>().toList();
           final compressedImages = await compressImages(originalImages);
 

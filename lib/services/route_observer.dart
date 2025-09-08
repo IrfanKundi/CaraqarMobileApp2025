@@ -41,7 +41,7 @@ class _MyPageState extends State<MyPage> with RouteAware {
     super.dispose();
   }
 
-  // ✅ Required build method
+  // Required build method
   @override
   Widget build(BuildContext context) {
     return Scaffold(

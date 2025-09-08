@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
 import 'package:careqar/ui/widgets/app_bar.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
@@ -5,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../constants/colors.dart';
 import '../../controllers/seller_profile_controller.dart';
+import '../../services/dynamic_link.dart';
+import '../widgets/alerts.dart';
 
 class SellerProfilePage extends StatelessWidget {
   const SellerProfilePage({super.key});
@@ -137,22 +142,6 @@ class SellerProfilePage extends StatelessWidget {
                                           size: 10.sp,
                                         ),
                                       ),
-                                    if (profile.userId == 0)
-                                      Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                                        decoration: BoxDecoration(
-                                          color: Colors.orange.shade100,
-                                          borderRadius: BorderRadius.circular(8.r),
-                                        ),
-                                        child: Text(
-                                          'Guest',
-                                          style: TextStyle(
-                                            fontSize: 8.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.orange.shade700,
-                                          ),
-                                        ),
-                                      ),
                                   ],
                                 ),
                                 SizedBox(height: 2.h),
@@ -172,41 +161,38 @@ class SellerProfilePage extends StatelessWidget {
                           Row(
                             children: [
                               // Call button
-                              GestureDetector(
-                                onTap: () => controller.makeCall(),
-                                child: Container(
-                                  width: 30.w,
-                                  height: 30.w,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.phone,
-                                    size: 16.sp,
-                                    color: Colors.black,
-                                  ),
+                              buildCircleIconButton(
+                                icon: FaIcon(
+                                  FontAwesomeIcons.phone,
+                                  size: 20.w,
+                                  color: kIconColor,
                                 ),
+                                onTap: () async {
+                                  await launch(
+                                    "tel://${controller.makeCall()}",
+                                  );
+                                },
                               ),
 
                               SizedBox(width: 10.w),
 
                               // WhatsApp button
-                              GestureDetector(
-                                onTap: () => controller.sendWhatsAppMessage(),
-                                child: Container(
-                                  width: 30.w,
-                                  height: 30.w,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.green,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.message,
-                                    size: 16.sp,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                              buildCircleIconButton(
+                                image:
+                                'assets/images/whatsapp.png',
+                                onTap: () async {
+                                  String
+                                  message = Uri.encodeFull(
+                                    "Hello,\n${controller.currentAgentName}\nI would like to get more information about this ad you posted on CarAqaar",
+                                  );
+                                  String url =
+                                  Platform.isIOS
+                                      ? "https://wa.me/${controller.makeCall()}?text=$message"
+                                      : "whatsapp://send?phone=${controller.makeCall()}&text=$message";
+                                  await launchUrl(
+                                    Uri.parse(url),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -457,6 +443,38 @@ class SellerProfilePage extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+
+  Widget buildCircleIconButton({
+    Widget? icon,
+    String? image,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(50),
+      child: Container(
+        width: 40.w,
+        height: 40.w,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Center(
+          child:
+          image != null
+              ? Image.asset(image, width: 24.w, height: 24.w)
+              : icon,
+        ),
+      ),
     );
   }
 }

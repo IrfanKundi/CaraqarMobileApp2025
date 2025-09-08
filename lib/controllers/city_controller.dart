@@ -117,7 +117,7 @@ class CityController extends GetxController {
         allCities.clear();
         searchedCities.clear();
 
-        allCities.addAll(parsedModel.cities);  // ✅ Fixed line
+        allCities.addAll(parsedModel.cities);  // Fixed line
         searchedCities.addAll(allCities);
 
         update();
