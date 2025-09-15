@@ -159,6 +159,7 @@ class ChooseModelVariantScreen extends GetView<VehicleController> {
                   return InkWell(
                     onTap: () {
                       controller.modelVariant = item.variantId;
+                      controller.modelVariantName = item.variantName;
                       if (Get.arguments == true) {
                         Navigator.pop(context, item);
                       } else {

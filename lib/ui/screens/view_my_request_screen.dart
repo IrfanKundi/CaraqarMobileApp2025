@@ -4,7 +4,6 @@ import 'package:careqar/controllers/add_request_controller.dart';
 import 'package:careqar/controllers/view_my_request_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -45,19 +44,19 @@ class ViewMyRequestScreen extends GetView<ViewMyRequestController> {
               ),
             ),
             kHorizontalSpace12,
-            IconButtonWidget(
-              icon: MaterialCommunityIcons.share_variant,
-              color: kBlackColor,
-              onPressed: () async {
-                var request = controller.request.value;
-                String url = await DynamicLink.createDynamicLink(
-                  false,
-                  uri: "/request?requestId=${request!.requestId}",
-                  metaTag: false,
-                );
-                Share.share(url);
-              },
-            ),
+            // IconButtonWidget(
+            //   icon: MaterialCommunityIcons.share_variant,
+            //   color: kBlackColor,
+            //   onPressed: () async {
+            //     var request = controller.request.value;
+            //     String url = await DynamicLink.createDynamicLink(
+            //       false,
+            //       uri: "/request?requestId=${request!.requestId}",
+            //       metaTag: false,
+            //     );
+            //     Share.share(url);
+            //   },
+            // ),
           ],
         ),
         systemOverlayStyle: SystemUiOverlayStyle.dark,

@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/view_car_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
+import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
@@ -27,6 +25,7 @@ import '../../../constants/strings.dart';
 import '../../../controllers/favorite_controller.dart';
 import '../../../global_variables.dart';
 import '../../../locale/slider_indicator.dart';
+import '../../../services/share_link_service.dart';
 import '../../widgets/button_widget.dart';
 
 class ViewCarScreen extends GetView<ViewCarController> {
@@ -61,15 +60,15 @@ class ViewCarScreen extends GetView<ViewCarController> {
                 icon: MaterialCommunityIcons.share_variant,
                 color: kBlackColor,
                 onPressed: () async {
-                  String adUrl = await DynamicLink.createDynamicLink(
-                    false,
-                    uri: "/car?CarsId=${car!.carId}",
-                    title: "${car.brandName} ${car.modelName} ${car.modelYear}",
-                    desc: car.description,
-                    image: car.images.first,
+                  final ShareService shareService = Get.find<ShareService>();
+
+                  String url = shareService.generateShareLink(
+                    type: 'car',
+                    id: car!.carId.toString(),
                   );
+
                   String message =
-                      "Hey! you might be interested in this.\n$adUrl";
+                      "Hey! you might be interested in this.\n$url";
                   Share.share(message);
                 },
               ),
@@ -674,7 +673,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                         SizedBox(height: 4.h),
                                         // Title
                                         Text(
-                                          "${car.brandName} ${car.modelName} ${car.modelYear}",
+                                          "${car.brandName} ${car.modelName} ${car.variantName}",
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: kHeadingStyle,
@@ -728,27 +727,35 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                     controller.updateClicks(
                                                       isWhatsapp: true,
                                                     );
-                                                    String
-                                                    adUrl = await DynamicLink.createDynamicLink(
-                                                      false,
-                                                      uri:
-                                                          "/Cars/Detail/${car.carId!}",
-                                                      title:
-                                                          "${car.brandName!} ${car.modelName} ${car.modelYear}",
-                                                      desc: car.description,
-                                                      image: car.images.first,
-                                                    );
-                                                    String
-                                                    message = Uri.encodeFull(
-                                                      "Hello,\n${car.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
-                                                    );
-                                                    String url =
-                                                        Platform.isIOS
-                                                            ? "https://wa.me/${car.contactNo}?text=$message"
-                                                            : "whatsapp://send?phone=${car.contactNo}&text=$message";
-                                                    await launchUrl(
-                                                      Uri.parse(url),
-                                                    );
+
+                                                    try {
+                                                      final ShareService
+                                                      shareService =
+                                                          Get.find<
+                                                            ShareService
+                                                          >();
+
+                                                      await shareService
+                                                          .shareToWhatsApp(
+                                                            type: 'car',
+                                                            id:
+                                                                car.carId!
+                                                                    .toString(),
+                                                            phoneNumber:
+                                                                car.contactNo,
+                                                            agentName:
+                                                                car.agentName,
+                                                            title:
+                                                                "${car.brandName!} ${car.modelName} ${car.modelYear}",
+                                                            description:
+                                                                car.description,
+                                                          );
+                                                    } catch (e) {
+                                                      showSnackBar(
+                                                        message:
+                                                            "Could not launch WhatsApp",
+                                                      );
+                                                    }
                                                   },
                                                 ),
                                                 // SizedBox(width: 8.w),
@@ -840,10 +847,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                           border: Border(
                                             bottom: BorderSide(
                                               color:
-                                                  controller
-                                                              .selectedTabIndex
-                                                              .value ==
-                                                          0
+                                                  controller.selectedTabIndex.value == 0
                                                       ? Colors.blue
                                                       : Colors.transparent,
                                               width: 2.0,
@@ -1068,25 +1072,37 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                     child: InkWell(
                                       onTap: () {
                                         // 🔍 Debug what we're getting
-                                        debugPrint('SAHAr 🔍 car.companyId: ${car.companyId}');
-                                        debugPrint('SAHAr 🔍 car.agentId: ${car.agentId}');
-                                        debugPrint('SAHAr 🔍 car.userId: ${car.userId}');
-                                        debugPrint('SAHAr 🔍 car.contactNo: ${car.contactNo}');
-                                        debugPrint('SAHAr 🔍 car.agentName: ${car.agentName}');
+                                        debugPrint(
+                                          'SAHAr 🔍 car.companyId: ${car.companyId}',
+                                        );
+                                        debugPrint(
+                                          'SAHAr 🔍 car.agentId: ${car.agentId}',
+                                        );
+                                        debugPrint(
+                                          'SAHAr 🔍 car.userId: ${car.userId}',
+                                        );
+                                        debugPrint(
+                                          'SAHAr 🔍 car.contactNo: ${car.contactNo}',
+                                        );
+                                        debugPrint(
+                                          'SAHAr 🔍 car.agentName: ${car.agentName}',
+                                        );
 
-
-                                        if (car.companyId != null && car.companyId != 0) {
-                                          debugPrint('SAHAr 🏢 Going to company screen');
+                                        if (car.companyId != null &&
+                                            car.companyId != 0) {
+                                          debugPrint(
+                                            'SAHAr 🏢 Going to company screen',
+                                          );
                                           Get.toNamed(
                                             Routes.companyScreen,
-                                            arguments: car.companyId,  // ← Pass company ID as arguments
+                                            arguments: car.companyId,
+                                            // ← Pass company ID as arguments
                                             parameters: {
                                               "type": "Car",
                                               "agentAds": "${car.companyId}",
                                             },
                                           );
                                         }
-
                                         // else if (car.agentId != null && car.agentId != 0) {
                                         //   debugPrint('SAHAr 👨‍💼 Going to agent screen');
                                         //   Get.toNamed(
@@ -1094,20 +1110,29 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                         //   );
                                         // }
                                         // 3rd Priority: Check userId (your existing logic)
-                                        else if (car.userId == null || car.userId == 0) {
-                                          debugPrint('SAHAr 🎭 Going to fake profile route');
+                                        else if (car.userId == null ||
+                                            car.userId == 0) {
+                                          debugPrint(
+                                            'SAHAr 🎭 Going to fake profile route',
+                                          );
                                           // Pass additional data for fake profile
-                                          Get.toNamed(Routes.sellerProfile, arguments: {
-                                            'userId': car.userId ?? 0,
-                                            'contactNo': car.contactNo,
-                                            'agentName': car.agentName,
-                                          });
+                                          Get.toNamed(
+                                            Routes.sellerProfile,
+                                            arguments: {
+                                              'userId': car.userId ?? 0,
+                                              'contactNo': car.contactNo,
+                                              'agentName': car.agentName,
+                                            },
+                                          );
                                         } else {
-                                          debugPrint('SAHAr 🌐 Going to real profile route');
+                                          debugPrint(
+                                            'SAHAr 🌐 Going to real profile route',
+                                          );
                                           // Normal user profile
-                                          Get.toNamed(Routes.sellerProfile, arguments: {
-                                            'userId': car.userId,
-                                          });
+                                          Get.toNamed(
+                                            Routes.sellerProfile,
+                                            arguments: {'userId': car.userId},
+                                          );
                                         }
                                       },
                                       child: Text(
@@ -1620,7 +1645,11 @@ class ViewCarScreen extends GetView<ViewCarController> {
               5,
             ),
             if (car.importYear?.isNotEmpty ?? false)
-              _buildStyledRow("Import Year".tr, car.importYear ?? "Not Available", 6),
+              _buildStyledRow(
+                "Import Year".tr,
+                car.importYear ?? "Not Available",
+                6,
+              ),
             _buildStyledRow("Type".tr, car.type!, 6),
             _buildStyledRow("Condition".tr, car.condition!, 7),
             _buildStyledRow("Mileage".tr, "${car.mileage} ${"KM".tr}", 8),

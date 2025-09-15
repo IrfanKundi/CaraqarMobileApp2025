@@ -4,7 +4,6 @@ import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
@@ -56,16 +55,16 @@ class ViewNumberPlateScreen extends GetView<ViewNumberPlateController> {
                               .share_variant,
                             color: kBlackColor,
                             onPressed: () async {
-                              String adUrl = await DynamicLink.createDynamicLink(false,
-                                  uri: "/NumberPlates/Detail/${numberPlate.numberPlateId}",
-                                  title: numberPlate.title,
-                                  desc: numberPlate.description,
-                                  image: numberPlate.images.first);
-                              //String webUrl = "https://www.caraqar.co/Properties/Detail/${numberPlate.numberPlateId}";
-                              // var message = "Hey! you might be interested in this.\n$adUrl\nor Check this ad on Car aqar\n$webUrl";
-                              var message = "Hey! you might be interested in this.\n$adUrl";
-
-                              Share.share(message);
+                              // String adUrl = await DynamicLink.createDynamicLink(false,
+                              //     uri: "/NumberPlates/Detail/${numberPlate.numberPlateId}",
+                              //     title: numberPlate.title,
+                              //     desc: numberPlate.description,
+                              //     image: numberPlate.images.first);
+                              // //String webUrl = "https://www.caraqar.co/Properties/Detail/${numberPlate.numberPlateId}";
+                              // // var message = "Hey! you might be interested in this.\n$adUrl\nor Check this ad on Car aqar\n$webUrl";
+                              // var message = "Hey! you might be interested in this.\n$adUrl";
+                              //
+                              // Share.share(message);
                             },
                           ),
                         ],
@@ -283,28 +282,28 @@ class ViewNumberPlateScreen extends GetView<ViewNumberPlateController> {
                         SizedBox(
                           width: 40.w,
                           child: OutlinedButton(onPressed: ()async{
-                            String adUrl = await DynamicLink
-                                .createDynamicLink(false,
-                                uri: "/NumberPlates/Detail/${numberPlate.numberPlateId}",
-                                title: numberPlate.number,
-                                desc: numberPlate.description,
-                                image: numberPlate.images.first);
-
-                            String url;
-                            //var message = Uri.encodeFull("Hello,\n${numberPlate.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl \n or Check this ad on Car aqar \n https://www.caraqar.co/NumberPlates/Detail/${numberPlate.numberPlateId}");
-                            var message = Uri.encodeFull("Hello,\n${numberPlate.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl");
-                            if (Platform.isIOS) {
-                              url =
-                              "https://wa.me/${numberPlate.contactNo}?text=$message";
-                            } else {
-                              url =
-                              "whatsapp://send?phone=${numberPlate.contactNo}&text=$message";
-                            }
-                            try{
-                              await launchUrl(Uri.parse(url),);
-                            }catch(e){
-                              showSnackBar(message: "CouldNotLaunchWhatsApp");
-                            }
+                            // String adUrl = await DynamicLink
+                            //     .createDynamicLink(false,
+                            //     uri: "/NumberPlates/Detail/${numberPlate.numberPlateId}",
+                            //     title: numberPlate.number,
+                            //     desc: numberPlate.description,
+                            //     image: numberPlate.images.first);
+                            //
+                            // String url;
+                            // //var message = Uri.encodeFull("Hello,\n${numberPlate.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl \n or Check this ad on Car aqar \n https://www.caraqar.co/NumberPlates/Detail/${numberPlate.numberPlateId}");
+                            // var message = Uri.encodeFull("Hello,\n${numberPlate.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl");
+                            // if (Platform.isIOS) {
+                            //   url =
+                            //   "https://wa.me/${numberPlate.contactNo}?text=$message";
+                            // } else {
+                            //   url =
+                            //   "whatsapp://send?phone=${numberPlate.contactNo}&text=$message";
+                            // }
+                            // try{
+                            //   await launchUrl(Uri.parse(url),);
+                            // }catch(e){
+                            //   showSnackBar(message: "CouldNotLaunchWhatsApp");
+                            // }
                           },
                             style: OutlinedButton.styleFrom(
                                 padding: EdgeInsets.zero,

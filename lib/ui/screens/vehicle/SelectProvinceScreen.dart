@@ -108,9 +108,8 @@ class SelectProvinceScreen extends GetView<VehicleController> {
 
                   return InkWell(
                     onTap: () async {
-                      //controller.city = item;
-                      //controller.registrationCityId = item.cityId;
-                      // Navigate to location screen
+                      print("SAHAr: Starting location selection for cityId: ${item.cityId}");
+
                       final selectedLocation = await Get.toNamed(
                         Routes.selectAdLocationScreen,
                         parameters: {
@@ -119,18 +118,33 @@ class SelectProvinceScreen extends GetView<VehicleController> {
                         },
                       );
 
-                      if (selectedLocation == null) return; // user cancelled
+                      print("SAHAr: Selected location result: $selectedLocation");
+
+                      if (selectedLocation == null) {
+                        print("SAHAr: User cancelled location selection");
+                        return; // user cancelled
+                      }
+
+                      print("SAHAr: Get.arguments value: ${Get.arguments}");
+
                       if (Get.arguments == true) {
+                        print("SAHAr: Returning result with registrationCityId: ${selectedLocation.locationId}");
                         Get.back(result: {
                           'registrationCityId': selectedLocation.locationId,
                         });
                       } else {
+                        print("SAHAr: Continuing to next screen");
+                        print("SAHAr: Setting registrationProvinceName to: ${item.name!.toString()}");
+                        print("SAHAr: Setting registrationProvince to: ${item.cityId.toString()}");
+                        print("SAHAr: Setting registrationCityId to: ${selectedLocation.locationId}");
+
                         // Continue to next screen
-                        controller.registrationProvince= item.cityId.toString();
+                        controller.registrationProvinceName = item.name!;
+                        controller.registrationProvince = item.cityId.toString();
                         controller.registrationCityId = selectedLocation.locationId;
-                        Get.toNamed(
-                          Routes.selectCityScreen,
-                        );
+
+                        print("SAHAr: Navigating to selectCityScreen");
+                        Get.toNamed(Routes.selectCityScreen);
                       }
                     },
                     borderRadius: BorderRadius.circular(30),

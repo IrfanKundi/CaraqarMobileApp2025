@@ -5,7 +5,8 @@ import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
+import 'package:careqar/services/share_link_service.dart';
+import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
 import 'package:careqar/ui/widgets/image_widget.dart';
@@ -60,15 +61,14 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                 icon: MaterialCommunityIcons.share_variant,
                 color: kBlackColor,
                 onPressed: () async {
-                  String adUrl = await DynamicLink.createDynamicLink(
-                    false,
-                    uri: "/bike?bikeId=${bike!.bikeId}",
-                    title: "${bike.brandName} ${bike.modelName} ${bike.modelYear}",
-                    desc: bike.description,
-                    image: bike.images.first,
+                  final ShareService shareService = Get.find<ShareService>();
+
+                  String url = shareService.generateShareLink(
+                    type: 'bike',
+                    id: bike!.bikeId.toString(),
                   );
-                  String message =
-                      "Hey! you might be interested in this.\n$adUrl";
+
+                  String message = "Hey! you might be interested in this.\n$url";
                   Share.share(message);
                 },
               ),
@@ -393,29 +393,22 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                         _buildCircleIconButton(
                                           image: 'assets/images/whatsapp.png',
                                           onTap: () async {
-                                            controller.updateClicks(
-                                              isWhatsapp: true,
-                                            );
-                                            String adUrl = await DynamicLink
-                                                .createDynamicLink(
-                                              false,
-                                              uri:
-                                              "/Bikes/Detail/${bike.bikeId!}",
-                                              title:
-                                              "${bike.brandName!} ${bike.modelName} ${bike.modelYear}",
-                                              desc: bike.description,
-                                              image: bike.images.first,
-                                            );
-                                            String message =
-                                            Uri.encodeFull(
-                                              "Hello,\n${bike.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl",
-                                            );
-                                            String url = Platform.isIOS
-                                                ? "https://wa.me/${bike.contactNo}?text=$message"
-                                                : "whatsapp://send?phone=${bike.contactNo}&text=$message";
-                                            await launchUrl(
-                                              Uri.parse(url),
-                                            );
+                                            controller.updateClicks(isWhatsapp: true);
+
+                                            try {
+                                              final ShareService shareService = Get.find<ShareService>();
+
+                                              await shareService.shareToWhatsApp(
+                                                type: 'bike',
+                                                id: bike.bikeId!.toString(),
+                                                phoneNumber: bike.contactNo,
+                                                agentName: bike.agentName,
+                                                title: "${bike.brandName!} ${bike.modelName} ${bike.modelYear}",
+                                                description: bike.description,
+                                              );
+                                            } catch (e) {
+                                              showSnackBar(message: "Could not launch WhatsApp");
+                                            }
                                           },
                                         ),
                                         SizedBox(width: 8.w),
@@ -426,34 +419,20 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                             color: kIconColor,
                                           ),
                                           onTap: () async {
-                                            controller.updateClicks(
-                                                isEmail: true);
-
-                                            String adUrl = await DynamicLink
-                                                .createDynamicLink(
-                                              false,
-                                              uri:
-                                              "/Bikes/Detail/${bike.bikeId}",
-                                              title: bike.title,
-                                              desc: bike.description,
-                                              image: bike.images.first,
-                                            );
-
-                                            String webUrl =
-                                                "https://www.caraqar.co/Bikes/Detail/${bike.bikeId}";
-                                            String? subject = bike.title;
-
-                                            var message =
-                                                "Hello,\n${bike.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl\nOr check this ad on Car aqar\n$webUrl";
-                                            final Email email = Email(
-                                              body: message,
-                                              subject: subject!,
-                                              recipients: [bike.email!],
-                                              isHTML: false,
-                                            );
-
-                                            await FlutterEmailSender.send(
-                                                email);
+                                            controller.updateClicks(isEmail: true);
+                                            try {
+                                              final ShareService shareService = Get.find<ShareService>();
+                                              await shareService.shareToEmail(
+                                                type: 'bike',
+                                                id: bike.bikeId.toString(),
+                                                email: bike.email!,
+                                                agentName: bike.agentName,
+                                                title: bike.title!,
+                                                description: bike.description,
+                                              );
+                                            } catch (e) {
+                                              showSnackBar(message: "Could not send email");
+                                            }
                                           },
                                         ),
                                       ],

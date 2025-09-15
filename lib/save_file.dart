@@ -26,7 +26,7 @@ class SaveFile{
            break;
          }
        }
-       newPath = newPath + "/CarAqar";
+       newPath = "$newPath/CarAqar";
        directory = Directory(newPath);
      } else {
        showSnackBar(message: "StoragePermissionDenied");  return null;

@@ -91,7 +91,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                         ),
                         ReviewAdItem(
                           title: "Variant".tr,
-                          value: "${controller.modelVariant}",
+                          value: "${controller.modelVariantName}",
                           onPressed: () async {
                             Get.put(
                               BrandController(),
@@ -139,7 +139,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                           ),
                         ReviewAdItem(
                           title: "Registered In".tr,
-                          value: "${controller.registrationProvince}".tr,
+                          value: "${controller.registrationProvinceName}".tr,
                           onPressed: () async {
                             await Get.toNamed(
                               Routes.selectProvinceScreen,

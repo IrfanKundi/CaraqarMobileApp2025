@@ -4,7 +4,6 @@ import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/view_request_controller.dart';
 import 'package:careqar/enums.dart';
-import 'package:careqar/services/dynamic_link.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
@@ -50,12 +49,12 @@ class ViewRequestScreen extends GetView<ViewRequestController> {
                             .share_variant,
                           color: kBlackColor,
                           onPressed: () async {
-                            String url = await DynamicLink.createDynamicLink(
-                              false,
-                                uri: "/request?requestId=${request.requestId}",
-                                metaTag: false,
-                            );
-                            Share.share(url);
+                            // String url = await DynamicLink.createDynamicLink(
+                            //   false,
+                            //     uri: "/request?requestId=${request.requestId}",
+                            //     metaTag: false,
+                            // );
+                            // Share.share(url);
                           },),
                       ],
                     ),
@@ -170,24 +169,24 @@ kHorizontalSpace12,
                             child: OutlinedButton(onPressed: ()async{
 
 
-                              String adUrl = await DynamicLink
-                                  .createDynamicLink(false,
-                                  uri: "/Request/Detail/${request.requestId}",
-                                  metaTag: false);
-                              String url;
-                              var message = Uri.encodeFull("Hello,\n${request.customerName}\nI would like to get more information about this ad you posted on.\n$adUrl \n or Check this ad on Car aqar \n https://www.caraqar.co/request/Detail/${request.requestId}");
-                              if (Platform.isIOS) {
-                                url =
-                                "https://wa.me/${request.phoneNumber!.phoneNumber}?text=$message";
-                              } else {
-                                url =
-                                "whatsapp://send?phone=${request.phoneNumber!.phoneNumber}&text=$message";
-                              }
-try{
-                              await launchUrl(Uri.parse(url),);
-                            }catch(e){
-                              showSnackBar(message: "CouldNotLaunchWhatsApp");
-                            }
+//                               String adUrl = await DynamicLink
+//                                   .createDynamicLink(false,
+//                                   uri: "/Request/Detail/${request.requestId}",
+//                                   metaTag: false);
+//                               String url;
+//                               var message = Uri.encodeFull("Hello,\n${request.customerName}\nI would like to get more information about this ad you posted on.\n$adUrl \n or Check this ad on Car aqar \n https://www.caraqar.co/request/Detail/${request.requestId}");
+//                               if (Platform.isIOS) {
+//                                 url =
+//                                 "https://wa.me/${request.phoneNumber!.phoneNumber}?text=$message";
+//                               } else {
+//                                 url =
+//                                 "whatsapp://send?phone=${request.phoneNumber!.phoneNumber}&text=$message";
+//                               }
+// try{
+//                               await launchUrl(Uri.parse(url),);
+//                             }catch(e){
+//                               showSnackBar(message: "CouldNotLaunchWhatsApp");
+//                             }
                             },
                               style: OutlinedButton.styleFrom(
                                   padding: EdgeInsets.zero,

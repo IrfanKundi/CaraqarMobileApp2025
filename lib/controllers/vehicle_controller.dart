@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:careqar/controllers/bike_controller.dart';
@@ -56,6 +57,7 @@ class VehicleController extends GetxController {
   int? locationId;
   String? province;
   String? registrationProvince;
+  String? registrationProvinceName;
   Brand? brand;
   Model? model;
   String? fuelType;
@@ -64,6 +66,7 @@ class VehicleController extends GetxController {
   String? mileage;
   String? importYear;
   int? modelVariant;
+  String? modelVariantName;
   int? seats;
   int? typeId;
   int? brandId;
@@ -265,91 +268,195 @@ if(formKey.currentState!.validate()){
 
   Future<void> addCar() async {
     try {
+      print("SAHAR: Starting addCar function");
+      print("SAHAR: newImages count: ${newImages.value.length}");
+
       if (newImages.value.isEmpty) {
+        print("SAHAR: No images found, showing snackbar");
         showSnackBar(message: "UploadCarImages");
       } else {
+        print("SAHAR: Images found, proceeding with car save");
         Get.focusScope?.unfocus();
 
         EasyLoading.show(status: "ProcessingPleaseWait".tr);
 
+        print("SAHAR: Car data being sent:");
+        print("SAHAR: - modelYear: $modelYear");
+        print("SAHAR: - importYear: $importYear");
+        print("SAHAR: - modelVariant: $modelVariant");
+        print("SAHAR: - condition: $condition");
+        print("SAHAR: - origin: $origin");
+        print("SAHAR: - registrationYear: $registrationYear");
+        print("SAHAR: - registrationCityId: $registrationCityId");
+        print("SAHAR: - registrationProvince: $registrationProvince");
+        print("SAHAR: - locationId: $locationId");
+        print("SAHAR: - brandId: ${brand?.brandId}");
+        print("SAHAR: - modelId: ${model?.modelId}");
+        print("SAHAR: - fuelType: $fuelType");
+        print("SAHAR: - transmission: $transmission");
+        print("SAHAR: - color: $color");
+        print("SAHAR: - mileage: $mileage");
+        print("SAHAR: - seats: $seats");
+        print("SAHAR: - engine: $engine");
+        print("SAHAR: - descriptionEn: $descriptionEn");
+        print("SAHAR: - descriptionAr: $descriptionAr");
+        print("SAHAR: - typeId: ${type?.typeId}");
+        print("SAHAR: - cityId: ${city?.cityId}");
+        print("SAHAR: - countryId: ${gSelectedCountry?.countryId}");
+        print("SAHAR: - price: $price");
+        print("SAHAR: - carId: $carId");
+        print("SAHAR: - purpose: $purpose");
+        print("SAHAR: - paymentMethod: $paymentMethod");
+        print("SAHAR: - phoneNumber: ${phoneNumber.parseNumber()}");
+        print("SAHAR: - countryCode: ${phoneNumber.dialCode}");
+        print("SAHAR: - isoCode: ${phoneNumber.isoCode}");
+        print("SAHAR: - images: ${images.join(",")}");
+        print("SAHAR: - vehicleFeatures count: ${vehicleFeatures.length}");
+
+        // Create the request body
+        final requestBody = {
+          "car": {
+            "modelYear": modelYear,
+            "ImportYear": importYear,
+            "ModelVariant": modelVariant,
+            "condition": condition,
+            "ImportedLocal": origin,
+            "RegistrationYear": registrationYear,
+            "RegistrationCityId": registrationCityId,
+            "RegistrationCity": registrationCityId,
+            "RegistrationProvince": registrationProvince.toString(),
+            "LocationId":locationId,
+            "brandId": brand?.brandId,
+            "modelId": model?.modelId,
+            "fuelType": fuelType,
+            "transmission": transmission,
+            "color": color,
+            "mileage": mileage,
+            "seats": seats,
+            "engin": engine,
+            "description": descriptionEn,
+            "descriptionAr": descriptionAr,
+            "typeId": type?.typeId,
+            "cityId": city?.cityId,
+            "countryId": gSelectedCountry?.countryId,
+            "price": price,
+            "carId": carId,
+            "purpose": purpose,
+            "paymentMethod": paymentMethod,
+            "createdAt": DateTime.now().toString(),
+            "images": images.join(","),
+            "phoneNumber": phoneNumber.parseNumber(),
+            "countryCode": phoneNumber.dialCode,
+            "isoCode": phoneNumber.isoCode,
+          },
+          "carFeatures": vehicleFeatures.map((e) => {
+            "featureId": e.featureId,
+            "headId": e.headId,
+            "quantity": e.quantity,
+            "featureOption": e.featureOption
+          }).toList(),
+        };
+
+        // Print the JSON encoded request body
+        print("SAHAR: ===== FULL REQUEST BODY JSON START =====");
+        try {
+          final jsonString = jsonEncode(requestBody);
+          print("SAHAR: Request Body JSON: $jsonString");
+        } catch (jsonError) {
+          print("SAHAR: Error encoding to JSON: $jsonError");
+          print("SAHAR: Raw request body: $requestBody");
+        }
+        print("SAHAR: ===== FULL REQUEST BODY JSON END =====");
+
+        // Print car features individually for better debugging
+        print("SAHAR: ===== CAR FEATURES DETAILS START =====");
+        for (int i = 0; i < vehicleFeatures.length; i++) {
+          final feature = vehicleFeatures[i];
+          print("SAHAR: Feature $i:");
+          print("SAHAR: - featureId: ${feature.featureId}");
+          print("SAHAR: - headId: ${feature.headId}");
+          print("SAHAR: - quantity: ${feature.quantity}");
+          print("SAHAR: - featureOption: ${feature.featureOption}");
+
+          try {
+            final featureJson = jsonEncode({
+              "featureId": feature.featureId,
+              "headId": feature.headId,
+              "quantity": feature.quantity,
+              "featureOption": feature.featureOption
+            });
+            print("SAHAR: - JSON: $featureJson");
+          } catch (e) {
+            print("SAHAR: - JSON encoding error: $e");
+          }
+        }
+        print("SAHAR: ===== CAR FEATURES DETAILS END =====");
+
         var response = await gApiProvider.post(
             path: "car/save",
             authorization: true,
-            body: {
-              "car": {
-                "modelYear": modelYear,
-                "ImportYear": importYear,
-                "ModelVariant": modelVariant,
-                "condition": condition,
-                "ImportedLocal": origin,
-                "RegistrationYear": registrationYear,
-                "RegistrationCityId": registrationCityId,
-                "RegistrationCity": registrationCityId,
-                "LocationId":locationId,
-                "brandId": brand?.brandId,
-                "modelId": model?.modelId,
-                "fuelType": fuelType,
-                "transmission": transmission,
-                "color": color,
-                "mileage": mileage,
-                "seats": seats,
-                "engin": engine,
-                "description": descriptionEn,
-                "descriptionAr": descriptionAr,
-                "typeId": type?.typeId,
-                "cityId": city?.cityId,
-                "countryId": gSelectedCountry?.countryId,
-                "price": price,
-                "carId": carId,
-                "purpose": purpose,
-                "paymentMethod": paymentMethod,
-                "createdAt": DateTime.now().toString(),
-                "images": images.join(","),
-                "phoneNumber": phoneNumber.parseNumber(),
-                "countryCode": phoneNumber.dialCode,
-                "isoCode": phoneNumber.isoCode,
-              },
-              "carFeatures": vehicleFeatures.map((e) => {
-                "featureId": e.featureId,
-                "headId": e.headId,
-                "quantity": e.quantity,
-                "featureOption": e.featureOption
-              }).toList(),
-            }
+            body: requestBody
         );
 
+        print("SAHAR: Car save API response received");
+
         await response.fold((l) {
+          print("SAHAR: Car save API failed with error: ${l.message}");
+          //print("SAHAR: Error details JSON: ${jsonEncode(l.toJson() ?? {})}");
           EasyLoading.dismiss();
           showSnackBar(message: l.message!);
         }, (r) async {
+          print("SAHAR: Car save API successful");
+          print("SAHAR: Response data: ${r.data}");
+          print("SAHAR: Response data JSON: ${jsonEncode(r.data ?? {})}");
+          print("SAHAR: Car ID from response: ${r.data["carId"]}");
 
           // Compress images before uploading
           final originalImages = newImages.value.whereType<File>().toList();
-          final compressedImages = await compressImages(originalImages);
+          print("SAHAR: Original images count for compression: ${originalImages.length}");
 
+          final compressedImages = await compressImages(originalImages);
+          print("SAHAR: Compressed images count: ${compressedImages.length}");
+
+          // Print image upload request body
+          final imageUploadBody = {
+            "carId": r.data["carId"].toString(),
+          };
+          print("SAHAR: Image upload body JSON: ${jsonEncode(imageUploadBody)}");
+
+          print("SAHAR: Starting image upload API call");
           var imagesResponse = await gApiProvider.post(
             path: "car/SaveImages",
             isFormData: true,
             authorization: true,
-            body: {
-              "carId": r.data["carId"].toString(),
-            },
+            body: imageUploadBody,
             files: compressedImages, // Use compressed images
           );
 
+          print("SAHAR: Image upload API response received");
           EasyLoading.dismiss();
 
           imagesResponse.fold((l) {
+            print("SAHAR: Image upload API failed with error: ${l.message}");
+            //print("SAHAR: Image upload error JSON: ${jsonEncode(l.toJson() ?? {})}");
             showSnackBar(message: l.message!);
           }, (x) async {
+            print("SAHAR: Image upload API successful");
+            print("SAHAR: Success response: ${r.message}");
+            print("SAHAR: Image upload response JSON: ${jsonEncode(x.data ?? {})}");
             await showAlertDialog(title: "Success", message: r.message);
+            print("SAHAR: Calling reset function");
             reset();
+            print("SAHAR: Navigating to navigation screen with tab 1");
             // update my car screen ali
             Get.offAllNamed(Routes.navigationScreen, arguments: {'initialTab': 1});
           });
         });
       }
     } catch (e) {
+      print("SAHAR: Exception caught in addCar: $e");
+      print("SAHAR: Exception type: ${e.runtimeType}");
+      print("SAHAR: Exception stack trace: ${e.toString()}");
       EasyLoading.dismiss();
       showSnackBar(message: "OperationFailed");
     }
@@ -532,7 +639,9 @@ if(formKey.currentState!.validate()){
     locationId=null;
     province=null;
     registrationProvince =null;
+    registrationProvinceName =null;
     modelVariant =null;
+    modelVariantName =null;
     importYear =null;
     brandId=null;
     modelId=null;

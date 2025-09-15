@@ -127,14 +127,22 @@ class ApiProvider {
   }) async {
     try {
       Response response;
-        print("SAHAr📥 [GET] → $kApiBaseUrl/$path");
-        if (body != null) print("SAHAr Request Params: $accessToken  ${jsonEncode(body)}");
 
+      // Debug token information
+      String finalToken = accessToken ?? UserSession.accessToken ?? '';
+      print("SAHAr📥 [GET] → $kApiBaseUrl/$path");
+      print("SAHAr🔐 Authorization: $authorization");
+      print("SAHAr🎫 Token (first 20 chars): ${finalToken.length > 20 ? finalToken.substring(0, 20) + '...' : finalToken}");
+      print("SAHAr🎫 Token Length: ${finalToken.length}");
+
+      if (body != null) print("SAHAr Request Params: ${jsonEncode(body)}");
 
       if (isFormData) {
         var request = MultipartRequest("GET", Uri.parse("$kApiBaseUrl/$path"));
-        request.headers[HttpHeaders.authorizationHeader] =
-        authorization ? "Bearer ${accessToken ?? UserSession.accessToken}" : "";
+
+        if (authorization && finalToken.isNotEmpty) {
+          request.headers[HttpHeaders.authorizationHeader] = "Bearer $finalToken";
+        }
         request.headers[HttpHeaders.acceptHeader] = 'application/json';
         request.headers["API_KEY"] = kApiKey;
         request.headers[HttpHeaders.contentTypeHeader] = 'multipart/form-data';
@@ -146,21 +154,24 @@ class ApiProvider {
         final StreamedResponse streamResponse = await request.send();
         response = await Response.fromStream(streamResponse);
       } else {
-        response = await _client.get(Uri.parse("$kApiBaseUrl/$path"), headers: {
+        Map<String, String> headers = {
           "content-type": "application/json",
           "accept": "application/json",
           "API_KEY": kApiKey,
-          "Authorization": authorization
-              ? "Bearer ${accessToken ?? UserSession.accessToken ?? ''}"
-              : ""
-        });
+        };
+
+        if (authorization && finalToken.isNotEmpty) {
+          headers["Authorization"] = "Bearer $finalToken";
+        }
+
+        print("SAHAr📋 Request Headers: $headers");
+
+        response = await _client.get(Uri.parse("$kApiBaseUrl/$path"), headers: headers);
       }
 
-      // 🟢 Response debug
-
-        print("SAHAr [GET] Status Code: ${UserSession.accessToken} ${response.statusCode}");
-        print("SAHAr 📨 [GET] Response Body: ${response.body}");
-
+      // Response debug
+      print("SAHAr✅ [GET] Status Code: ${response.statusCode}");
+      print("SAHAr📨 [GET] Response Body: ${response.body}");
 
       var parsedBody = jsonDecode(response.body);
 
@@ -202,4 +213,3 @@ class ApiProvider {
     }
   }
 }
-

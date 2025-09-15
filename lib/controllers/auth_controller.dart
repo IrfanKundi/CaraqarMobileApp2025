@@ -14,7 +14,13 @@ class AuthController extends GetxController {
   var status = Status.initial.obs;
   Rx<AuthState> authState = AuthState.unauthorized.obs;
 
-  init()async{
+  @override
+  void onInit() {
+    super.onInit();
+    _initAuth();
+  }
+
+  Future<void> _initAuth() async {
     try {
       status(Status.loading);
       await UserSession.exist();
@@ -30,17 +36,15 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> createSession(String accessToken, {socialLogin = false,loginWith}) async {
+  Future<void> createSession(String accessToken, {socialLogin = false, loginWith}) async {
     try {
       status(Status.loading);
-      await UserSession.create(accessToken,loginWith: loginWith);
+      await UserSession.create(accessToken, loginWith: loginWith);
       authState(UserSession.isLoggedIn!
           ? AuthState.authorized
           : AuthState.unauthorized);
 
-  Get.find<ProfileController>().getProfile();
-
-
+      Get.find<ProfileController>().getProfile();
 
       status(Status.success);
     } catch (e) {
@@ -52,13 +56,13 @@ class AuthController extends GetxController {
     try {
       status(Status.loading);
       EasyLoading.show(status: "PleaseWait".tr);
-      var loginWith=UserSession.loginWith;
+      var loginWith = UserSession.loginWith;
       await UserSession.logout();
-      Get.find<ProfileController>().user.value=UserModel();
-      if(loginWith!=null){
-        if(loginWith==EnumToString.convertToString(LoginWith.Google)){
-          await    GoogleSignIn().disconnect();
-        }else if(loginWith==EnumToString.convertToString(LoginWith.Facebook)){
+      Get.find<ProfileController>().user.value = UserModel();
+      if (loginWith != null) {
+        if (loginWith == EnumToString.convertToString(LoginWith.Google)) {
+          await GoogleSignIn().disconnect();
+        } else if (loginWith == EnumToString.convertToString(LoginWith.Facebook)) {
           await FacebookAuth.instance.logOut();
         }
       }

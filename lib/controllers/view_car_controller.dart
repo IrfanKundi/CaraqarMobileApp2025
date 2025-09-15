@@ -78,7 +78,7 @@ class ViewCarController extends GetxController {
 
 
 
-     return response.fold((l) {
+      return response.fold((l) {
         showSnackBar(message: l.message!);
         status(Status.error);
       }, (r) async {
@@ -127,15 +127,15 @@ class ViewCarController extends GetxController {
       var userId;
 
       if(UserSession.isLoggedIn!){
-      userId=Get.find<ProfileController>().user.value.userId;
+        userId=Get.find<ProfileController>().user.value.userId;
       }else{
-    userId=UserSession.guestUserId;
+        userId=UserSession.guestUserId;
       }
 
 
       var response = await gApiProvider
           .post(
-        path: "car/updateClicks?carId=${car.value?.carId}&userId=$userId&isEmail=$isEmail&isCall=$isCall&isWhatsapp=$isWhatsapp");
+          path: "car/updateClicks?carId=${car.value?.carId}&userId=$userId&isEmail=$isEmail&isCall=$isCall&isWhatsapp=$isWhatsapp");
 
 
       return  response.fold((l) {
@@ -223,16 +223,26 @@ class ViewCarController extends GetxController {
 
   @override
   void onReady() {
+    // Handle different types of arguments
     if(Get.arguments is String){
       getCar(Get.arguments);
-    }else{
-      car.value=Get.arguments;
+    } else if(Get.arguments is Map){
+      String? carId = Get.arguments['carId'];
+      if(carId != null && carId.isNotEmpty) {
+        getCar(carId);
+      } else {
+        showSnackBar(message: "Invalid car link");
+        status(Status.error);
+      }
+    } else if(Get.arguments != null) {
+      car.value = Get.arguments;
       getComments(car.value?.carId);
       updateClicks();
       status(Status.success);
+    } else {
+      showSnackBar(message: "No car data provided");
+      status(Status.error);
     }
-
-    // TODO: implement onReady
     super.onReady();
   }
 

@@ -38,7 +38,32 @@ class BrandController extends GetxController {
   var engine = "".obs;
   var year = "".obs;
 
-  final List<String> priorityBrands = ['Toyota', 'Honda', 'Suzuki', 'Hyundai' , 'KIA', 'Changan Auto', 'MG', 'Prince'];
+  // Updated priority brands list in the exact order you want
+  final List<String> priorityBrands = [
+    'Toyota', 'Honda', 'Suzuki', 'Hyundai', 'Kia', 'MG', 'Changan Auto', 'Prince'
+  ];
+
+  /// Helper method to sort brands by priority order
+  int _brandPrioritySort(Brand a, Brand b) {
+    int indexA = priorityBrands.indexWhere(
+            (p) => p.toLowerCase() == a.brandName!.toLowerCase());
+    int indexB = priorityBrands.indexWhere(
+            (p) => p.toLowerCase() == b.brandName!.toLowerCase());
+
+    if (indexA == -1 && indexB == -1) {
+      // Both not in priority list, sort alphabetically
+      return a.brandName!.compareTo(b.brandName!);
+    } else if (indexA == -1) {
+      // A is not in priority, B is in priority - B comes first
+      return 1;
+    } else if (indexB == -1) {
+      // B is not in priority, A is in priority - A comes first
+      return -1;
+    } else {
+      // Both are in priority list, sort by their position in priorityBrands
+      return indexA.compareTo(indexB);
+    }
+  }
 
   Future<void> getVariants(int? modelId) async {
     try {
@@ -126,16 +151,17 @@ class BrandController extends GetxController {
 
     final prioritized = filtered
         .where((b) => priorityBrands.any(
-            (p) => b.brandName!.toLowerCase().contains(p.toLowerCase())))
+            (p) => p.toLowerCase() == b.brandName!.toLowerCase()))
         .toList();
 
     final rest = filtered
         .where((b) => !priorityBrands.any(
-            (p) => b.brandName!.toLowerCase().contains(p.toLowerCase())))
+            (p) => p.toLowerCase() == b.brandName!.toLowerCase()))
         .toList();
 
-    // Optional: sort both
-    prioritized.sort((a, b) => a.brandName!.compareTo(b.brandName!));
+    // Sort prioritized brands by their order in priorityBrands list
+    prioritized.sort(_brandPrioritySort);
+    // Sort rest alphabetically
     rest.sort((a, b) => a.brandName!.compareTo(b.brandName!));
 
     searchedBrands.assignAll([...prioritized, ...rest]);
@@ -177,15 +203,17 @@ class BrandController extends GetxController {
         // Prioritize top brands on initial load
         final prioritized = allBrands
             .where((b) => priorityBrands.any((p) =>
-            b.brandName!.toLowerCase().contains(p.toLowerCase())))
+        p.toLowerCase() == b.brandName!.toLowerCase()))
             .toList();
 
         final rest = allBrands
             .where((b) => !priorityBrands.any((p) =>
-            b.brandName!.toLowerCase().contains(p.toLowerCase())))
+        p.toLowerCase() == b.brandName!.toLowerCase()))
             .toList();
 
-        prioritized.sort((a, b) => a.brandName!.compareTo(b.brandName!));
+        // Sort prioritized brands by their order in priorityBrands list
+        prioritized.sort(_brandPrioritySort);
+        // Sort rest alphabetically
         rest.sort((a, b) => a.brandName!.compareTo(b.brandName!));
 
         searchedBrands.assignAll([...prioritized, ...rest]);

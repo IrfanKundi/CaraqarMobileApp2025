@@ -263,7 +263,7 @@ class MyApp extends StatelessWidget {
       GetPage(name: Routes.reviewAdScreen, page: () => ReviewAdScreen()),
       GetPage(name: Routes.selectPaymentMethodScreen, page: () => const SelectPaymentMethodScreen()),
 
-      GetPage(name: Routes.initialScreen, page: () => const InitialScreen()),
+      GetPage(name: Routes.initialScreen, page: () => const ChooseOptionScreenNew()),
       GetPage(name: Routes.favoritesScreen, page: () => const FavoritesScreen()),
       GetPage(name: Routes.addFeaturesScreen, page: () => const AddFeaturesScreen()),
       GetPage(name: Routes.companyScreen, page: () => CompanyScreen()),

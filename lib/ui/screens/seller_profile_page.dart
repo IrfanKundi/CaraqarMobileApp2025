@@ -10,8 +10,6 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../constants/colors.dart';
 import '../../controllers/seller_profile_controller.dart';
-import '../../services/dynamic_link.dart';
-import '../widgets/alerts.dart';
 
 class SellerProfilePage extends StatelessWidget {
   const SellerProfilePage({super.key});
@@ -144,15 +142,15 @@ class SellerProfilePage extends StatelessWidget {
                                       ),
                                   ],
                                 ),
-                                SizedBox(height: 2.h),
-                                Text(
-                                  "Lahore, Pakistan", // You can make this dynamic if you have location data
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                SizedBox(height: 5.h),
+                              Text(
+                                profile.locationDisplay,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.w400,
                                 ),
+                              ),
                               ],
                             ),
                           ),

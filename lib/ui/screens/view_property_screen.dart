@@ -8,7 +8,7 @@ import 'package:careqar/controllers/favorite_controller.dart';
 import 'package:careqar/controllers/view_property_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
+import 'package:careqar/services/share_link_service.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -18,14 +18,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,16 +68,14 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                 icon: MaterialCommunityIcons.share_variant,
                 color: kBlackColor,
                 onPressed: () async {
-                  String adUrl = await DynamicLink.createDynamicLink(
-                    false,
-                    uri: "/Properties/Detail/${property!.propertyId}",
+                  final ShareService shareService = Get.find<ShareService>();
+
+                  await shareService.shareItem(
+                    type: 'property', // or 'car', 'bike' depending on your item type
+                    id: property!.propertyId.toString(),
                     title: property.title,
-                    desc: property.description,
-                    image: property.images.first,
+                    description: "Hey! you might be interested in this.",
                   );
-                  //String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
-                  var message = "Hey! you might be interested in this.\n$adUrl";
-                  Share.share(message);
                 },
               ),
             ],
@@ -491,29 +487,21 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                         ),
                                         SizedBox(width: 8.w),
                                         _buildCircleIconButton(
-                                            image: 'assets/images/whatsapp.png',
+                                          image: 'assets/images/whatsapp.png',
                                           onTap: () async {
                                             controller.updateClicks(isWhatsapp: true);
 
-                                            String adUrl = await DynamicLink.createDynamicLink(
-                                              false,
-                                              uri: "/Properties/Detail/${property.propertyId}",
-                                              title: property.title,
-                                              desc: property.description,
-                                              image: property.images.first,
-                                            );
-
-                                            //String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
-                                            String url;
-                                            var message = Uri.encodeFull(
-                                                "Hello,\n${property.agentName}\nI would like to get more information about this ad you posted on.\n$adUrl");
-                                            if (Platform.isIOS) {
-                                              url = "https://wa.me/${property.contactNo}?text=$message";
-                                            } else {
-                                              url = "whatsapp://send?phone=${property.contactNo}&text=$message";
-                                            }
                                             try {
-                                              await launchUrl(Uri.parse(url));
+                                              final ShareService shareService = Get.find<ShareService>();
+
+                                              await shareService.shareToWhatsApp(
+                                                type: 'property', // or 'car', 'bike' depending on your item type
+                                                id: property.propertyId.toString(),
+                                                phoneNumber: property.contactNo,
+                                                agentName: property.agentName,
+                                                title: property.title,
+                                                description: property.description,
+                                              );
                                             } catch (e) {
                                               showSnackBar(message: "CouldNotLaunchWhatsApp");
                                             }
@@ -531,29 +519,21 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                             onTap: () async {
                                               controller.updateClicks(isEmail: true);
 
-                                              String adUrl = await DynamicLink.createDynamicLink(
-                                                false,
-                                                uri: "/Properties/Detail/${property.propertyId}",
-                                                title: property.title,
-                                                desc: property.description,
-                                                image: property.images.first,
-                                              );
+                                              try {
+                                                final ShareService shareService = Get.find<ShareService>();
 
-                                              //String webUrl = "$kFileBaseUrl/Properties/Detail/${property.propertyId}";
-                                              String subject = property.title!;
-
-                                              var message = "Hello,\n${property.agentName}\n"
-                                                  "I would like to get more information about this ad you posted on.\n"
-                                                  "$adUrl";
-
-                                              final Email email = Email(
-                                                body: message,
-                                                subject: subject,
-                                                recipients: [property.email!],
-                                                isHTML: false,
-                                              );
-
-                                              await FlutterEmailSender.send(email);
+                                                await shareService.shareToEmail(
+                                                  type: 'property', // or 'car', 'bike' depending on your item type
+                                                  id: property.propertyId.toString(),
+                                                  email: property.email!,
+                                                  agentName: property.agentName,
+                                                  title: property.title!,
+                                                  description: property.description,
+                                                );
+                                              } catch (e) {
+                                                // Handle error - you can show a snackbar or dialog
+                                                showSnackBar(message: "Could not send email");
+                                              }
                                             },
                                           ),
                                       ],

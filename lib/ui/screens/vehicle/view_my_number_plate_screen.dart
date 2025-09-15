@@ -5,7 +5,6 @@ import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/vehicle_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
@@ -57,14 +56,14 @@ class ViewMyNumberPlateScreen extends GetView<ViewMyNumberPlateController> {
                               .share_variant,
                             color: kBlackColor,
                             onPressed: () async {
-                              String url = await DynamicLink.createDynamicLink(
-                                  false,
-                                  uri: "/numberPlate?numberPlateId=${numberPlate.numberPlateId}",
-                                  title: numberPlate.number,
-                                  desc: numberPlate.description,
-                                  image: numberPlate.images.first
-                              );
-                              Share.share(url);
+                              // String url = await DynamicLink.createDynamicLink(
+                              //     false,
+                              //     uri: "/numberPlate?numberPlateId=${numberPlate.numberPlateId}",
+                              //     title: numberPlate.number,
+                              //     desc: numberPlate.description,
+                              //     image: numberPlate.images.first
+                              // );
+                              // Share.share(url);
                             },),
                         ],
                       ),

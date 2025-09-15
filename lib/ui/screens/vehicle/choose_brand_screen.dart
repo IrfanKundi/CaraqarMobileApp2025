@@ -162,8 +162,8 @@ class ChooseBrandScreen extends GetView<VehicleController> {
                             padding: EdgeInsets.all(8),
                             child: ImageWidget(
                                 item.image,
-                                width: 24,
-                                height: 24
+                                width: 30,
+                                height: 30
                             ),
                           ),
                           SizedBox(width: 12),

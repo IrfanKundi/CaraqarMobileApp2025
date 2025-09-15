@@ -3,7 +3,7 @@ import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
+import 'package:careqar/services/share_link_service.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -47,20 +47,23 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                     children: [
                       Row(
                         children: [
-                          Expanded(child: Text("Details".tr.toUpperCase(),textAlign: TextAlign.center,maxLines: 1,style: kAppBarStyle,))
-                          ,
+                          Expanded(child: Text("Details".tr.toUpperCase(),textAlign: TextAlign.center,maxLines: 1,style: kAppBarStyle,)),
 
                           kHorizontalSpace12,
-                          IconButtonWidget(icon: MaterialCommunityIcons
-                              .share_variant,
+                          IconButtonWidget(
+                            icon: MaterialCommunityIcons.share_variant,
                             color: kBlackColor,
                             onPressed: () async {
-                              String url = await DynamicLink
-                                  .createDynamicLink(false,
-                                  uri: "/bike?bikeId=${bike
-                                      .bikeId}",title:"${bike.brandName} ${bike.modelName} ${bike.modelYear}",desc: bike.description,image: bike.images.first);
-                              Share.share(url);
-                            },),
+                              final ShareService shareService = Get.find<ShareService>();
+
+                              await shareService.shareItem(
+                                type: 'bike',
+                                id: bike.bikeId.toString(),
+                                title: "${bike.brandName} ${bike.modelName} ${bike.modelYear}",
+                                description: bike.description,
+                              );
+                            },
+                          )
                         ],
                       ),
                     ],

@@ -11,6 +11,11 @@ class UserProfile {
   final bool? phoneNumberVerified;
   final bool? emailVerified;
   final bool? isCustomInfo;
+  // New location fields added
+  final int? cityId;
+  final String? cityName;
+  final int? locationId;
+  final String? locationName;
 
   UserProfile({
     required this.userId,
@@ -25,6 +30,11 @@ class UserProfile {
     this.phoneNumberVerified,
     this.emailVerified,
     this.isCustomInfo,
+    // New location parameters added
+    this.cityId,
+    this.cityName,
+    this.locationId,
+    this.locationName,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
@@ -41,6 +51,11 @@ class UserProfile {
       phoneNumberVerified: json['PhoneNumberVerified'] ?? false,
       emailVerified: json['EmailVerified'] ?? false,
       isCustomInfo: json['IsCustomInfo'] ?? false,
+      // New location fields from JSON
+      cityId: json['cityId'],
+      cityName: json['cityName'],
+      locationId: json['locationId'],
+      locationName: json['locationName'],
     );
   }
 
@@ -71,5 +86,30 @@ class UserProfile {
       return '$countryCode$phoneNumber';
     }
     return phoneNumber ?? '';
+  }
+
+  // New getter for dynamic location display
+  String get locationDisplay {
+    List<String> locationParts = [];
+
+    if (locationName != null && locationName!.isNotEmpty) {
+      locationParts.add(locationName!);
+    }
+
+    if (cityName != null && cityName!.isNotEmpty) {
+      locationParts.add(cityName!);
+    }
+
+    // Add "Pakistan" as default country if no location data
+    if (locationParts.isEmpty) {
+      return "Pakistan";
+    }
+
+    // Add Pakistan if not already included
+    if (!locationParts.any((part) => part.toLowerCase().contains('pakistan'))) {
+      locationParts.add("Pakistan");
+    }
+
+    return locationParts.join(", ");
   }
 }

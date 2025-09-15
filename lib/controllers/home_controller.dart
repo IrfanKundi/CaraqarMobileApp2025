@@ -13,7 +13,6 @@ import 'package:careqar/ui/screens/news_screen.dart';
 import 'package:careqar/ui/screens/requests_screen.dart';
 import 'package:careqar/ui/screens/vehicle/my_cars_screen.dart';
 import 'package:careqar/ui/screens/vehicle/vehicle_home_screen.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -113,7 +112,7 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     checkForUpdate(gNavigatorKey.currentContext);
-    initDynamicLinks();
+    //initDynamicLinks();
     scrollController.addListener(() {
       currentExtent.value = maxExtent - scrollController.offset;
       if (currentExtent < 0) currentExtent.value = 0.0;
@@ -135,50 +134,50 @@ class HomeController extends GetxController {
 
 
 
+//TODO need to add app link
 
-
-  void initDynamicLinks() async {
-    FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
-    dynamicLinks.onLink.listen((PendingDynamicLinkData dynamicLink) async {
-      final Uri? deepLink = dynamicLink.link;
-
-      if (deepLink != null) {
-        if(deepLink.path.contains("/property")){
-          Get.toNamed(Routes.viewPropertyScreen,arguments: deepLink.queryParameters["propertyId"]);
-
-        }else    if(deepLink.path.contains("/car")){
-          Get.toNamed(Routes.viewCarScreen,arguments: deepLink.queryParameters["carId"]);
-
-        }
-        else    if(deepLink.path.contains("/bike")){
-          Get.toNamed(Routes.viewBikeScreen,arguments: deepLink.queryParameters["bikeId"]);
-
-        }
-        else    if(deepLink.path.contains("/numberPlate")){
-          Get.toNamed(Routes.viewNumberPlateScreen,arguments: deepLink.queryParameters["numberPlateId"]);
-
-        }
-      }
-    }).onError((error) {
-      if (kDebugMode) {
-        print(error.message);
-      }
-    });
-
-
-
-
-    final PendingDynamicLinkData? data =
-    await FirebaseDynamicLinks.instance.getInitialLink();
-    final Uri? deepLink = data?.link;
-
-    if (deepLink != null) {
-      if(deepLink.path.contains("/property")){
-        Get.toNamed(Routes.viewPropertyScreen,arguments: deepLink.queryParameters["propertyId"]);
-      }
-
-    }
-  }
+  // void initDynamicLinks() async {
+  //   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+  //   dynamicLinks.onLink.listen((PendingDynamicLinkData dynamicLink) async {
+  //     final Uri? deepLink = dynamicLink.link;
+  //
+  //     if (deepLink != null) {
+  //       if(deepLink.path.contains("/property")){
+  //         Get.toNamed(Routes.viewPropertyScreen,arguments: deepLink.queryParameters["propertyId"]);
+  //
+  //       }else    if(deepLink.path.contains("/car")){
+  //         Get.toNamed(Routes.viewCarScreen,arguments: deepLink.queryParameters["carId"]);
+  //
+  //       }
+  //       else    if(deepLink.path.contains("/bike")){
+  //         Get.toNamed(Routes.viewBikeScreen,arguments: deepLink.queryParameters["bikeId"]);
+  //
+  //       }
+  //       else    if(deepLink.path.contains("/numberPlate")){
+  //         Get.toNamed(Routes.viewNumberPlateScreen,arguments: deepLink.queryParameters["numberPlateId"]);
+  //
+  //       }
+  //     }
+  //   }).onError((error) {
+  //     if (kDebugMode) {
+  //       print(error.message);
+  //     }
+  //   });
+  //
+  //
+  //
+  //
+  //   final PendingDynamicLinkData? data =
+  //   await FirebaseDynamicLinks.instance.getInitialLink();
+  //   final Uri? deepLink = data?.link;
+  //
+  //   if (deepLink != null) {
+  //     if(deepLink.path.contains("/property")){
+  //       Get.toNamed(Routes.viewPropertyScreen,arguments: deepLink.queryParameters["propertyId"]);
+  //     }
+  //
+  //   }
+  // }
 
 
 

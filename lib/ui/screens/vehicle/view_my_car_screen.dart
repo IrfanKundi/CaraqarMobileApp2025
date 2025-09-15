@@ -5,7 +5,6 @@ import 'package:careqar/controllers/vehicle_controller.dart';
 import 'package:careqar/controllers/view_my_car_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -20,10 +19,10 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart';
 
 import '../../../global_variables.dart';
+import '../../../services/share_link_service.dart';
 
 class ViewMyCarScreen extends GetView<ViewMyCarController> {
   ViewMyCarScreen({Key? key}) : super(key: key) {
@@ -54,14 +53,14 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                 icon: MaterialCommunityIcons.share_variant,
                 color: kBlackColor,
                 onPressed: () async {
-                  String url = await DynamicLink.createDynamicLink(
-                    false,
-                    uri: "/car?carId=${car?.carId}",
+                  final ShareService shareService = Get.find<ShareService>();
+
+                  await shareService.shareItem(
+                    type: 'car',
+                    id: car?.carId.toString() ?? '',
                     title: "${car?.brandName} ${car?.modelName} ${car?.modelYear}",
-                    desc: car?.description,
-                    image: car?.images.first,
+                    description: car?.description,
                   );
-                  Share.share(url);
                 },
               ),
             ],
@@ -302,7 +301,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                                 SizedBox(height: 4.h),
                                 // Title
                                 Text(
-                                  "${car.brandName} ${car.modelName} ${car.modelYear}",
+                                  "${car.brandName} ${car.modelName} ${car.variantName}",
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: kHeadingStyle,
@@ -721,7 +720,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
             ),
             _buildStyledRow(
               "Registered In".tr,
-              car.registrationCity?.isNotEmpty == true ? car.registration! : "Not Available",
+              car.registrationProvince?.isNotEmpty == true ? car.registrationProvince! : "Not Available",
               4,
             ),
             _buildStyledRow(

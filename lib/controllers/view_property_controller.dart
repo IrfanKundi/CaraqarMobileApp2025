@@ -78,7 +78,7 @@ class ViewPropertyController extends GetxController {
 
 
 
-     return response.fold((l) {
+      return response.fold((l) {
         showSnackBar(message: l.message!);
         status(Status.error);
       }, (r) async {
@@ -128,15 +128,15 @@ class ViewPropertyController extends GetxController {
       var userId;
 
       if(UserSession.isLoggedIn!){
-      userId=Get.put(ProfileController()).user.value.userId;
+        userId=Get.put(ProfileController()).user.value.userId;
       }else{
-    userId=UserSession.guestUserId;
+        userId=UserSession.guestUserId;
       }
 
 
       var response = await gApiProvider
           .post(
-        path: "property/updateClicks?propertyId=${property.value?.propertyId}&userId=$userId&isEmail=$isEmail&isCall=$isCall&isWhatsapp=$isWhatsapp");
+          path: "property/updateClicks?propertyId=${property.value?.propertyId}&userId=$userId&isEmail=$isEmail&isCall=$isCall&isWhatsapp=$isWhatsapp");
 
 
       return  response.fold((l) {
@@ -225,13 +225,30 @@ class ViewPropertyController extends GetxController {
 
   @override
   void onReady() {
+    // Handle different types of arguments
     if(Get.arguments is String){
+      // Direct propertyId as string
       getProperty(Get.arguments);
-    }else{
-      property.value=Get.arguments;
+    } else if(Get.arguments is Map){
+      // Deep link arguments - extract propertyId from map
+      String? propertyId = Get.arguments['propertyId'];
+      if(propertyId != null && propertyId.isNotEmpty) {
+        getProperty(propertyId);
+      } else {
+        // Invalid propertyId in deep link - show error and redirect
+        showSnackBar(message: "Invalid property link");
+        status(Status.error);
+      }
+    } else if(Get.arguments != null) {
+      // Existing Property object passed directly
+      property.value = Get.arguments;
       getComments(property.value?.propertyId);
       updateClicks();
       status(Status.success);
+    } else {
+      // No arguments provided - show error
+      showSnackBar(message: "No property data provided");
+      status(Status.error);
     }
 
     // TODO: implement onReady

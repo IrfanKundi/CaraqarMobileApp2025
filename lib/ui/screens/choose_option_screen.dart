@@ -255,7 +255,7 @@ Future<void> getAppContent() async {
     var box = await Hive.openBox<AppContent>('app-content');  // Open Box For App Content
 
     AuthController authController = Get.find<AuthController>();
-    await authController.init();
+    //await authController.init();
 
     ContentController contentController = Get.put(ContentController());
     await contentController.getContent();

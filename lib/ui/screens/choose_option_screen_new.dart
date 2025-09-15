@@ -7,7 +7,6 @@ import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -18,7 +17,6 @@ import '../../controllers/type_controller.dart';
 import '../../global_variables.dart';
 import '../../models/content_model.dart';
 import '../../user_session.dart';
-import '../widgets/switching_screen.dart';
 
 class ChooseOptionScreenNew extends StatefulWidget {
   const ChooseOptionScreenNew({Key? key}) : super(key: key);
@@ -309,13 +307,6 @@ class SlideData {
 
 
 loadRealEstate() async {
-  Get.dialog(
-    const SwitchingScreen(
-      label: 'Switching to Real Estate',
-      icon: Icons.swap_horiz, // or use your custom icon
-    ),
-    barrierDismissible: false,
-  );
   gIsVehicle = false;
   TypeController typeController = Get.put(TypeController());
   typeController.allTypes.clear();
@@ -331,13 +322,6 @@ loadRealEstate() async {
 }
 
 loadVehicle() async {
-  Get.dialog(
-    const SwitchingScreen(
-      label: 'Switching to Motors',
-      icon: Icons.swap_horiz, // or use your custom icon
-    ),
-    barrierDismissible: false,
-  );
   gIsVehicle = true;
   getAppContent();
   Future.delayed(Duration(seconds: 1),() {
@@ -348,13 +332,13 @@ loadVehicle() async {
 
 Future<void> getAppContent() async {
   try {
-    CountryController countryController = Get.find<CountryController>();
-    await countryController.getCountries(); // Get All Countries
+    // CountryController countryController = Get.find<CountryController>();
+    // await countryController.getCountries(); // Get All Countries
 
     var box = await Hive.openBox<AppContent>('app-content');  // Open Box For App Content
 
-    AuthController authController = Get.find<AuthController>();
-    await authController.init();
+    //AuthController authController = Get.find<AuthController>();
+   // await authController.init();
 
     ContentController contentController = Get.put(ContentController());
     await contentController.getContent();

@@ -5,7 +5,6 @@ import 'package:careqar/controllers/add_property_controller.dart';
 import 'package:careqar/controllers/view_my_property_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/services/dynamic_link.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -26,6 +25,7 @@ import 'package:timeago/timeago.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../global_variables.dart';
+import '../../services/share_link_service.dart';
 
 class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
   ViewMyPropertyScreen({super.key}) {
@@ -62,14 +62,14 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                 icon: MaterialCommunityIcons.share_variant,
                 color: kBlackColor,
                 onPressed: () async {
-                  String url = await DynamicLink.createDynamicLink(
-                    false,
-                    uri: "/property?propertyId=${property.propertyId}",
+                  final ShareService shareService = Get.find<ShareService>();
+
+                  await shareService.shareItem(
+                    type: 'property',
+                    id: property.propertyId.toString(),
                     title: property.title,
-                    desc: property.description,
-                    image: property.images.first,
+                    description: property.description,
                   );
-                  Share.share(url);
                 },
               ),
             ],

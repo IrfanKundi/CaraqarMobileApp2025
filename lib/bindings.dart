@@ -17,6 +17,8 @@ import 'package:careqar/controllers/view_car_controller.dart';
 import 'package:careqar/controllers/view_image_controller.dart';
 import 'package:careqar/controllers/view_my_car_controller.dart';
 import 'package:careqar/controllers/view_request_controller.dart';
+import 'package:careqar/services/deep_link_service.dart';
+import 'package:careqar/services/share_link_service.dart';
 import 'package:careqar/ui/screens/seller_profile_page.dart';
 import 'package:get/get.dart';
 
@@ -39,14 +41,14 @@ import 'controllers/view_my_property_controller.dart';
 import 'controllers/view_my_request_controller.dart';
 import 'controllers/view_number_plate_controller.dart';
 import 'controllers/view_property_controller.dart';
-class AppBindings extends Bindings{
-
+class AppBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put(ContentController(),permanent: true);
-    Get.put(AuthController(),permanent: true);
-    Get.put(ProfileController(),permanent: true);
-
+    Get.put(ContentController(), permanent: true);
+    Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
+    Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
+    Get.put(DeepLinkService(), permanent: true);
+    Get.put(ShareService(), permanent: true);
   }
 }
 

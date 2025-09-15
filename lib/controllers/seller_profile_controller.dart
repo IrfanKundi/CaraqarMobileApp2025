@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import '../global_variables.dart';
 import '../models/UserProfile.dart' show UserProfile;
-import '../user_session.dart';
 
 class SellerProfileController extends GetxController {
 
@@ -68,13 +67,6 @@ class SellerProfileController extends GetxController {
       if (kDebugMode) {
         debugPrint(' SAHAr 🌐 Fetching real profile for userId: $userId');
       }
-      if (UserSession.accessToken == null || UserSession.accessToken!.isEmpty) {
-        error.value = 'Please login to view profile details';
-        if (kDebugMode) {
-          debugPrint(' SAHAr 🔒 Cannot fetch profile - no auth token');
-        }
-        return;
-      }
       fetchUserProfile(userId);
     }
 
@@ -113,7 +105,7 @@ class SellerProfileController extends GetxController {
           debugPrint(' SAHAr 🖼️ Selected random profile image: $randomImage');
         }
 
-        // Create fake profile data
+        // Create fake profile data with location
         final fakeProfileData = {
           'UserId': 0,
           'FirstName': agentName ?? 'Guest User',
@@ -122,7 +114,7 @@ class SellerProfileController extends GetxController {
           'PhoneNumber': contactNo?.replaceAll('+92', '') ?? '1234567890',
           'Email': 'guest@example.com',
           'Password': null,
-          'Image': randomImage, // Use random fake profile image
+          'Image': randomImage,
           'CreatedAt': DateTime.now().toIso8601String(),
           'Status': 'Guest',
           'IsDeleted': false,
@@ -135,7 +127,11 @@ class SellerProfileController extends GetxController {
           'IsCustomImage': null,
           'IsCustomInfo': false,
           'CountryId': null,
-          'IsoCode': null
+          'IsoCode': null,
+          'cityId': null,
+          'cityName': 'Punjab', // Default fake city
+          'locationId': null,
+          'locationName': 'Lahore', // Default fake location
         };
 
         // Create UserProfile from fake data

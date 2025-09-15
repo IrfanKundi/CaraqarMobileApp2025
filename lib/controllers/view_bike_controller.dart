@@ -77,13 +77,16 @@ class ViewBikeController extends GetxController {
 
 
 
-     return response.fold((l) {
+      return response.fold((l) {
         showSnackBar(message: l.message!);
         status(Status.error);
       }, (r) async {
         status(Status.success);
         bike.value = BikeModel.fromMap(r.data["bikes"]).bikes.first;
         getComments(bikeId);
+        if (bike.value != null && bike.value!.images.isNotEmpty) {
+          await preloadCarImages();
+        }
         updateClicks();
       });
     } catch (e) {
@@ -106,9 +109,6 @@ class ViewBikeController extends GetxController {
         commentsStatus(Status.error);
       }, (r) async {
         comments = CommentModel.fromMap(r.data).comments;
-        if (bike.value != null && bike.value!.images.isNotEmpty) {
-          await preloadCarImages();
-        }
         update(["comments"]);
         commentsStatus(Status.success);
       });
@@ -126,15 +126,15 @@ class ViewBikeController extends GetxController {
       var userId;
 
       if(UserSession.isLoggedIn!){
-      userId=Get.find<ProfileController>().user.value.userId;
+        userId=Get.find<ProfileController>().user.value.userId;
       }else{
-    userId=UserSession.guestUserId;
+        userId=UserSession.guestUserId;
       }
 
 
       var response = await gApiProvider
           .post(
-        path: "bike/updateClicks?bikeId=${bike.value?.bikeId}&userId=$userId&isEmail=$isEmail&isCall=$isCall&isWhatsapp=$isWhatsapp");
+          path: "bike/updateClicks?bikeId=${bike.value?.bikeId}&userId=$userId&isEmail=$isEmail&isCall=$isCall&isWhatsapp=$isWhatsapp");
 
 
       return  response.fold((l) {
@@ -222,13 +222,30 @@ class ViewBikeController extends GetxController {
 
   @override
   void onReady() {
+    // Handle different types of arguments
     if(Get.arguments is String){
+      // Direct bikeId as string
       getBike(Get.arguments);
-    }else{
-      bike.value=Get.arguments;
+    } else if(Get.arguments is Map){
+      // Deep link arguments - extract bikeId from map
+      String? bikeId = Get.arguments['bikeId'];
+      if(bikeId != null && bikeId.isNotEmpty) {
+        getBike(bikeId);
+      } else {
+        // Invalid bikeId in deep link - show error and redirect
+        showSnackBar(message: "Invalid bike link");
+        status(Status.error);
+      }
+    } else if(Get.arguments != null) {
+      // Existing Bike object passed directly
+      bike.value = Get.arguments;
       getComments(bike.value?.bikeId);
       updateClicks();
       status(Status.success);
+    } else {
+      // No arguments provided - show error
+      showSnackBar(message: "No bike data provided");
+      status(Status.error);
     }
 
     // TODO: implement onReady
