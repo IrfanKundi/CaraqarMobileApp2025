@@ -59,7 +59,7 @@ class ViewMyCarScreen extends GetView<ViewMyCarController> {
                     type: 'car',
                     id: car?.carId.toString() ?? '',
                     title: "${car?.brandName} ${car?.modelName} ${car?.modelYear}",
-                    description: car?.description,
+                    description: car?.description, price: car!.price!.toString(),
                   );
                 },
               ),

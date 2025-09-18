@@ -9,7 +9,7 @@ import 'package:careqar/controllers/profile_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/global_variables.dart';
 import 'package:careqar/routes.dart';
-import 'package:careqar/ui/screens/choose_option_screen_new.dart';
+import 'package:careqar/ui/screens/choose_option_screen.dart';
 import 'package:careqar/ui/screens/favorites_screen.dart';
 import 'package:careqar/ui/screens/news_screen.dart';
 import 'package:careqar/ui/screens/vehicle/my_orders_screen.dart';
@@ -274,32 +274,7 @@ class ProfileScreen extends GetView<ProfileController> {
                     },
                   ),
                 ),
-                SizedBox(height: 12.h),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ProfileMenuItem(
-                    icon: MaterialCommunityIcons.car,
-                    text: "Motors",
-                    isSelected: gIsVehicle, // Selected when in motors (gIsVehicle = true)
-                    onTap: () {
-                      if(!gIsVehicle){
-                        loadVehicle();
-                      }else{
-                        Get.back();
-                      }
-                    },
-                  ),
-                ),
+
                 SizedBox(height: 12.h),
                 Container(
                   decoration: BoxDecoration(
@@ -326,7 +301,32 @@ class ProfileScreen extends GetView<ProfileController> {
                     },
                   ),
                 ),
-
+                SizedBox(height: 12.h),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ProfileMenuItem(
+                    icon: MaterialCommunityIcons.car,
+                    text: "Motors",
+                    isSelected: gIsVehicle, // Selected when in motors (gIsVehicle = true)
+                    onTap: () {
+                      if(!gIsVehicle){
+                        loadVehicle();
+                      }else{
+                        Get.back();
+                      }
+                    },
+                  ),
+                ),
                 if (authController.authState.value == AuthState.authorized) ...[
                   SizedBox(height: 12.h),
 
@@ -508,7 +508,6 @@ class ProfileScreen extends GetView<ProfileController> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 10.h),
 
                   // Delete Account

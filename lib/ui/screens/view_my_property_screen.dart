@@ -67,8 +67,9 @@ class ViewMyPropertyScreen extends GetView<ViewMyPropertyController> {
                   await shareService.shareItem(
                     type: 'property',
                     id: property.propertyId.toString(),
-                    title: property.title,
-                    description: property.description,
+                    title: property.title!,
+                    description: property.description, price: property.price.toString(),
+                    location: property.location,
                   );
                 },
               ),

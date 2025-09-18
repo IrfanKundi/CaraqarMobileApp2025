@@ -4,6 +4,7 @@ import 'package:careqar/constants/style.dart';
 import 'package:careqar/controllers/view_car_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
+import 'package:careqar/services/deep_link_service.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
 import 'package:careqar/ui/widgets/icon_button_widget.dart';
@@ -45,6 +46,14 @@ class ViewCarScreen extends GetView<ViewCarController> {
         appBar: AppBar(
           backgroundColor: kWhiteColor,
           iconTheme: const IconThemeData(color: kBlackColor),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: kBlackColor),
+            onPressed: () {
+              final deepLinkService = Get.find<DeepLinkService>();
+              print("SAHAr Back pressed. openedViaDeeplink=${deepLinkService.openedViaDeeplink}");
+              deepLinkService.handleDeeplinkBack();
+            },
+          ),
           title: Row(
             children: [
               Expanded(
@@ -62,14 +71,12 @@ class ViewCarScreen extends GetView<ViewCarController> {
                 onPressed: () async {
                   final ShareService shareService = Get.find<ShareService>();
 
-                  String url = shareService.generateShareLink(
+                  await shareService.shareItem(
                     type: 'car',
                     id: car!.carId.toString(),
+                    title: "${car.brandName!} ${car.modelName} ${car.modelYear}", // or car.name, depending on your car model
+                    price: car.price.toString(), // Optional
                   );
-
-                  String message =
-                      "Hey! you might be interested in this.\n$url";
-                  Share.share(message);
                 },
               ),
             ],
@@ -748,7 +755,7 @@ class ViewCarScreen extends GetView<ViewCarController> {
                                                             title:
                                                                 "${car.brandName!} ${car.modelName} ${car.modelYear}",
                                                             description:
-                                                                car.description,
+                                                                car.description, price: car.price.toString(),
                                                           );
                                                     } catch (e) {
                                                       showSnackBar(

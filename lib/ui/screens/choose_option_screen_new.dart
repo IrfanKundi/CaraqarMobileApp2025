@@ -12,7 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 
 import '../../controllers/content_controller.dart';
-import '../../controllers/country_controller.dart';
 import '../../controllers/type_controller.dart';
 import '../../global_variables.dart';
 import '../../models/content_model.dart';

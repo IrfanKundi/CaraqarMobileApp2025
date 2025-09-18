@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 class SwitchingScreen extends StatelessWidget {
   final String label;
-  final IconData icon;
+  final String gifPath;
 
   const SwitchingScreen({
     super.key,
     required this.label,
-    required this.icon,
+    required this.gifPath,
   });
 
   @override
@@ -20,13 +20,21 @@ class SwitchingScreen extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 48, color: theme.colorScheme.primary),
+              // Replace Icon with Image.asset for GIF
+              SizedBox(
+                width: 96,
+                height: 96,
+                child: Image.asset(
+                  gifPath,
+                  fit: BoxFit.contain,
+                ),
+              ),
               const SizedBox(height: 16),
               Text(
                 label,

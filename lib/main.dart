@@ -1,15 +1,11 @@
-import 'package:careqar/models/content_model.dart';
-import 'package:careqar/services/deep_link_service.dart';
-import 'package:careqar/services/share_link_service.dart';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import 'controllers/country_controller.dart';
-import 'global_variables.dart';
+
 import 'locale/app_localizations.dart';
 import 'my_app.dart';
 
@@ -25,10 +21,10 @@ void main() async {
     storageBucket: 'car-eqar.firebasestorage.app',
   ));
 
-  await Hive.initFlutter();
-  Hive.registerAdapter(AppContentAdapter());
-  gBox = await Hive.openBox<AppContent>('app-content');
-  timeago.setLocaleMessages('ar', timeago.ArMessages());
+  // await Hive.initFlutter();
+  // Hive.registerAdapter(AppContentAdapter());
+  // gBox = await Hive.openBox<AppContent>('app-content');
+  // timeago.setLocaleMessages('ar', timeago.ArMessages());
 
   // Start app immediately - don't block on heavy operations
   runApp(DevicePreview(
@@ -37,7 +33,7 @@ void main() async {
   ));
 
   // Heavy initialization after app starts - this won't block deep links
-  _initializeAppAfterStart();
+ // _initializeAppAfterStart();
 }
 
 void _initializeAppAfterStart() {

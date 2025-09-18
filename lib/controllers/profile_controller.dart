@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global_variables.dart';
 
@@ -156,12 +157,28 @@ class ProfileController extends GetxController {
       response.fold((l) {
         showSnackBar(message: l.message!);
       }, (r) async {
-        await showAlertDialog(title: "AccountDeleted", message: r.message);
+        // Clear local data before logout
+        await _clearLocalData();
+
+        await showAlertDialog(
+            title: "AccountDeleted".tr,
+            message: r.message ?? "Your account has been permanently deleted.".tr
+        );
+
         Get.find<AuthController>().logout();
       });
     } catch (e) {
       EasyLoading.dismiss();
-      showSnackBar(message: "Failed");
+      showSnackBar(message: "DeleteAccountFailed".tr);
+    }
+  }
+
+  Future<void> _clearLocalData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+    } catch (e) {
+      print('Error clearing local data: $e');
     }
   }
 

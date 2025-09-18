@@ -219,7 +219,7 @@ class ReviewAdScreen extends GetView<VehicleController> {
                         ),
                         ReviewAdItem(
                           title: "Engine".tr,
-                          value: "${controller.engine}",
+                          value: "${controller.engine}cc",
                           onPressed: () async {
                             await Get.toNamed(
                               Routes.enterEngineScreen,
@@ -1045,6 +1045,24 @@ class ReviewAdItem extends GetView<VehicleController> {
     }
   }
 
+  // Helper method to get color from gVehicleColors list
+  Color? _getColorFromName(String colorName) {
+    try {
+      final vehicleColor = gVehicleColors.firstWhere(
+            (color) => color.name.toLowerCase() == colorName.toLowerCase(),
+      );
+      return vehicleColor.color;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Check if this is a color field
+  bool _isColorField() {
+    String cleanTitle = title.toString().replaceAll('.tr', '').toLowerCase();
+    return cleanTitle == 'color';
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -1070,7 +1088,20 @@ class ReviewAdItem extends GetView<VehicleController> {
           children: [
             Container(
               padding: EdgeInsets.all(8),
-              child: Icon(
+              child: _isColorField() && _getColorFromName(value.toString()) != null
+                  ? Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _getColorFromName(value.toString()),
+                  border: Border.all(
+                    color: Colors.grey.shade300,
+                    width: 1,
+                  ),
+                ),
+              )
+                  : Icon(
                 _getIconForTitle(title),
                 color: Colors.grey.shade600,
                 size: 20,

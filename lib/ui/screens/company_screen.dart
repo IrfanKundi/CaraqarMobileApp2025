@@ -26,16 +26,15 @@ import 'package:url_launcher/url_launcher.dart';
 
 class CompanyScreen extends StatelessWidget {
 
-
   late CompanyController controller;
   CompanyScreen({Key? key}) : super(key: key){
     initData();
-      //controller.getCompanies();
+    //controller.getCompanies();
   }
 
   void initData() {
-     controller =Get.put<CompanyController>(CompanyController());
-     controller.companyStatus.value=Status.loading;
+    controller =Get.put<CompanyController>(CompanyController());
+    controller.companyStatus.value=Status.loading;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp)async {
 
@@ -64,529 +63,531 @@ class CompanyScreen extends StatelessWidget {
         controller.getNumberPlates(controller.company!);
       }
 
-
-
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
 
-
-
     return Scaffold(backgroundColor: kWhiteColor,
-      body: GetBuilder<CompanyController>(
-        builder: (controller)=>
-        controller.companyStatus.value==Status.loading?
+        body: GetBuilder<CompanyController>(
+          builder: (controller)=>
+          controller.companyStatus.value==Status.loading?
 
-            const CircularLoader():
+          const CircularLoader():
 
-            controller.companyStatus.value==Status.error?
-            Center(
-              child: Text(kCouldNotLoadData.tr,
-                  style: kTextStyle16),
-            )
+          controller.companyStatus.value==Status.error?
+          Center(
+            child: Text(kCouldNotLoadData.tr,
+                style: kTextStyle16),
+          )
 
-                :
+              :
 
-
-         NestedScrollView(
-          headerSliverBuilder: (BuildContext context,
-              bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                  backgroundColor: kWhiteColor,
-                  iconTheme: const IconThemeData(color: kBlackColor),
-                  expandedHeight: 0.25.sh,
-                  pinned: true,
-                  title: Row(
-                    children: [
-                      Expanded(
-                        child: Text("Profile".tr.toUpperCase(),
-                          textAlign: TextAlign.center,maxLines: 1,style: kAppBarStyle,),
-                      ),
-            GetBuilder<CompanyController>(builder: (controller)=>
-                           ButtonWidget(text: controller.company!.followId!=null?"Unfollow":"Follow", onPressed: ()=>controller.followUnfollow(controller.company),
-                               height: 30.h)
-
-                      )
-                    ],
-                  ),
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    background: SizedBox(
-                      height: double.infinity,
-                      child: Stack(
+          NestedScrollView(
+              headerSliverBuilder: (BuildContext context,
+                  bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                      backgroundColor: kWhiteColor,
+                      iconTheme: const IconThemeData(color: kBlackColor),
+                      expandedHeight: 0.25.sh,
+                      pinned: true,
+                      title: Row(
                         children: [
-                          Stack(
+                          Expanded(
+                            child: Text("Profile".tr.toUpperCase(),
+                              textAlign: TextAlign.center,maxLines: 1,style: kAppBarStyle,),
+                          ),
+                          // Share Button
+                          IconButton(
+                            onPressed: () => controller.showShareOptions(
+                                controller.company!,
+                                Get.parameters["type"] ?? "Real State"
+                            ),
+                            icon: Icon(Icons.share, color: kAccentColor, size: 24.w),
+                          ),
+                          kHorizontalSpace8,
+                          GetBuilder<CompanyController>(builder: (controller)=>
+                              ButtonWidget(text: controller.company!.followId!=null?"Unfollow":"Follow", onPressed: ()=>controller.followUnfollow(controller.company),
+                                  height: 30.h)
+                          )
+                        ],
+                      ),
+                      flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: true,
+                        background: SizedBox(
+                          height: double.infinity,
+                          child: Stack(
                             children: [
-                              GestureDetector(
-                                onTap: (){
-                                  Get.toNamed(Routes.viewImageScreen,
-                                      arguments: controller.company!.image,parameters: {"index":0.toString()});
-                                },
-                                child: ImageWidget(
-                                  controller.company!.image,
-                                  width: double.infinity,
-                                  height:double.infinity,
-                                  fit: BoxFit.fill,
+                              Stack(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
+                                      Get.toNamed(Routes.viewImageScreen,
+                                          arguments: controller.company!.image,parameters: {"index":0.toString()});
+                                    },
+                                    child: ImageWidget(
+                                      controller.company!.image,
+                                      width: double.infinity,
+                                      height:double.infinity,
+                                      fit: BoxFit.fill,
 
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                child: Container(
-                                  height:20.h,width: 1.sw,
-                                  decoration: const BoxDecoration(
-                                      boxShadow:[ BoxShadow(
-                                        color: Colors.white,
-                                        spreadRadius: 15,
-                                        blurRadius: 15,
-                                        offset: Offset(0, 15),
-
-                                      )]
+                                    ),
                                   ),
-                                ),),
+                                  Positioned(
+                                    bottom: 0,
+                                    child: Container(
+                                      height:20.h,width: 1.sw,
+                                      decoration: const BoxDecoration(
+                                          boxShadow:[ BoxShadow(
+                                            color: Colors.white,
+                                            spreadRadius: 15,
+                                            blurRadius: 15,
+                                            offset: Offset(0, 15),
+
+                                          )]
+                                      ),
+                                    ),),
+                                ],
+                              ),
+
+                              // Positioned(
+                              //   bottom: 0,
+                              //   child:
+                              // ),
+
                             ],
                           ),
-
-                          // Positioned(
-                          //   bottom: 0,
-                          //   child:
-                          // ),
-
-                        ],
-                      ),
-                    ),
-                  ), systemOverlayStyle: SystemUiOverlayStyle.dark),
-            ];
-          },
-          body: RemoveSplash(
-            child: SingleChildScrollView(
-
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 1.sw,
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: kPrimaryColor),
-                                shape: BoxShape.circle
-                            ),
-                            child: ImageWidget(controller.company!.logo,isCircular: true,height: 90.r,width: 90.r,fit: BoxFit.cover,)),
-                        kVerticalSpace12,
-                        Text("${controller.company!.companyName}".toUpperCase(),style: kTextStyle16,),
-                        kVerticalSpace4,
-                        Text(controller.company!.description??"NoDescription".tr,style: kTextStyle14.copyWith(color:kGreyColor),),
-
-                        kVerticalSpace4,
-
-                        // Contact Icons and Links
-
-                        Row(mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 40.w,
-                              child: OutlinedButton(onPressed: ()async{
-                                await  launch("tel://${controller.company!.contactNo}");
-                              },
-                                style: OutlinedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    side: const BorderSide(color: Colors.transparent)
-                                ), child:Icon(MaterialCommunityIcons.phone,color: kAccentColor,size: 25.w),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 40.w,
-                              child: OutlinedButton(onPressed: ()async{
-                                String url;
-                                if (Platform.isIOS) {
-                                  url =
-                                  "whatsapp://wa.me/${controller.company!.contactNo}/?text=Hello";
-                                } else {
-                                  url =
-                                  "whatsapp://send?phone=${controller.company!.contactNo}&text=Hello";
-                                }
-
-                                try{
-
-                                  await launchUrl(Uri.parse(url),);
-
-                                }catch(e){
-                                  showSnackBar(message: "CouldNotLaunchWhatsApp");
-                                }
-                              },
-                                style: OutlinedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    side: const BorderSide(color: Colors.transparent)
-                                ), child: Image.asset("assets/images/whatsapp.png",width: 22.w,),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 40.w,
-                              child: OutlinedButton(onPressed: ()async{
-                                final Uri emailLaunchUri = Uri(
-                                  scheme: 'mailto',
-                                  path: '${controller.company!.email}',
-                                  query: encodeQueryParameters(<String, String>{
-                                    'subject': ''
-                                  }),
-                                );
-                                if (await canLaunch(emailLaunchUri.toString())) {
-                                  await launch(emailLaunchUri.toString());
-                                } else {
-                                  //  throw 'Could not launch';
-                                }
-                              },
-                                style: OutlinedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    side: const BorderSide(color: Colors.transparent)
-                                ), child:Icon(MaterialCommunityIcons.email,color: kAccentColor,size: 25.w,),
-                              ),
-                            ),
-
-                          ],
                         ),
+                      ), systemOverlayStyle: SystemUiOverlayStyle.dark),
+                ];
+              },
+              body: RemoveSplash(
+                child: SingleChildScrollView(
 
-                        kVerticalSpace8,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 1.sw,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: kPrimaryColor),
+                                      shape: BoxShape.circle
+                                  ),
+                                  child: ImageWidget(controller.company!.logo,isCircular: true,height: 90.r,width: 90.r,fit: BoxFit.cover,)),
+                              kVerticalSpace12,
+                              Text("${controller.company!.companyName}".toUpperCase(),style: kTextStyle16,),
+                              kVerticalSpace4,
+                              Text(controller.company!.description??"NoDescription".tr,style: kTextStyle14.copyWith(color:kGreyColor),),
 
-                        Divider(endIndent: 0.1.sw,indent: 0.1.sw,),
-                        Container(
-                            margin: EdgeInsets.symmetric(horizontal: 0.1.sw),
-                            child:  GetBuilder<CompanyController>(builder: (controller)=>  Row(
+                              kVerticalSpace4,
+
+                              // Contact Icons and Links
+
+                              Row(mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 40.w,
+                                    child: OutlinedButton(onPressed: ()async{
+                                      await  launch("tel://${controller.company!.contactNo}");
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          side: const BorderSide(color: Colors.transparent)
+                                      ), child:Icon(MaterialCommunityIcons.phone,color: kAccentColor,size: 25.w),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 40.w,
+                                    child: OutlinedButton(onPressed: ()async{
+                                      String url;
+                                      if (Platform.isIOS) {
+                                        url =
+                                        "whatsapp://wa.me/${controller.company!.contactNo}/?text=Hello";
+                                      } else {
+                                        url =
+                                        "whatsapp://send?phone=${controller.company!.contactNo}&text=Hello";
+                                      }
+
+                                      try{
+
+                                        await launchUrl(Uri.parse(url),);
+
+                                      }catch(e){
+                                        showSnackBar(message: "CouldNotLaunchWhatsApp");
+                                      }
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          side: const BorderSide(color: Colors.transparent)
+                                      ), child: Image.asset("assets/images/whatsapp.png",width: 22.w,),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 40.w,
+                                    child: OutlinedButton(onPressed: ()async{
+                                      final Uri emailLaunchUri = Uri(
+                                        scheme: 'mailto',
+                                        path: '${controller.company!.email}',
+                                        query: encodeQueryParameters(<String, String>{
+                                          'subject': ''
+                                        }),
+                                      );
+                                      if (await canLaunch(emailLaunchUri.toString())) {
+                                        await launch(emailLaunchUri.toString());
+                                      } else {
+                                        //  throw 'Could not launch';
+                                      }
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          side: const BorderSide(color: Colors.transparent)
+                                      ), child:Icon(MaterialCommunityIcons.email,color: kAccentColor,size: 25.w,),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+
+                              kVerticalSpace8,
+
+                              Divider(endIndent: 0.1.sw,indent: 0.1.sw,),
+                              Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 0.1.sw),
+                                  child:  GetBuilder<CompanyController>(builder: (controller)=>  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                            children: [
+                                              Text("${controller.company!.followers}",style: kTextStyle14,),
+                                              kVerticalSpace4,
+                                              FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text("Followers".tr,style: kTextStyle14,)),
+                                            ]),
+                                      ),
+
+                                      SizedBox(
+                                        height: 40.w,
+                                        child: const VerticalDivider(),
+                                      ),
+
+
+                                      Expanded(
+                                          child:   Column(
+                                              children: [
+                                                Text("${controller.company!.totalAds}",style: kTextStyle14,),
+                                                kVerticalSpace4,
+                                                Text("Ads".tr,style: kTextStyle14,),
+                                              ])),
+
+                                      SizedBox(
+                                        height: 40.w,
+                                        child: const VerticalDivider(),
+                                      ),
+
+
+                                      Expanded(
+                                          child:   Column(
+                                              children: [
+                                                Text("${controller.company!.totalViews}",style: kTextStyle14,),
+                                                kVerticalSpace4,
+                                                FittedBox(
+
+                                                    fit: BoxFit.scaleDown,
+                                                    child: Text("TotalViews".tr,style: kTextStyle14,)),
+                                              ]))
+                                    ],
+                                  ),
+                                  )),
+                              Divider(endIndent: 0.1.sw,indent: 0.1.sw,),
+
+
+                            ],
+                          ),
+                        ),
+                        Get.parameters["type"]=="Real State"?
+                        GetBuilder<CompanyController>(builder: (controller)=>
+                            Column(crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Expanded(
-                                  child: Column(
-                                      children: [
-                                        Text("${controller.company!.followers}",style: kTextStyle14,),
-                                        kVerticalSpace4,
-                                        FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Text("Followers".tr,style: kTextStyle14,)),
-                                      ]),
+
+
+                                Padding(
+                                  padding: kScreenPadding,
+                                  child: Row(
+                                    children: [
+                                      Text("${"Ads".tr} (${controller.company!.ads.length})",style: kTextStyle16,),
+                                      kHorizontalSpace8,
+                                      IconButtonWidget(color: kAccentColor,
+                                        onPressed: (){
+                                          controller.isGridView=!controller.isGridView;
+                                          controller.update();
+                                        },icon:controller.isGridView?
+                                        MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
+                                        ,)
+                                    ],
+                                  ),
                                 ),
 
-                                SizedBox(
-                                  height: 40.w,
-                                  child: const VerticalDivider(),
-                                ),
+                                controller
+                                    .adsStatus.value ==
+                                    Status.loading
+                                    ? CircularLoader():
+
+                                controller.adsStatus.value ==
+                                    Status.error
+                                    ? Center(
+                                  child: Text(kCouldNotLoadData.tr,
+                                      style: kTextStyle16),
+                                )
+                                    :
+
+                                controller.company!.ads.isEmpty?
+                                Center(
+                                  child: Text("NoDataFound".tr,
+                                      style: kTextStyle16),
+                                ):
+                                controller.isGridView?  GridView.builder(
+                                    padding: EdgeInsets.zero,
+                                    physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.ads.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
+                                    childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
+                                    itemBuilder: (context, index) {
+
+                                      var item = controller.company!.ads[index];
+                                      return PropertyItem(item: item,);
 
 
-                                Expanded(
-                                    child:   Column(
-                                        children: [
-                                          Text("${controller.company!.totalAds}",style: kTextStyle14,),
-                                          kVerticalSpace4,
-                                          Text("Ads".tr,style: kTextStyle14,),
-                                        ])),
+                                    }):    ListView.builder(
+                                    padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.ads.length,
+                                    itemBuilder: (context, index) {
 
-                                SizedBox(
-                                  height: 40.w,
-                                  child: const VerticalDivider(),
-                                ),
+                                      var item = controller.company!.ads[index];
+                                      return PropertyItem(item: item,isGridView: false,);
 
 
-                                Expanded(
-                                    child:   Column(
-                                        children: [
-                                          Text("${controller.company!.totalViews}",style: kTextStyle14,),
-                                          kVerticalSpace4,
-                                          FittedBox(
+                                    }),
 
-                                              fit: BoxFit.scaleDown,
-                                              child: Text("TotalViews".tr,style: kTextStyle14,)),
-                                        ]))
                               ],
                             ),
-                            )),
-                        Divider(endIndent: 0.1.sw,indent: 0.1.sw,),
+                        ):
+                        Get.parameters["type"]=="Car"?
+                        GetBuilder<CompanyController>(builder: (controller)=>
+                            Column(crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
 
 
+                                Padding(
+                                  padding: kScreenPadding,
+                                  child: Row(
+                                    children: [
+                                      Text("${"Ads".tr} (${controller.company!.cars.length})",style: kTextStyle16,),
+                                      kHorizontalSpace8,
+                                      IconButtonWidget(color: kAccentColor,
+                                        onPressed: (){
+                                          controller.isGridView=!controller.isGridView;
+                                          controller.update();
+                                        },icon:controller.isGridView?
+                                        MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
+                                        ,)
+                                    ],
+                                  ),
+                                ),
+
+                                controller
+                                    .adsStatus.value ==
+                                    Status.loading
+                                    ? CircularLoader():
+
+                                controller.adsStatus.value ==
+                                    Status.error
+                                    ? Center(
+                                  child: Text(kCouldNotLoadData.tr,
+                                      style: kTextStyle16),
+                                )
+                                    :
+
+                                controller.company!.cars.isEmpty?
+                                Center(
+                                  child: Text("NoDataFound".tr,
+                                      style: kTextStyle16),
+                                ):
+                                controller.isGridView?  GridView.builder(
+                                    padding: EdgeInsets.zero,
+                                    physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.cars.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
+                                    childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
+                                    itemBuilder: (context, index) {
+
+                                      var item = controller.company!.cars[index];
+                                      return CarItem(item: item,);
+
+
+                                    }):    ListView.builder(
+                                    padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.cars.length,
+                                    itemBuilder: (context, index) {
+
+                                      var item = controller.company!.cars[index];
+                                      return CarItem(item: item,isGridView: false,);
+
+
+                                    }),
+
+                              ],
+                            ),
+                        ):
+                        Get.parameters["type"]=="Bike"?
+                        GetBuilder<CompanyController>(builder: (controller)=>
+                            Column(crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+
+
+                                Padding(
+                                  padding: kScreenPadding,
+                                  child: Row(
+                                    children: [
+                                      Text("${"Ads".tr} (${controller.company!.bikes.length})",style: kTextStyle16,),
+                                      kHorizontalSpace8,
+                                      IconButtonWidget(color: kAccentColor,
+                                        onPressed: (){
+                                          controller.isGridView=!controller.isGridView;
+                                          controller.update();
+                                        },icon:controller.isGridView?
+                                        MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
+                                        ,)
+                                    ],
+                                  ),
+                                ),
+
+                                controller
+                                    .adsStatus.value ==
+                                    Status.loading
+                                    ? CircularLoader():
+
+                                controller.adsStatus.value ==
+                                    Status.error
+                                    ? Center(
+                                  child: Text(kCouldNotLoadData.tr,
+                                      style: kTextStyle16),
+                                )
+                                    :
+
+                                controller.company!.bikes.isEmpty?
+                                Center(
+                                  child: Text("NoDataFound".tr,
+                                      style: kTextStyle16),
+                                ):
+                                controller.isGridView?  GridView.builder(
+                                    padding: EdgeInsets.zero,
+                                    physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.bikes.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
+                                    childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
+                                    itemBuilder: (context, index) {
+
+                                      var item = controller.company!.bikes[index];
+                                      return BikeItem(item: item,);
+
+
+                                    }):    ListView.builder(
+                                    padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.bikes.length,
+                                    itemBuilder: (context, index) {
+
+                                      var item = controller.company!.bikes[index];
+                                      return BikeItem(item: item,isGridView: false,);
+
+
+                                    }),
+
+                              ],
+                            ),
+                        ):
+                        GetBuilder<CompanyController>(builder: (controller)=>
+                            Column(crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+
+
+                                Padding(
+                                  padding: kScreenPadding,
+                                  child: Row(
+                                    children: [
+                                      Text("${"Ads".tr} (${controller.company!.numberPlates.length})",style: kTextStyle16,),
+                                      kHorizontalSpace8,
+                                      IconButtonWidget(color: kAccentColor,
+                                        onPressed: (){
+                                          controller.isGridView=!controller.isGridView;
+                                          controller.update();
+                                        },icon:controller.isGridView?
+                                        MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
+                                        ,)
+                                    ],
+                                  ),
+                                ),
+
+                                controller
+                                    .adsStatus.value ==
+                                    Status.loading
+                                    ? CircularLoader():
+
+                                controller.adsStatus.value ==
+                                    Status.error
+                                    ? Center(
+                                  child: Text(kCouldNotLoadData.tr,
+                                      style: kTextStyle16),
+                                )
+                                    :
+
+                                controller.company!.numberPlates.isEmpty?
+                                Center(
+                                  child: Text("NoDataFound".tr,
+                                      style: kTextStyle16),
+                                ):
+                                controller.isGridView?  GridView.builder(
+                                    padding: EdgeInsets.zero,
+                                    physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.numberPlates.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
+                                    childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
+                                    itemBuilder: (context, index) {
+
+                                      var item = controller.company!.numberPlates[index];
+                                      return NumberPlateItem(item: item,);
+
+
+                                    }):    ListView.builder(
+                                    padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:controller.company!.numberPlates.length,
+                                    itemBuilder: (context, index) {
+
+                                      var item = controller.company!.numberPlates[index];
+                                      return NumberPlateItem(item: item,isGridView: false,);
+
+
+                                    }),
+
+                              ],
+                            ),
+                        ),
                       ],
-                    ),
-                  ),
-                  Get.parameters["type"]=="Real State"?
-                  GetBuilder<CompanyController>(builder: (controller)=>
-                      Column(crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
+                    )
 
-
-                          Padding(
-                            padding: kScreenPadding,
-                            child: Row(
-                              children: [
-                                Text("${"Ads".tr} (${controller.company!.ads.length})",style: kTextStyle16,),
-                                kHorizontalSpace8,
-                                IconButtonWidget(color: kAccentColor,
-                                  onPressed: (){
-                                    controller.isGridView=!controller.isGridView;
-                                    controller.update();
-                                  },icon:controller.isGridView?
-                                  MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
-                                  ,)
-                              ],
-                            ),
-                          ),
-
-                          controller
-                              .adsStatus.value ==
-                              Status.loading
-                              ? CircularLoader():
-
-                          controller.adsStatus.value ==
-                              Status.error
-                              ? Center(
-                            child: Text(kCouldNotLoadData.tr,
-                                style: kTextStyle16),
-                          )
-                              :
-
-                          controller.company!.ads.isEmpty?
-                          Center(
-                            child: Text("NoDataFound".tr,
-                                style: kTextStyle16),
-                          ):
-                          controller.isGridView?  GridView.builder(
-                              padding: EdgeInsets.zero,
-                              physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.ads.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                              childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.ads[index];
-                                return PropertyItem(item: item,);
-
-
-                              }):    ListView.builder(
-                              padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.ads.length,
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.ads[index];
-                                return PropertyItem(item: item,isGridView: false,);
-
-
-                              }),
-
-                        ],
-                      ),
-                  ):
-                  Get.parameters["type"]=="Car"?
-                  GetBuilder<CompanyController>(builder: (controller)=>
-                      Column(crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-
-
-                          Padding(
-                            padding: kScreenPadding,
-                            child: Row(
-                              children: [
-                                Text("${"Ads".tr} (${controller.company!.cars.length})",style: kTextStyle16,),
-                                kHorizontalSpace8,
-                                IconButtonWidget(color: kAccentColor,
-                                  onPressed: (){
-                                    controller.isGridView=!controller.isGridView;
-                                    controller.update();
-                                  },icon:controller.isGridView?
-                                  MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
-                                  ,)
-                              ],
-                            ),
-                          ),
-
-                          controller
-                              .adsStatus.value ==
-                              Status.loading
-                              ? CircularLoader():
-
-                          controller.adsStatus.value ==
-                              Status.error
-                              ? Center(
-                            child: Text(kCouldNotLoadData.tr,
-                                style: kTextStyle16),
-                          )
-                              :
-
-                          controller.company!.cars.isEmpty?
-                          Center(
-                            child: Text("NoDataFound".tr,
-                                style: kTextStyle16),
-                          ):
-                          controller.isGridView?  GridView.builder(
-                              padding: EdgeInsets.zero,
-                              physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.cars.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                              childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.cars[index];
-                                return CarItem(item: item,);
-
-
-                              }):    ListView.builder(
-                              padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.cars.length,
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.cars[index];
-                                return CarItem(item: item,isGridView: false,);
-
-
-                              }),
-
-                        ],
-                      ),
-                  ):
-                  Get.parameters["type"]=="Bike"?
-                  GetBuilder<CompanyController>(builder: (controller)=>
-                      Column(crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-
-
-                          Padding(
-                            padding: kScreenPadding,
-                            child: Row(
-                              children: [
-                                Text("${"Ads".tr} (${controller.company!.bikes.length})",style: kTextStyle16,),
-                                kHorizontalSpace8,
-                                IconButtonWidget(color: kAccentColor,
-                                  onPressed: (){
-                                    controller.isGridView=!controller.isGridView;
-                                    controller.update();
-                                  },icon:controller.isGridView?
-                                  MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
-                                  ,)
-                              ],
-                            ),
-                          ),
-
-                          controller
-                              .adsStatus.value ==
-                              Status.loading
-                              ? CircularLoader():
-
-                          controller.adsStatus.value ==
-                              Status.error
-                              ? Center(
-                            child: Text(kCouldNotLoadData.tr,
-                                style: kTextStyle16),
-                          )
-                              :
-
-                          controller.company!.bikes.isEmpty?
-                          Center(
-                            child: Text("NoDataFound".tr,
-                                style: kTextStyle16),
-                          ):
-                          controller.isGridView?  GridView.builder(
-                              padding: EdgeInsets.zero,
-                              physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.bikes.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                              childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.bikes[index];
-                                return BikeItem(item: item,);
-
-
-                              }):    ListView.builder(
-                              padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.bikes.length,
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.bikes[index];
-                                return BikeItem(item: item,isGridView: false,);
-
-
-                              }),
-
-                        ],
-                      ),
-                  ):
-                  GetBuilder<CompanyController>(builder: (controller)=>
-                      Column(crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-
-
-                          Padding(
-                            padding: kScreenPadding,
-                            child: Row(
-                              children: [
-                                Text("${"Ads".tr} (${controller.company!.numberPlates.length})",style: kTextStyle16,),
-                                kHorizontalSpace8,
-                                IconButtonWidget(color: kAccentColor,
-                                  onPressed: (){
-                                    controller.isGridView=!controller.isGridView;
-                                    controller.update();
-                                  },icon:controller.isGridView?
-                                  MaterialCommunityIcons.view_list: MaterialCommunityIcons.view_grid
-                                  ,)
-                              ],
-                            ),
-                          ),
-
-                          controller
-                              .adsStatus.value ==
-                              Status.loading
-                              ? CircularLoader():
-
-                          controller.adsStatus.value ==
-                              Status.error
-                              ? Center(
-                            child: Text(kCouldNotLoadData.tr,
-                                style: kTextStyle16),
-                          )
-                              :
-
-                          controller.company!.numberPlates.isEmpty?
-                          Center(
-                            child: Text("NoDataFound".tr,
-                                style: kTextStyle16),
-                          ):
-                          controller.isGridView?  GridView.builder(
-                              padding: EdgeInsets.zero,
-                              physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.numberPlates.length,gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,
-                              childAspectRatio: 0.45, crossAxisSpacing: 8.w, mainAxisSpacing: 8.w),
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.numberPlates[index];
-                                return NumberPlateItem(item: item,);
-
-
-                              }):    ListView.builder(
-                              padding: EdgeInsets.zero,   physics: const PageScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:controller.company!.numberPlates.length,
-                              itemBuilder: (context, index) {
-
-                                var item = controller.company!.numberPlates[index];
-                                return NumberPlateItem(item: item,isGridView: false,);
-
-
-                              }),
-
-                        ],
-                      ),
-                  ),
-                ],
+                ),
               )
+          ),
+        )
 
-            ),
-          )
-        ),
-      )
-
-     );
+    );
   }
 }

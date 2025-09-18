@@ -214,7 +214,7 @@ loadRealEstate() async {
   Get.dialog(
     const SwitchingScreen(
       label: 'Switching to Real Estate',
-      icon: Icons.swap_horiz, // or use your custom icon
+        gifPath: 'assets/images/house.gif', // or use your custom icon
     ),
     barrierDismissible: false,
   );
@@ -234,7 +234,7 @@ loadVehicle() async {
   Get.dialog(
     const SwitchingScreen(
       label: 'Switching to Motors',
-      icon: Icons.swap_horiz, // same icon or use a vehicle icon
+      gifPath: 'assets/images/house.gif', // same icon or use a vehicle icon
     ),
     barrierDismissible: false,
   );

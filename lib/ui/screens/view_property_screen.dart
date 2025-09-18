@@ -8,6 +8,7 @@ import 'package:careqar/controllers/favorite_controller.dart';
 import 'package:careqar/controllers/view_property_controller.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
+import 'package:careqar/services/deep_link_service.dart';
 import 'package:careqar/services/share_link_service.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/button_widget.dart';
@@ -53,6 +54,14 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
         appBar: AppBar(
           backgroundColor: kWhiteColor,
           iconTheme: const IconThemeData(color: kBlackColor),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: kBlackColor),
+            onPressed: () {
+              final deepLinkService = Get.find<DeepLinkService>();
+              print("SAHAr Back pressed. openedViaDeeplink=${deepLinkService.openedViaDeeplink}");
+              deepLinkService.handleDeeplinkBack();
+            },
+          ),
           title: Row(
             children: [
               Expanded(
@@ -71,10 +80,11 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                   final ShareService shareService = Get.find<ShareService>();
 
                   await shareService.shareItem(
-                    type: 'property', // or 'car', 'bike' depending on your item type
+                    type: 'property',
                     id: property!.propertyId.toString(),
-                    title: property.title,
-                    description: "Hey! you might be interested in this.",
+                    title: property.title!,
+                    price: property.price.toString(), // Optional
+                    location: property.cityName, // Optional
                   );
                 },
               ),
@@ -499,8 +509,9 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                                 id: property.propertyId.toString(),
                                                 phoneNumber: property.contactNo,
                                                 agentName: property.agentName,
-                                                title: property.title,
+                                                title: property.title!,
                                                 description: property.description,
+                                                price: property.price.toString(),
                                               );
                                             } catch (e) {
                                               showSnackBar(message: "CouldNotLaunchWhatsApp");
@@ -529,6 +540,7 @@ class ViewPropertyScreen extends GetView<ViewPropertyController> {
                                                   agentName: property.agentName,
                                                   title: property.title!,
                                                   description: property.description,
+                                                  price: property.price.toString(),
                                                 );
                                               } catch (e) {
                                                 // Handle error - you can show a snackbar or dialog

@@ -16,7 +16,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../controllers/vehicle_controller.dart';
 import '../../../controllers/view_my_bike_controller.dart';
@@ -60,7 +59,7 @@ class ViewMyBikeScreen extends GetView<ViewMyBikeController> {
                                 type: 'bike',
                                 id: bike.bikeId.toString(),
                                 title: "${bike.brandName} ${bike.modelName} ${bike.modelYear}",
-                                description: bike.description,
+                                description: bike.description, price: bike.price.toString(),
                               );
                             },
                           )

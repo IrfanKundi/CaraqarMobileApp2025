@@ -1,6 +1,7 @@
 import 'package:careqar/locale/app_localizations.dart';
 import 'package:careqar/routes.dart';
 import 'package:careqar/select_country_screen.dart';
+import 'package:careqar/ui/initial_screen_new.dart';
 import 'package:careqar/ui/screens/add_features_screen.dart';
 import 'package:careqar/ui/screens/add_property_screen.dart';
 import 'package:careqar/ui/screens/agent_screen.dart';
@@ -19,7 +20,6 @@ import 'package:careqar/ui/screens/favorites_screen.dart';
 import 'package:careqar/ui/screens/filters_screen.dart';
 import 'package:careqar/ui/screens/foreigner_screen.dart';
 import 'package:careqar/ui/screens/forgot_password_screen.dart';
-import 'package:careqar/ui/screens/initial_screen.dart';
 import 'package:careqar/ui/screens/intro_screen.dart';
 import 'package:careqar/ui/screens/login_screen.dart';
 import 'package:careqar/ui/screens/my_properties_screen.dart';
@@ -177,7 +177,7 @@ class MyApp extends StatelessWidget {
               .copyWith(secondary: kAccentColor),
         ),
         builder: initEasyLoading(), // Initialize easyLoading
-        initialRoute: Routes.chooseOptionScreenNew,
+        initialRoute: Routes.initialScreen,
         getPages: _getPages(), // Routes Initialization
       ),
     );
@@ -186,6 +186,7 @@ class MyApp extends StatelessWidget {
 
   _getPages() {
     return  [
+      GetPage(name: Routes.initialScreen, page: () => const InitialScreen()),
       GetPage(
         name: Routes.sellerProfile,
         page: () => SellerProfilePage(),
@@ -295,8 +296,12 @@ class MyApp extends StatelessWidget {
         name: Routes.viewCarScreen,
         page: () => ViewCarScreen(),
         binding: BindingsBuilder(() {
-          Get.lazyPut<ViewCarController>(() => ViewCarController());
-          Get.lazyPut<LocationController>(() => LocationController());
+          if (!Get.isRegistered<ViewCarController>()) {
+            Get.lazyPut<ViewCarController>(() => ViewCarController());
+          }
+          if (!Get.isRegistered<LocationController>()) {
+            Get.lazyPut<LocationController>(() => LocationController());
+          }
         }),
       ),
 

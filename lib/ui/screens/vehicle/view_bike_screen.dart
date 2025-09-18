@@ -5,6 +5,7 @@ import 'package:careqar/constants/colors.dart';
 import 'package:careqar/constants/style.dart';
 import 'package:careqar/enums.dart';
 import 'package:careqar/routes.dart';
+import 'package:careqar/services/deep_link_service.dart';
 import 'package:careqar/services/share_link_service.dart';
 import 'package:careqar/ui/widgets/alerts.dart';
 import 'package:careqar/ui/widgets/circular_loader.dart';
@@ -46,6 +47,14 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
         appBar: AppBar(
           backgroundColor: kWhiteColor,
           iconTheme: const IconThemeData(color: kBlackColor),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: kBlackColor),
+            onPressed: () {
+              final deepLinkService = Get.find<DeepLinkService>();
+              print("SAHAr Back pressed. openedViaDeeplink=${deepLinkService.openedViaDeeplink}");
+              deepLinkService.handleDeeplinkBack();
+            },
+          ),
           title: Row(
             children: [
               Expanded(
@@ -63,13 +72,12 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                 onPressed: () async {
                   final ShareService shareService = Get.find<ShareService>();
 
-                  String url = shareService.generateShareLink(
+                  await shareService.shareItem(
                     type: 'bike',
                     id: bike!.bikeId.toString(),
+                    title: bike.title!, // or bike.name, depending on your bike model
+                    price: bike.price.toString(), // Optional
                   );
-
-                  String message = "Hey! you might be interested in this.\n$url";
-                  Share.share(message);
                 },
               ),
             ],
@@ -404,7 +412,7 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                                 phoneNumber: bike.contactNo,
                                                 agentName: bike.agentName,
                                                 title: "${bike.brandName!} ${bike.modelName} ${bike.modelYear}",
-                                                description: bike.description,
+                                                description: bike.description, price: bike.price.toString(),
                                               );
                                             } catch (e) {
                                               showSnackBar(message: "Could not launch WhatsApp");
@@ -428,7 +436,7 @@ class ViewBikeScreen extends GetView<ViewBikeController> {
                                                 email: bike.email!,
                                                 agentName: bike.agentName,
                                                 title: bike.title!,
-                                                description: bike.description,
+                                                description: bike.description, price: bike.price.toString(),
                                               );
                                             } catch (e) {
                                               showSnackBar(message: "Could not send email");

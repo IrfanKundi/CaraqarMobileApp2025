@@ -117,34 +117,10 @@ class _HomeScreenState extends  State<VehicleHomeScreen>  with TickerProviderSta
     _videoPlayerController.dispose();
   }
 
-  loadRealEstate() async {
-    Get.dialog(
-      const SwitchingScreen(
-        label: 'Switching to Real Estate',
-        icon: Icons.swap_horiz, // or use your custom icon
-      ),
-      barrierDismissible: false,
-    );
-    _videoPlayerController.dispose();
-    gIsVehicle = false;
-    TypeController typeController = Get.put(TypeController());
-    typeController.allTypes.clear();
-    typeController.subTypes.clear();
-    await typeController.getTypes();
-    await typeController.getTypesWithSubTypes();
-    Future.delayed(const Duration(seconds: 1), () {
-      Get.back();
-      Get.offAllNamed(Routes.navigationScreen);
-    });
-  }
-
-
-
 
   @override
   Widget build(BuildContext context) {
     // kHorizontalSpace12,
-
 
     return  Scaffold(
         resizeToAvoidBottomInset: false,
